@@ -33,6 +33,13 @@ gem 'seed_dump' # import / export seed data from existing db (https://github.com
 gem 'figaro' # private ENV vars for safe deployment
 gem 'rename' # rails g rename:into new_app_name
 gem 'rack-cors', :require => 'rack/cors'
+gem 'httparty'
+
+# google
+gem 'googleauth'
+gem 'google-api-client'
+gem 'google_drive'
+gem 'gcloud' # only requiring to suppress `bin/rails: No such file or directory - gcloud`
 
 group :development do
   gem 'web-console', '~> 3.5.0'

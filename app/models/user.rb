@@ -4,4 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   validates_presence_of :email
+
+  has_many :parsers, dependent: :destroy
+  has_many :documents, through: :parsers
 end

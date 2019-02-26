@@ -1,17 +1,17 @@
 require 'rails_helper'
 
-RSpec.describe User, type: :model do
-  subject { build(:user) }
+RSpec.describe Parser, type: :model do
+  subject { build(:parser) }
 
   it 'has a valid factory' do
     expect(subject).to be_valid
   end
 
   describe 'ActiveModel validations' do
-    it { expect(subject).to validate_presence_of(:email) }
+
   end
 
   describe 'ActiveRecord associations' do
-    it { expect(subject).to have_many(:parsers) }
+    it { expect(subject).to belong_to(:user) }
   end
 end

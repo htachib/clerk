@@ -8,7 +8,7 @@ RSpec.describe Parser, type: :model do
   end
 
   describe 'ActiveModel validations' do
-
+    it { expect(subject).to validate_presence_of(:destination_id) }
   end
 
   describe 'ActiveRecord associations' do

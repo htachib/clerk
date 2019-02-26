@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_26_141436) do
+ActiveRecord::Schema.define(version: 2019_02_26_190041) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 2019_02_26_141436) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "parser_id"
+    t.boolean "processed", default: false
     t.index ["parser_id"], name: "index_documents_on_parser_id"
   end
 
@@ -30,6 +31,7 @@ ActiveRecord::Schema.define(version: 2019_02_26_141436) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.text "destination_id"
     t.index ["user_id"], name: "index_parsers_on_user_id"
   end
 

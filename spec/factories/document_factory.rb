@@ -3,5 +3,6 @@ FactoryBot.define do
     parser
     external_id { SecureRandom.hex(16) }
     name  { 'Cat-Scan-2019.pdf' }
+    processed { false }
   end
 end

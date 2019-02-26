@@ -10,10 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2015_08_23_223218) do
+ActiveRecord::Schema.define(version: 2019_02_26_141436) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "documents", force: :cascade do |t|
+    t.text "external_id"
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "parser_id"
+    t.index ["parser_id"], name: "index_documents_on_parser_id"
+  end
+
+  create_table "parsers", force: :cascade do |t|
+    t.text "external_id"
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_parsers_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -32,4 +50,6 @@ ActiveRecord::Schema.define(version: 2015_08_23_223218) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "documents", "parsers"
+  add_foreign_key "parsers", "users"
 end

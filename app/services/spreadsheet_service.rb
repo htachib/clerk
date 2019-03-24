@@ -20,7 +20,7 @@ class SpreadsheetService
         next if doc.processed?
 
         # todo, could check spreadsheet headers and ensure they match?
-        data = prepare_row(document, parser_id)
+        data = prepare_rows(document, parser_id)
         doc.process! if add_row(sheet_id, data) # returns true/false
       end
     end
@@ -35,25 +35,35 @@ class SpreadsheetService
   end
 
   # todo: replace with iteration through 'parsers' table!
+  # def parsers
+  #   [
+  #     { sheet_id: '1dEdAAXzfsIOkhympf7AHeIB7nEyQBpDVgo8ZO5StPsA', parser_id: 'eylfucfqzted' }, # cas chargeback
+  #     { sheet_id: '1yf0tGmzWeW3yNJw0w9M4Vr1parHiqv6l7BQ1drrJIrE', parser_id: 'enowqxdfgcqg' }, # eagle
+  #     { sheet_id: '1PjDZmbrvWZ04gGUGp7Lmwfps6mcOc-tDtp4XT_BcoO8', parser_id: 'xvexmuksclhe' }  # unfi west
+  #   ]
+  # end
+
+  # v2.0
   def parsers
+    sheet_id = 'xxxx'
     [
-      { sheet_id: '1dEdAAXzfsIOkhympf7AHeIB7nEyQBpDVgo8ZO5StPsA', parser_id: 'eylfucfqzted' }, # cas chargeback
-      { sheet_id: '1yf0tGmzWeW3yNJw0w9M4Vr1parHiqv6l7BQ1drrJIrE', parser_id: 'enowqxdfgcqg' }, # eagle
-      { sheet_id: '1PjDZmbrvWZ04gGUGp7Lmwfps6mcOc-tDtp4XT_BcoO8', parser_id: 'xvexmuksclhe' }  # unfi west
+      { sheet_id: sheet_id, parser_id: 'eylfucfqzted' }, # cas chargeback
+      { sheet_id: sheet_id, parser_id: 'enowqxdfgcqg' }, # eagle
+      { sheet_id: sheet_id, parser_id: 'xvexmuksclhe' }  # unfi west
     ]
   end
 
-  # todo: case statement to combines 'rules' for each doc, ie 'meta_data' + 'line_items'
+  # TODO: case statement to combines 'rules' for each doc, ie 'meta_data' + 'line_items'
   # could store the 'keys' inside `parser.rules = {}`
-
-  def prepare_row(document, parser_id)
+  def prepare_rows(document, parser_id)
     case parser_id
       when 'xvexmuksclhe'
-        AdvancedParsers::UnfiWest.prepare_row(document)
+        AdvancedParsers::UnfiWest.parse_rows(document)
       when 'eylfucfqzted'
-        AdvancedParsers::CasChargeback.prepare_row(document)
+        raw_data = AdvancedParsers::CasChargeback.parse_rows(document)
+        Mappers::CasChargeback.prepare_rows(raw_data)
       when 'enowqxdfgcqg'
-        AdvancedParsers::Eagle.prepare_row(document)
+        AdvancedParsers::Eagle.parse_rows(document)
     end
   end
 

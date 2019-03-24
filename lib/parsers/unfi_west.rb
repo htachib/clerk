@@ -15,7 +15,7 @@ module Parsers
         'Z' => 'Miscellaneous'
       }
 
-      def parse_row(document)
+      def parse_rows(document)
         data = document['invoice_details'].map {|row| row.values }
         invoice_headers = data[0]
         category_sections = divide_by_section(data)

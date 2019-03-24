@@ -2,7 +2,7 @@ module Parsers
   class CasChargeback
     class << self
 
-      def parse_row(document)
+      def parse_rows(document)
         meta_data = document['meta_data'][0]
         invoice_details = document['invoice_details']
 

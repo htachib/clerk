@@ -1,0 +1,44 @@
+module Mappers
+  class UNFIEastReclamation
+    class << self
+
+      def prepare_rows(raw_rows)
+        raw_rows.map do |raw_row|
+          prepared_row = OutputHeaders::ROW_FIELDS
+          prepared_row['Customer'] = 'UNFI East'
+          prepared_row['Parser'] = 'UNFI East Reclamation'
+          prepared_row['File Name'] = raw_row['file_name'].gsub('.pdf','')
+          prepared_row['Invoice Number'] = raw_row['invoice_number']
+          prepared_row['Deduction Post Date'] = ''
+          promo_date = raw_row['promo_date']
+          prepared_row['Promo Start Date'] = get_promo_start_date(promo_date)
+          prepared_row['Promo End Date'] = get_promo_end_date(promo_date)
+          prepared_row['Deduction Type'] = 'Reclamation'
+          deduction_description = raw_row['deduction_description']
+          prepared_row['Deduction Description'] = deduction_description
+          prepared_row['Customer Chain ID'] = get_customer_chain(deduction_description)
+          prepared_row['Customer Detailed Name'] = ''
+          prepared_row['Chargeback Amount'] = raw_row['grand_total']
+          prepared_row['Customer Number'] = ''
+          prepared_row['Customer Location'] = ''
+          prepared_row['Customer City'] = ''
+          prepared_row['Customer State'] = ''
+
+          prepared_row.values # => [['asdf', 'asdf', 'asdf']]
+        end
+      end
+
+      def get_promo_start_date(input)
+        Date.parse(input).strftime("%m/%d/%Y")
+      end
+
+      def get_promo_end_date(input)
+        Date.parse(input).end_of_month.strftime("%m/%d/%Y")
+      end
+
+      def get_customer_chain(input)
+        input.split("Reclamation")[0].strip
+      end
+    end
+  end
+end

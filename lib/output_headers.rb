@@ -26,5 +26,12 @@ class OutputHeaders
                 'Whlse' => '',
                 'Total Discount%' => '',
                 'MCB%' => '',
+                'TOL User' => '',
+                'UPC' => '',
+                'Reference Number' => '',
+                'Reference Date' => '',
+                'KEHE Comment' => '',
+                'EXT-COST' => '',
+                'EP Fee' => ''
               }
 end

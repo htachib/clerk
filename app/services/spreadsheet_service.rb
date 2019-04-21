@@ -7,13 +7,44 @@ class SpreadsheetService
     @user = user
   end
 
+  def get_rows_from_spreadsheet(parser_id)
+    # parser = Parser.find_by(external_id: parser_id)
+    sheet = session.spreadsheet_by_key(parser.destination_id).worksheets[0]
+
+    rows = sheet.rows
+    headers = rows[0]
+    body = rows[1..-1]
+
+    line_with_headers = []
+    body.each do |row|
+      line = {}
+      row.each_with_index do |cell, idx|
+        line[headers[idx]] = cell
+      end
+      line_with_headers.push(line)
+    end
+
+    # here have array of hashes where each hash is a row with header<>data
+  rescue OpenSSL::SSL::SSLError
+    # retry
+  end
+
+  def get_document(parser_id)
+    case parser_id
+      when 'asdfasdf' # TODO
+        get_rows_from_spreadsheet(parser_id)
+      else
+        DocParserService.fetch_documents(parser_id)
+    end
+  end
+
   def import_data
     active_parsers.each do |parser|
       parser_id = parser.external_id
       sheet_id = parser.destination_id
 
       parser = user.parsers.find_or_create_by(external_id: parser_id, destination_id: sheet_id)
-      documents = DocParserService.fetch_documents(parser_id)
+      documents = get_document(parser_id)
 
       documents.each do |document|
         doc = parser.documents.find_or_create_by(external_id: document.dig('id'), name: document.dig('file_name'))
@@ -53,17 +84,32 @@ class SpreadsheetService
   def parse_and_prepare_rows(document, parser_id)
     case parser_id
       when 'xvexmuksclhe'
-        raw_rows = Parsers::UNFIWestWeeklyMCBReport.parse_rows(document)
-        Mappers::UNFIWestWeeklyMCBReport.prepare_rows(raw_rows)
+        raw_rows = Parsers::UNFIWestWeeklyMCB.parse_rows(document)
+        Mappers::UNFIWestWeeklyMCB.prepare_rows(raw_rows)
       when 'eylfucfqzted'
         raw_rows = Parsers::UNFIEastChargeback.parse_rows(document)
         Mappers::UNFIEastChargeback.prepare_rows(raw_rows)
       when 'enowqxdfgcqg'
-        raw_rows = Parsers::UNFIEastDeductionInvoice.parse_rows(document)
-        Mappers::UNFIEastDeductionInvoice.prepare_rows(raw_rows)
+        raw_rows = Parsers::UNFIEastDeductionQuarterly.parse_rows(document)
+        Mappers::UNFIEastDeductionInvoiceQuarterly.prepare_rows(raw_rows)
       when 'azwkpkgfxroi'
         raw_rows = Parsers::UNFIEastReclamation.parse_rows(document)
         Mappers::UNFIEastReclamation.prepare_rows(raw_rows)
+      when 'unkxjvdpcdwg'
+        raw_rows = Parsers::KeHeWeeklyMCB.parse_rows(document)
+        Mappers::KeHeWeeklyMCB.prepare_rows(raw_rows)
+      when 'hkoarkqejsvb'
+        raw_rows = Parsers::KeHeLateDeliveryFee.parse_rows(document)
+        Mappers::KeHeLateDeliveryFee.prepare_rows(raw_rows)
+      when 'bqwnqipeffxj'
+        raw_rows = Parsers::KeHePassThroughPromotion.parse_rows(document)
+        Mappers::KeHePassThroughPromotion.prepare_rows(raw_rows)
+      when 'yajcqtqeuwhd'
+        raw_rows = Parsers::KeHePromotion.parse_rows(document)
+        Mappers::KeHePromotion.prepare_rows(raw_rows)
+      when 'hjczbplazgti'
+        raw_rows = Parsers::KeHeSlotting.parse_rows(document)
+        Mappers::KeHeSlotting.prepare_rows(raw_rows)
     end
   end
 

@@ -1,5 +1,5 @@
 module Mappers
-  class UNFIEastDeductionInvoice
+  class UNFIEastDeductionQuarterly
     class << self
 
       def prepare_rows(raw_rows)
@@ -9,7 +9,7 @@ module Mappers
           prepared_row['Parser'] = 'UNFI East Deduction Invoice'
           prepared_row['File Name'] = raw_row['file_name'].gsub('.pdf','')
           prepared_row['Invoice Number'] = raw_row['deduction_num']
-          prepared_row['Deduction Post Date'] = ''
+          prepared_row['Deduction Post Date'] = Date.parse(raw_row['uploaded_at']).strftime("%m/%d/%Y")
           performance_dates = raw_row['performance_dates']
           prepared_row['Promo Start Date'] = get_promo_start_date(performance_dates)
           prepared_row['Promo End Date'] = get_promo_end_date(performance_dates)
@@ -39,9 +39,10 @@ module Mappers
 
       def get_deduction_type(input)
         type = input.split(/\d\s/).last
-        case input
-        when 'Ad Agreements'
+        if type == 'Ad Agreements'
           'Ad Fee'
+        else
+          type
         end
         # add others as identified
       end

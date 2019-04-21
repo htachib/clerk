@@ -1,5 +1,5 @@
-module AdvancedParsers
-  class UnfiWest
+module Parsers
+  class UNFIWestWeeklyMCBReport
     class << self
       SECTIONS = {
         'A' => 'Ad Deals',
@@ -15,14 +15,37 @@ module AdvancedParsers
         'Z' => 'Miscellaneous'
       }
 
-      def prepare_row(document)
+      def parse_rows(document)
+        invoice_data(document).map do |row|
+          row.deep_merge('file_name' => document['file_name']
+          ).deep_merge(
+          'uploaded_at' => document['uploaded_at']
+          )
+        end
+      end
+
+      def invoice_data(document)
         data = document['invoice_details'].map {|row| row.values }
         invoice_headers = data[0]
         category_sections = divide_by_section(data)
         data_by_section = sort_section(category_sections, invoice_headers)
         parser_headers = ['MCB Category', data_by_section.first.values.first[:customers].first.keys - ['invoices'], invoice_headers].flatten
+        add_headers_to_data(parser_headers, data_by_section)
+      end
 
-        get_rows(data_by_section)
+      def add_headers_to_data(parser_headers, data_by_section)
+        invoice_data = get_rows(data_by_section)
+        rows = []
+
+        invoice_data.each do |d|
+          row = {}
+          parser_headers.count.times do |idx|
+            row[parser_headers[idx]] = d[idx]
+          end
+          rows << row
+        end
+
+        rows
       end
 
       def category_starting_rows(data)

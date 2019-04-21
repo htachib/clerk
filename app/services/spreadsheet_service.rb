@@ -8,9 +8,9 @@ class SpreadsheetService
   end
 
   def import_data
-    parsers.each do |parser|
-      parser_id = parser[:parser_id]
-      sheet_id = parser[:sheet_id]
+    active_parsers.each do |parser|
+      parser_id = parser.external_id
+      sheet_id = parser.destination_id
 
       parser = user.parsers.find_or_create_by(external_id: parser_id, destination_id: sheet_id)
       documents = DocParserService.fetch_documents(parser_id)
@@ -20,13 +20,13 @@ class SpreadsheetService
         next if doc.processed?
 
         # todo, could check spreadsheet headers and ensure they match?
-        data = prepare_row(document, parser_id)
-        doc.process! if add_row(sheet_id, data) # returns true/false
+        data = parse_and_prepare_rows(document, parser_id) # parses and prepares rows
+        doc.process! if add_rows(sheet_id, data) # returns true/false
       end
     end
   end
 
-  def add_row(sheet_id, data) # ['bob', 'jimbob@gmail.com', false, '2/01/2019']
+  def add_rows(sheet_id, data) # ['bob', 'jimbob@gmail.com', false, '2/01/2019']
     sheet = fetch_by_key(sheet_id)
     new_row = sheet.num_rows + 1
     data = data.count == data.flatten.count ? [data] : data # single + multiple row collections
@@ -34,26 +34,36 @@ class SpreadsheetService
     sheet.save
   end
 
-  # todo: replace with iteration through 'parsers' table!
-  def parsers
-    [
-      { sheet_id: '1dEdAAXzfsIOkhympf7AHeIB7nEyQBpDVgo8ZO5StPsA', parser_id: 'eylfucfqzted' }, # cas chargeback
-      { sheet_id: '1yf0tGmzWeW3yNJw0w9M4Vr1parHiqv6l7BQ1drrJIrE', parser_id: 'enowqxdfgcqg' }, # eagle
-      { sheet_id: '1PjDZmbrvWZ04gGUGp7Lmwfps6mcOc-tDtp4XT_BcoO8', parser_id: 'xvexmuksclhe' }  # unfi west
-    ]
+  # v2.0 - insert to prod DB then DELETE this
+  # def parsers
+  #   sheet_id = '1UnsCVq6dIQXIlQnDI4MaKXW2Vqp8QzYONuYn4o5UGvI' # master
+  #   [
+  #     { destination_id: sheet_id, external_id: 'eylfucfqzted' }, # cas chargeback
+  #     { destination_id: sheet_id, external_id: 'enowqxdfgcqg' }, # eagle
+  #     { destination_id: sheet_id, external_id: 'xvexmuksclhe' }  # unfi west
+  #   ]
+  # end
+
+  def active_parsers
+    Parser.where.not(destination_id: nil)
   end
 
-  # todo: case statement to combines 'rules' for each doc, ie 'meta_data' + 'line_items'
+  # TODO: case statement to combines 'rules' for each doc, ie 'meta_data' + 'line_items'
   # could store the 'keys' inside `parser.rules = {}`
-
-  def prepare_row(document, parser_id)
+  def parse_and_prepare_rows(document, parser_id)
     case parser_id
       when 'xvexmuksclhe'
-        AdvancedParsers::UnfiWest.prepare_row(document)
+        raw_rows = Parsers::UNFIWestWeeklyMCBReport.parse_rows(document)
+        Mappers::UNFIWestWeeklyMCBReport.prepare_rows(raw_rows)
       when 'eylfucfqzted'
-        AdvancedParsers::CasChargeback.prepare_row(document)
+        raw_rows = Parsers::UNFIEastChargeback.parse_rows(document)
+        Mappers::UNFIEastChargeback.prepare_rows(raw_rows)
       when 'enowqxdfgcqg'
-        AdvancedParsers::Eagle.prepare_row(document)
+        raw_rows = Parsers::UNFIEastDeductionInvoice.parse_rows(document)
+        Mappers::UNFIEastDeductionInvoice.prepare_rows(raw_rows)
+      when 'azwkpkgfxroi'
+        raw_rows = Parsers::UNFIEastReclamation.parse_rows(document)
+        Mappers::UNFIEastReclamation.prepare_rows(raw_rows)
     end
   end
 

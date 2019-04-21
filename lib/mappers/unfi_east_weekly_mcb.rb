@@ -7,9 +7,9 @@ module Mappers
           prepared_row = OutputHeaders::ROW_FIELDS
           prepared_row['Customer'] = 'UNFI East'
           prepared_row['Parser'] = 'UNFI East Weekly MCB Report'
-          prepared_row['File Name'] = '{{TBD}}'
+          prepared_row['File Name'] = raw_row['file_name']
           prepared_row['Invoice Number'] = raw_row['Invoice']
-          prepared_row['Deduction Post Date'] = Date.parse(raw_row['uploaded_at']).strftime("%m/%d/%Y")
+          prepared_row['Deduction Post Date'] = raw_row['uploaded_at']
           promo_end_date = raw_row['Period End']
           prepared_row['Promo End Date'] = format_date_year(promo_end_date)
           prepared_row['Promo Start Date'] = get_promo_start_date(promo_end_date)
@@ -17,7 +17,7 @@ module Mappers
           prepared_row['Deduction Description'] = ''
           prepared_row['Customer Chain ID'] = raw_row['Chain']
           prepared_row['Customer Detailed Name'] = raw_row['Customer Name']
-          prepared_row['Chargeback Amount'] = raw_row['MCB']
+          prepared_row['Chargeback Amount'] = raw_row['ChgBckAmt']
           prepared_row['Customer Number'] = raw_row['Cust #']
           prepared_row['Customer Location'] = [raw_row['City'], raw_row['State']].join(', ')
           prepared_row['Customer City'] = raw_row['City']
@@ -30,13 +30,14 @@ module Mappers
           prepared_row['Shipped'] = raw_row['QtyS']
           prepared_row['Whlse'] = raw_row['InvAmt']
           prepared_row['Total Discount%'] = ''
-          prepared_row['MCB%'] = raw_row['ChgBckPct'] + '%'
+          prepared_row['MCB%'] = "#{raw_row['ChgBckPct']}%"
 
-          prepared_row.values # => [['asdf', 'asdf', 'asdf']]
+          prepared_row.values # => [["UNFI East", "UNFI East Weekly MCB Report", "WE 2018-08-11 51304CASAD"]]
         end
       end
 
-      def get_promo_start_date(end_date)
+      def get_promo_start_date(end_date = nil)
+        return '' unless end_date
         date = convert_date(end_date) - 6.days
         date.strftime("%m/%d/%Y")
       end
@@ -45,7 +46,8 @@ module Mappers
         Date.strptime(input, '%m/%d/%y')
       end
 
-      def format_date_year(input)
+      def format_date_year(input = nil)
+        return '' unless input
         Date.strptime(input, '%m/%d/%y').strftime('%m/%d/%Y')
       end
     end

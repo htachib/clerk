@@ -2,58 +2,43 @@ class SpreadsheetService
   attr_accessor :session
   attr_accessor :user
 
-  def initialize(user)
+  def initialize(user = nil)
     @session = client
-    @user = user
-  end
-
-  def get_rows_from_spreadsheet(parser_id)
-    # parser = Parser.find_by(external_id: parser_id)
-    sheet = session.spreadsheet_by_key(parser.destination_id).worksheets[0]
-
-    rows = sheet.rows
-    headers = rows[0]
-    body = rows[1..-1]
-
-    line_with_headers = []
-    body.each do |row|
-      line = {}
-      row.each_with_index do |cell, idx|
-        line[headers[idx]] = cell
-      end
-      line_with_headers.push(line)
-    end
-
-    # here have array of hashes where each hash is a row with header<>data
-  rescue OpenSSL::SSL::SSLError
-    # retry
-  end
-
-  def get_document(parser_id)
-    case parser_id
-      when 'asdfasdf' # TODO
-        get_rows_from_spreadsheet(parser_id)
-      else
-        DocParserService.fetch_documents(parser_id)
-    end
+    @user = user ||= User.find_by(email: User::ADMIN_EMAIL)
   end
 
   def import_data
     active_parsers.each do |parser|
-      parser_id = parser.external_id
-      sheet_id = parser.destination_id
+      parser_id = parser.external_id # pointer to docparser process
+      sheet_id = parser.destination_id # pointer to google spreadsheet
 
-      parser = user.parsers.find_or_create_by(external_id: parser_id, destination_id: sheet_id)
-      documents = get_document(parser_id)
+      documents = get_documents(parser_id)
 
       documents.each do |document|
-        doc = parser.documents.find_or_create_by(external_id: document.dig('id'), name: document.dig('file_name'))
+        doc = prepare_doc(parser, document)
         next if doc.processed?
 
         # todo, could check spreadsheet headers and ensure they match?
         data = parse_and_prepare_rows(document, parser_id) # parses and prepares rows
         doc.process! if add_rows(sheet_id, data) # returns true/false
       end
+    end
+  end
+
+  def prepare_doc(parser, document)
+    external_id = document.try(:id) || document.dig('id') # sheet, docparser
+    name = document.try(:name) || document.dig('file_name')
+
+    parser.documents.find_or_create_by(external_id: external_id, name: name)
+  end
+
+  def get_documents(parser_id)
+    case parser_id
+      when '1Z5by0rrvu1tVw5K2nXZRAJL3ct2TM7GS' # Unfi Easy Weekly MCB
+        fetch_documents_from_folder(parser_id)
+      else
+        # TODO: only fetch documents where created_at > last import
+        DocParserService.fetch_documents(parser_id)
     end
   end
 
@@ -83,6 +68,9 @@ class SpreadsheetService
   # could store the 'keys' inside `parser.rules = {}`
   def parse_and_prepare_rows(document, parser_id)
     case parser_id
+      when '1Z5by0rrvu1tVw5K2nXZRAJL3ct2TM7GS'
+        raw_rows = Parsers::UNFIEastWeeklyMCB.parse_rows(document)
+        Mappers::UNFIEastWeeklyMCB.prepare_rows(raw_rows)
       when 'xvexmuksclhe'
         raw_rows = Parsers::UNFIWestWeeklyMCB.parse_rows(document)
         Mappers::UNFIWestWeeklyMCB.prepare_rows(raw_rows)
@@ -115,6 +103,12 @@ class SpreadsheetService
 
   def fetch_by_key(sheet_id)
     session.spreadsheet_by_key(sheet_id).worksheets[0]
+  end
+
+  def fetch_documents_from_folder(folder_id)
+    folder = session.file_by_id(folder_id)
+    sheets = folder.spreadsheets
+    sheets.select { |sheet| !sheet.trashed? }
   end
 
   def create_sheet(folder_id, sheet_name) # '0BwwA4oUTeiV1TGRPeTVjaWRDY1E'

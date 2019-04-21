@@ -1,5 +1,5 @@
 module Mappers
-  class KeHeWeeklyMCB
+  class KeheWeeklyMCB
     class << self
 
       def prepare_rows(raw_rows)

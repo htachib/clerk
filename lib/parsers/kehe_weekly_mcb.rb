@@ -1,9 +1,9 @@
 module Parsers
-  class KeHeWeeklyMCB
+  class KeheWeeklyMCB
     INVOICE_HEADERS = ["UPC#", "QTY SHIP", "DESCRIPTION", "REFERENCE NBR", "REFERENCE DATE", "COMMENT", "COST", "DISC $ OR %", "EXT-COST"]
     class << self
       def parse_rows(document)
-        invoice_dates = raw_invoice_dates
+        invoice_dates = raw_invoice_dates(document)
         invoice_data(document).map do |row|
           row.deep_merge(invoice_dates[0]
           ).deep_merge(invoice_dates[1]
@@ -72,7 +72,7 @@ module Parsers
         body
       end
 
-      def raw_invoice_dates
+      def raw_invoice_dates(document)
         meta_data = document['meta_data'][0]['key_0']
         dates = meta_data.scan(/\d{2}\/\d{2}\/\d{4}/)
         return [{'start_date' => dates[0]},{'end_date' => dates[1]}]

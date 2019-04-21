@@ -1,5 +1,5 @@
 module Mappers
-  class KeHeLateDeliveryFee
+  class KeheLateDeliveryFee
     class << self
       def prepare_rows(raw_rows)
         prepared_row = OutputHeaders::ROW_FIELDS
@@ -10,7 +10,7 @@ module Mappers
         prepared_row['Invoice Number'] = raw_rows['invoice number']
         prepared_row['Deduction Post Date'] = Date.parse(raw_rows['uploaded_at']).strftime("%m/%d/%Y")
         prepared_row['Promo End Date'] = raw_rows['invoice_date']
-        prepared_row['Promo Start Date'] = raw_row['start_date']
+        prepared_row['Promo Start Date'] = raw_rows['start_date']
         prepared_row['Deduction Type'] = raw_rows['Type']
         prepared_row['Customer Chain ID'] = 'KeHe'
         prepared_row['Customer Detailed Name'] = 'KeHe'

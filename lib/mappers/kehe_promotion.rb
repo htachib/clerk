@@ -1,5 +1,5 @@
 module Mappers
-  class KeHePromotion
+  class KehePromotion
     class << self
       def prepare_rows(raw_rows)
         prepared_row = OutputHeaders::ROW_FIELDS

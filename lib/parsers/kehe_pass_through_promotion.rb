@@ -1,5 +1,5 @@
 module Parsers
-  class KeHePassThroughPromotion
+  class KehePassThroughPromotion
     class << self
       def parse_rows(document)
         invoice_data(document).deep_merge(

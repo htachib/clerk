@@ -3,4 +3,5 @@ class Parser < ActiveRecord::Base
   has_many :documents, dependent: :destroy
 
   validates_presence_of :destination_id
+  validates_uniqueness_of :external_id, scope: :user_id
 end

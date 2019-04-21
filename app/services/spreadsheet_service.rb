@@ -79,25 +79,25 @@ class SpreadsheetService
         Mappers::UNFIEastChargeback.prepare_rows(raw_rows)
       when 'enowqxdfgcqg'
         raw_rows = Parsers::UNFIEastDeductionQuarterly.parse_rows(document)
-        Mappers::UNFIEastDeductionInvoiceQuarterly.prepare_rows(raw_rows)
+        Mappers::UNFIEastDeductionQuarterly.prepare_rows(raw_rows)
       when 'azwkpkgfxroi'
         raw_rows = Parsers::UNFIEastReclamation.parse_rows(document)
         Mappers::UNFIEastReclamation.prepare_rows(raw_rows)
       when 'unkxjvdpcdwg'
-        raw_rows = Parsers::KeHeWeeklyMCB.parse_rows(document)
-        Mappers::KeHeWeeklyMCB.prepare_rows(raw_rows)
+        raw_rows = Parsers::KeheWeeklyMCB.parse_rows(document)
+        Mappers::KeheWeeklyMCB.prepare_rows(raw_rows)
       when 'hkoarkqejsvb'
-        raw_rows = Parsers::KeHeLateDeliveryFee.parse_rows(document)
-        Mappers::KeHeLateDeliveryFee.prepare_rows(raw_rows)
+        raw_rows = Parsers::KeheLateDeliveryFee.parse_rows(document)
+        Mappers::KeheLateDeliveryFee.prepare_rows(raw_rows)
       when 'bqwnqipeffxj'
-        raw_rows = Parsers::KeHePassThroughPromotion.parse_rows(document)
-        Mappers::KeHePassThroughPromotion.prepare_rows(raw_rows)
+        raw_rows = Parsers::KehePassThroughPromotion.parse_rows(document)
+        Mappers::KehePassThroughPromotion.prepare_rows(raw_rows)
       when 'yajcqtqeuwhd'
-        raw_rows = Parsers::KeHePromotion.parse_rows(document)
-        Mappers::KeHePromotion.prepare_rows(raw_rows)
+        raw_rows = Parsers::KehePromotion.parse_rows(document)
+        Mappers::KehePromotion.prepare_rows(raw_rows)
       when 'hjczbplazgti'
-        raw_rows = Parsers::KeHeSlotting.parse_rows(document)
-        Mappers::KeHeSlotting.prepare_rows(raw_rows)
+        raw_rows = Parsers::KeheSlotting.parse_rows(document)
+        Mappers::KeheSlotting.prepare_rows(raw_rows)
     end
   end
 

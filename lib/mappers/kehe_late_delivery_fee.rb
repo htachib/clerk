@@ -2,7 +2,7 @@ module Mappers
   class KeheLateDeliveryFee
     class << self
       def prepare_rows(raw_rows)
-        prepared_row = OutputHeaders::ROW_FIELDS
+        prepared_row = OutputHeaders::ROW_FIELDS.deep_dup
         prepared_row['Customer'] = 'KeHe'
         prepared_row['Parser'] = 'KeHe Late Delivery Fee'
         file_name = raw_rows['file_name'].gsub('.pdf','').gsub('.PDF','')

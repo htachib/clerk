@@ -4,9 +4,9 @@ module Mappers
 
       def prepare_rows(raw_rows)
         raw_rows.map do |raw_row|
-          prepared_row = OutputHeaders::ROW_FIELDS
+          prepared_row = OutputHeaders::ROW_FIELDS.deep_dup
           prepared_row['Customer'] = 'UNFI East'
-          prepared_row['Parser'] = 'UNFI East Deduction Invoice'
+          prepared_row['Parser'] = 'UNFI East Deduction Quarterly'
           prepared_row['File Name'] = raw_row['file_name'].gsub('.pdf','')
           prepared_row['Invoice Number'] = raw_row['deduction_num']
           prepared_row['Deduction Post Date'] = Date.parse(raw_row['uploaded_at']).strftime("%m/%d/%Y")

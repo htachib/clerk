@@ -4,9 +4,9 @@ module Mappers
 
       def prepare_rows(raw_rows)
         raw_rows.map do |raw_row|
-          prepared_row = OutputHeaders::ROW_FIELDS
+          prepared_row = OutputHeaders::ROW_FIELDS.deep_dup
           prepared_row['Customer'] = 'UNFI East'
-          prepared_row['Parser'] = 'UNFI East Weekly MCB Report'
+          prepared_row['Parser'] = 'UNFI East Weekly MCB'
           prepared_row['File Name'] = raw_row['file_name']
           prepared_row['Invoice Number'] = raw_row['Invoice']
           prepared_row['Deduction Post Date'] = raw_row['uploaded_at']

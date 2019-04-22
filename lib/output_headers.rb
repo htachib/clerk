@@ -33,5 +33,5 @@ class OutputHeaders
                 'KEHE Comment' => '',
                 'EXT-COST' => '',
                 'EP Fee' => ''
-              }
+              }.freeze
 end

@@ -4,7 +4,7 @@ module Mappers
 
       def prepare_rows(raw_rows)
         raw_rows.map do |raw_row|
-          prepared_row = OutputHeaders::ROW_FIELDS
+          prepared_row = OutputHeaders::ROW_FIELDS.deep_dup
           prepared_row['Customer'] = 'KeHe'
           prepared_row['Parser'] = 'KeHe Weekly MCB Report'
           file_name = raw_row['file_name'].gsub('.pdf','').gsub('.PDF','')

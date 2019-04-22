@@ -1,5 +1,5 @@
 module Mappers
-  class UNFIWestWeeklyMCBReport
+  class UNFIWestWeeklyMCB
     class << self
 
       def prepare_rows(raw_rows)
@@ -11,7 +11,7 @@ module Mappers
           prepared_row['File Name'] = file_name
           invoice_number = get_invoice_number(file_name)
           prepared_row['Invoice Number'] = invoice_number
-          prepared_row['Deduction Post Date'] = ''
+          prepared_row['Deduction Post Date'] = Date.parse(raw_row['uploaded_at']).strftime("%m/%d/%Y")
           promo_date = get_promo_date(invoice_number)
           promo_end_date = get_promo_end_date(promo_date)
           prepared_row['Promo End Date'] = promo_end_date

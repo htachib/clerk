@@ -9,10 +9,12 @@ module Mappers
           prepared_row['Parser'] = 'UNFI East Reclamation'
           prepared_row['File Name'] = raw_row['file_name'].gsub('.pdf','')
           prepared_row['Invoice Number'] = raw_row['invoice_number']
-          prepared_row['Deduction Post Date'] = ''
+          uploaded_date = Date.parse(raw_row['uploaded_at']).strftime("%m/%d/%Y")
+          prepared_row['Deduction Post Date'] = uploaded_date
           promo_date = raw_row['promo_date']
-          prepared_row['Promo Start Date'] = get_promo_start_date(promo_date)
-          prepared_row['Promo End Date'] = get_promo_end_date(promo_date)
+          promo_end_date = get_promo_end_date(promo_date)
+          prepared_row['Promo End Date'] = promo_end_date
+          prepared_row['Promo Start Date'] = promo_end_date
           prepared_row['Deduction Type'] = 'Reclamation'
           deduction_description = raw_row['deduction_description']
           prepared_row['Deduction Description'] = deduction_description
@@ -26,10 +28,6 @@ module Mappers
 
           prepared_row.values # => [['asdf', 'asdf', 'asdf']]
         end
-      end
-
-      def get_promo_start_date(input)
-        Date.parse(input).strftime("%m/%d/%Y")
       end
 
       def get_promo_end_date(input)

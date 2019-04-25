@@ -30,8 +30,7 @@ class OutputHeaders
                 'UPC' => '',
                 'Reference Number' => '',
                 'Reference Date' => '',
-                'KEHE Comment' => '',
-                'EXT-COST' => '',
+                'KeHE Comment' => '',
                 'EP Fee' => ''
               }.freeze
 end

@@ -12,11 +12,20 @@ module Parsers
       def invoice_data(document)
         parsed_meta_data_cover(document).deep_merge(parsed_meta_data(document)
         ).deep_merge(parsed_invoice_details(document)
-        ).deep_merge(parsed_totals(document))
+        ).deep_merge(parsed_totals(document)
+        ).deep_merge(parsed_customer_data(document))
       end
 
       def get_raw_data(document, type)
         document[type].map {|row| row.values }
+      end
+
+      def parsed_customer_data(document)
+        parsed = {}
+        data = get_raw_data(document,'customer_data').map { |row| row.join(' ') }
+        parsed['customer_name'] = data[0].split(' ').first.strip
+        parsed['invoice_type'] = data[0].split(' ').last.strip
+        parsed
       end
 
       def parsed_meta_data_cover(document)

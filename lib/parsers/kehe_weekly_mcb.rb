@@ -1,17 +1,31 @@
 module Parsers
   class KeheWeeklyMCB
-    INVOICE_HEADERS = ["UPC#", "QTY SHIP", "DESCRIPTION", "REFERENCE NBR", "REFERENCE DATE", "COMMENT", "COST", "DISC $ OR %", "EXT-COST"]
     class << self
+      INVOICE_HEADERS = ["UPC#", "QTY SHIP", "DESCRIPTION", "REFERENCE NBR", "REFERENCE DATE", "COMMENT", "COST", "DISC $ OR %", "EXT-COST"]
+
       def parse_rows(document)
         invoice_dates = raw_invoice_dates(document)
-        invoice_data(document).map do |row|
-          row.deep_merge(invoice_dates[0]
-          ).deep_merge(invoice_dates[1]
-          ).deep_merge('file_name' => document['file_name']
-          ).deep_merge(
-          'uploaded_at' => document['uploaded_at']
-          )
+        invoice_rows = invoice_data(document).map do |row|
+          merge_rows(row, document, invoice_dates)
         end
+        processing_fee_row = processing_fee(document, invoice_dates)
+        new_row = merge_rows(processing_fee_row, document, invoice_dates)
+        invoice_rows.push(new_row)
+      end
+
+      def merge_rows(row, document, invoice_dates)
+        row.deep_merge(invoice_dates[0]
+        ).deep_merge(invoice_dates[1]
+        ).deep_merge('file_name' => document['file_name']
+        ).deep_merge(
+        'uploaded_at' => document['uploaded_at']
+        )
+      end
+
+      def processing_fee(document, invoice_dates)
+        totals = document['totals']
+        fee = totals[2].values.last
+        {'processing_fee' => fee}
       end
 
       def invoice_data(document)
@@ -72,10 +86,10 @@ module Parsers
       end
 
       def raw_invoice_dates(document)
-        meta_data = document['meta_data'][0]['key_0']
+        meta_data = document['invoice_dates'][0]['key_0']
         dates = meta_data.scan(/\d{2}\/\d{2}\/\d{4}/)
         return [{'start_date' => dates[0]},{'end_date' => dates[1]}]
-      end 
+      end
 
       def parse_section(section)
         parsed_data = []

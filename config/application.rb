@@ -10,7 +10,7 @@ module ClerkOcr
   class Application < Rails::Application
     config.load_defaults 5.2
     Figaro.load
-    config.autoload_paths << Rails.root.join('lib') # adds Lib folder to autoloaded files
+    config.eager_load_paths << Rails.root.join('lib') # adds Lib folder to autoloaded files
     config.autoload_paths += %W(#{config.root}/app/services)
 
     # allow cross origin requests

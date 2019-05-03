@@ -4,6 +4,8 @@ class Parser < ActiveRecord::Base
 
   scope :active, -> { where.not(destination_id: nil) }
 
+  serialize :settings, Hash
+
   validates_presence_of :destination_id
   validates_uniqueness_of :external_id, scope: :user_id
 end

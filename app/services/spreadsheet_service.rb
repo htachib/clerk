@@ -9,17 +9,16 @@ class SpreadsheetService
 
   def import_data
     Parser.active.each do |parser|
-      parser_id = parser.external_id # pointer to docparser process
       sheet_id = parser.destination_id # pointer to google spreadsheet
 
-      documents = get_documents(parser_id)
+      documents = get_documents(parser)
 
       documents.each do |document|
         doc = prepare_doc(parser, document)
         next if doc.processed?
 
         # todo, could check spreadsheet headers and ensure they match?
-        data = parse_and_prepare_rows(document, parser_id) # parses and prepares rows
+        data = parse_and_prepare_rows(document, parser) # parses and prepares rows
         doc.process! if add_rows(sheet_id, data) # returns true/false
       end
     end
@@ -32,13 +31,11 @@ class SpreadsheetService
     parser.documents.find_or_create_by(external_id: external_id, name: name)
   end
 
-  def get_documents(parser_id)
-    case parser_id
-      when '1Z5by0rrvu1tVw5K2nXZRAJL3ct2TM7GS' # Unfi Easy Weekly MCB
-        fetch_documents_from_folder(parser_id)
-      else
-        # TODO: only fetch documents where created_at > last import
-        DocParserService.fetch_documents(parser_id)
+  def get_documents(parser)
+    if parser.settings.dig('source') == 'google_drive'
+      fetch_documents_from_folder(parser.external_id)
+    else # TODO: only fetch documents where created_at > last import
+      DocParserService.fetch_documents(parser.external_id)
     end
   end
 
@@ -50,41 +47,11 @@ class SpreadsheetService
     sheet.save
   end
 
-  # TODO: case statement to combines 'rules' for each doc, ie 'meta_data' + 'line_items'
-  # could store the 'keys' inside `parser.rules = {}`
-  def parse_and_prepare_rows(document, parser_id)
-    case parser_id
-      when '1Z5by0rrvu1tVw5K2nXZRAJL3ct2TM7GS'
-        raw_rows = Parsers::UNFIEastWeeklyMCB.parse_rows(document)
-        Mappers::UNFIEastWeeklyMCB.prepare_rows(raw_rows)
-      when 'xvexmuksclhe'
-        raw_rows = Parsers::UNFIWestWeeklyMCB.parse_rows(document)
-        Mappers::UNFIWestWeeklyMCB.prepare_rows(raw_rows)
-      when 'eylfucfqzted'
-        raw_rows = Parsers::UNFIEastChargeback.parse_rows(document)
-        Mappers::UNFIEastChargeback.prepare_rows(raw_rows)
-      when 'enowqxdfgcqg'
-        raw_rows = Parsers::UNFIEastDeductionQuarterly.parse_rows(document)
-        Mappers::UNFIEastDeductionQuarterly.prepare_rows(raw_rows)
-      when 'azwkpkgfxroi'
-        raw_rows = Parsers::UNFIEastReclamation.parse_rows(document)
-        Mappers::UNFIEastReclamation.prepare_rows(raw_rows)
-      when 'unkxjvdpcdwg'
-        raw_rows = Parsers::KeheWeeklyMCB.parse_rows(document)
-        Mappers::KeheWeeklyMCB.prepare_rows(raw_rows)
-      when 'hkoarkqejsvb'
-        raw_rows = Parsers::KeheLateDeliveryFee.parse_rows(document)
-        Mappers::KeheLateDeliveryFee.prepare_rows(raw_rows)
-      when 'bqwnqipeffxj'
-        raw_rows = Parsers::KehePassThroughPromotion.parse_rows(document)
-        Mappers::KehePassThroughPromotion.prepare_rows(raw_rows)
-      when 'yajcqtqeuwhd'
-        raw_rows = Parsers::KehePromotion.parse_rows(document)
-        Mappers::KehePromotion.prepare_rows(raw_rows)
-      when 'hjczbplazgti'
-        raw_rows = Parsers::KeheSlotting.parse_rows(document)
-        Mappers::KeheSlotting.prepare_rows(raw_rows)
-    end
+  def parse_and_prepare_rows(document, parser)
+    library = parser.settings.dig('library')
+
+    raw_rows = "Parsers::#{library}".constantize.parse_rows(document)
+    "Mappers::#{library}".constantize.prepare_rows(document)
   end
 
   def fetch_by_key(sheet_id)

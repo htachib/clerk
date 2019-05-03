@@ -7,10 +7,8 @@ class SpreadsheetService
     @user = user ||= User.find_by(email: User::ADMIN_EMAIL)
   end
 
-  def import_data
+  def import_data!
     Parser.active.each do |parser|
-      sheet_id = parser.destination_id # pointer to google spreadsheet
-
       documents = get_documents(parser)
 
       documents.each do |document|
@@ -19,7 +17,7 @@ class SpreadsheetService
 
         # todo, could check spreadsheet headers and ensure they match?
         data = parse_and_prepare_rows(document, parser) # parses and prepares rows
-        doc.process! if add_rows(sheet_id, data) # returns true/false
+        doc.process! if add_rows(parser, data) # returns true/false
       end
     end
   end
@@ -39,10 +37,12 @@ class SpreadsheetService
     end
   end
 
-  def add_rows(sheet_id, data) # ['bob', 'jimbob@gmail.com', false, '2/01/2019']
-    sheet = fetch_by_key(sheet_id)
+  def add_rows(parser, data) # ['bob', 'jimbob@gmail.com', false, '2/01/2019']
+    sheet = fetch_by_key(parser.destination_id)
+
     new_row = sheet.num_rows + 1
     data = data.count == data.flatten.count ? [data] : data # single + multiple row collections
+
     sheet.insert_rows(new_row, data)
     sheet.save
   end

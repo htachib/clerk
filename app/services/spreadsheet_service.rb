@@ -51,7 +51,7 @@ class SpreadsheetService
     library = parser.settings.dig('library')
 
     raw_rows = "Parsers::#{library}".constantize.parse_rows(document)
-    "Mappers::#{library}".constantize.prepare_rows(document)
+    "Mappers::#{library}".constantize.prepare_rows(raw_rows)
   end
 
   def fetch_by_key(sheet_id)

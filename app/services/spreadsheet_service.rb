@@ -8,7 +8,7 @@ class SpreadsheetService
   end
 
   def import_data
-    active_parsers.each do |parser|
+    Parser.active.each do |parser|
       parser_id = parser.external_id # pointer to docparser process
       sheet_id = parser.destination_id # pointer to google spreadsheet
 
@@ -48,20 +48,6 @@ class SpreadsheetService
     data = data.count == data.flatten.count ? [data] : data # single + multiple row collections
     sheet.insert_rows(new_row, data)
     sheet.save
-  end
-
-  # v2.0 - insert to prod DB then DELETE this
-  # def parsers
-  #   sheet_id = '1UnsCVq6dIQXIlQnDI4MaKXW2Vqp8QzYONuYn4o5UGvI' # master
-  #   [
-  #     { destination_id: sheet_id, external_id: 'eylfucfqzted' }, # cas chargeback
-  #     { destination_id: sheet_id, external_id: 'enowqxdfgcqg' }, # eagle
-  #     { destination_id: sheet_id, external_id: 'xvexmuksclhe' }  # unfi west
-  #   ]
-  # end
-
-  def active_parsers
-    Parser.where.not(destination_id: nil)
   end
 
   # TODO: case statement to combines 'rules' for each doc, ie 'meta_data' + 'line_items'

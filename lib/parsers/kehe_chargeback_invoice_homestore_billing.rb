@@ -1,5 +1,5 @@
 module Parsers
-  class KeheChargebackInvoiceHomestoreBilling
+  class KeheChargebackInvoiceHomestoreBilling < Base
     class << self
       def parse_rows(document)
         invoice_data(document).deep_merge(
@@ -19,7 +19,6 @@ module Parsers
       end
 
       def invoice_num(meta_data)
-        binding.pry
         invoice_num_rows = meta_data.select{|row| row.match(/invoice.*#/i) }
         invoice_num = invoice_num_rows.first.gsub(/invoice.*#/i,'').strip
         invoice_num.empty? ? alt_invoice_num(meta_data, invoice_num_rows.last) : invoice_num
@@ -44,19 +43,19 @@ module Parsers
       end
 
       def parsed_invoice_date(document)
-        binding.pry
         date = get_raw_data(document, 'invoice_dates').flatten[0]
         {'invoice_date' => date}
       end
 
       def parsed_totals(document)
-        binding.pry
         totals = get_raw_data(document, 'totals').flatten
         invoice_total_row = totals.select{|row| row.match(/invoice.*total/i) }.first
-        chargeback_amount = invoice_total_row.match(/\$\d+\.?\d+/)[0].gsub('$','')
+        chargeback_str = invoice_total_row.match(/\$\d+(\.|\s)?\d+/)[0].gsub('$','')
+        chargeback_amount = str_to_dollars(chargeback_str)
 
         ep_fee_row = totals.select{|row| row.match(/ep.*fee/i) }.first
-        ep_fee = !!ep_fee_row ? ep_fee_row.match(/\$\d+\.?\d+/)[0].gsub('$','') : ''
+        ep_fee_str = !!ep_fee_row ? ep_fee_row.match(/\$\d+(\.|\s)?\d+/)[0].gsub('$','') : ''
+        ep_fee = str_to_dollars(ep_fee_str)
 
         {'chargeback_amount' => chargeback_amount,
           'ep_fee' => ep_fee}

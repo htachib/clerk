@@ -1,5 +1,5 @@
 module Parsers
-  class KeheWeeklyMCB
+  class KeheWeeklyMCB < Base
     class << self
       INVOICE_HEADERS = ["UPC#", "QTY SHIP", "DESCRIPTION", "REFERENCE NBR", "REFERENCE DATE", "COMMENT", "COST", "DISC $ OR %", "EXT-COST"]
 

@@ -19,8 +19,11 @@ parsers = [
   {"external_id"=>"gqcqsvamopbj", "name"=>nil, "destination_id"=>"1sEjNPub3yXyEMdHCzLMLaUmOxNBNLiv5-o_GVNgutlo", "settings"=>{"library"=>"KeheCouponInvoice"}},
   {"external_id"=>"pawpvontahrx", "name"=>nil, "destination_id"=>"1sEjNPub3yXyEMdHCzLMLaUmOxNBNLiv5-o_GVNgutlo", "settings"=>{"library"=>"KeheCustomerSpoilageAllowanceBillback"}},
   {"external_id"=>"lmncjdwbrpqy", "name"=>nil, "destination_id"=>"1sEjNPub3yXyEMdHCzLMLaUmOxNBNLiv5-o_GVNgutlo", "settings"=>{"library"=>"KeheFreeFill"}},
-  {"external_id"=>"bepcjhlzdfsw", "name"=>nil, "destination_id"=>"1sEjNPub3yXyEMdHCzLMLaUmOxNBNLiv5-o_GVNgutlo", "settings"=>{"library"=>"KeheInvoiceAdjustment"}}
+  {"external_id"=>"bepcjhlzdfsw", "name"=>nil, "destination_id"=>"1sEjNPub3yXyEMdHCzLMLaUmOxNBNLiv5-o_GVNgutlo", "settings"=>{"library"=>"KeheInvoiceAdjustment"}},
+  {"external_id"=>"xzhgcymbtodl", "name"=>nil, "destination_id"=>"1sEjNPub3yXyEMdHCzLMLaUmOxNBNLiv5-o_GVNgutlo", "settings"=>{"library"=>"KeheLumperFeeChargebackInvoice"}}
 ]
+
+
 
 # CHANGE DESTINATION IDS before production!!
 

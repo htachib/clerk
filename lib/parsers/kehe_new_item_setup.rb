@@ -30,10 +30,6 @@ module Parsers
         meta_data[idx].split(' ').last
       end
 
-      def invoice_num_from_file_name(document)
-        document['file_name'].split(' ').first
-      end
-
       def parsed_meta_data(document)
         parsed = {}
         meta_data = get_raw_data(document,'meta_data').map do |row|
@@ -55,9 +51,10 @@ module Parsers
       def parsed_totals(document)
         totals = get_raw_data(document, 'totals').flatten
         invoice_total_row = totals.select{ |row| row.match(/$/)}.last
-        invoice_total = invoice_total_row.match(/\$\d+.?\d+/)[0]
+        invoice_total = get_amount_str(invoice_total_row)
+        chargeback_amount = str_to_dollars(invoice_total)
 
-        {'chargeback_amount' => invoice_total}
+        {'chargeback_amount' => chargeback_amount}
       end
     end
   end

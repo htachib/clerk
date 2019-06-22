@@ -70,10 +70,6 @@ module Parsers
         {'invoice_date' => date}
       end
 
-      def calc_grand_total(one, two)
-        one && two ? one + two : nil
-      end
-
       def parsed_totals(document)
         totals = get_raw_data(document, 'totals').flatten
 

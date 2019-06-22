@@ -20,7 +20,6 @@ module Parsers
       end
 
       def invoice_num(meta_data)
-        binding.pry
         invoice_num_rows = meta_data.select{|row| row.match(/invoice.*#/i) }
         invoice_num = invoice_num_rows.first.gsub(/invoice.*#/i,'').strip
         invoice_num.empty? ? alt_invoice_num(meta_data, invoice_num_rows.last) : invoice_num

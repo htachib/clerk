@@ -2,7 +2,6 @@ module Mappers
   class KeheScanInvoice
     class << self
       def prepare_rows(raw_rows)
-        binding.pry
         prepared_row = OutputHeaders::ROW_FIELDS.deep_dup
         prepared_row['Customer'] = 'KeHE'
         prepared_row['Parser'] = 'KeHE Scan Invoice'

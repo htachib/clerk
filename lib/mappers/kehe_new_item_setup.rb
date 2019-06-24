@@ -13,7 +13,7 @@ module Mappers
         prepared_row['Promo Start Date'] = raw_rows['start_date']
         prepared_row['Deduction Type'] = raw_rows['Type']
         prepared_row['Deduction Description'] = ''
-        prepared_row['Customer Chain ID'] = raw_rows['chain']
+        prepared_row['Customer Chain ID'] = 'KeHE'
         prepared_row['Customer Detailed Name'] = 'KeHE'
         prepared_row['Chargeback Amount'] = raw_rows['chargeback_amount']
         prepared_row['EP Fee'] = raw_rows['ep_fee']

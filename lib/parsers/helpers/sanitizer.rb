@@ -17,7 +17,7 @@ module Parsers
       end
 
       def invoice_num_from_file_name(document)
-        document['file_name'].split(' ').first
+        document['file_name'].split(' ').first.match(/([a-zA-Z]|\d){5,}/)[0]
       end
 
       def invoice_date_from_file_name(document)

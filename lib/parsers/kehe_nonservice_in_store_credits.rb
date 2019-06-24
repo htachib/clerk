@@ -48,12 +48,13 @@ module Parsers
 
         parsed['invoice number'] = invoice_num_from_file_name(document) || invoice_num(meta_data)
         type_row = meta_data.select{|row| row.match(/type.*:?/i) }.first
-        parsed['Type'] = type_row.gsub(/type\W?/i,'')
+        parsed['Type'] = type_row.gsub(/type\W?/i,'').strip
         parsed
       end
 
       def parsed_invoice_date(document)
-        date = get_raw_data(document, 'invoice_date').flatten[0]
+        invoice_date_row = get_raw_data(document, 'invoice_date')
+        date = invoice_date_row ? invoice_date_row.flatten[0] : invoice_date_from_file_name(document)
         {'invoice_date' => date}
       end
 

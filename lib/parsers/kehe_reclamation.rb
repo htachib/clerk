@@ -49,7 +49,7 @@ module Parsers
 
         parsed['invoice number'] = invoice_num_from_file_name(document) || invoice_num(meta_data)
         type_row = meta_data.select{|row| row.match(/type.*:?/i) }.first
-        parsed['Type'] = type_row.gsub(/type\W?/i,'')
+        parsed['Type'] = type_row.gsub(/type\W?/i,'').strip
         parsed
       end
 

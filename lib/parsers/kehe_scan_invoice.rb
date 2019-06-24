@@ -31,10 +31,19 @@ module Parsers
         meta_data[idx].split(' ').last
       end
 
+      def customer_row_idx(rows)
+        rows.find_index{|row| row.match?(/(phone|fax)/i)} + 1
+      end
+
       def sanitized_customer(rows)
         customer_row = rows.last
-        return nil if customer_row.match?(/(chargeback.*invoice)/i)
-        regex = /(scan|chargeback|invoice|reclamation|recovery|date.*invoice$)/i
+        if customer_row.match?(/(chargeback.*invoice)/i)
+          idx = customer_row_idx(rows)
+          row = rows[idx]
+          customer_row = row.match?(/chargeback.*invoice/i) ? 'KeHE' : row
+        end
+
+        regex = /(date|\#|scans|scan|chargeback|invoice|reclamation|recovery|date.*invoice$)/i
         customer_row.gsub(regex,'').strip
       end
 
@@ -52,7 +61,7 @@ module Parsers
 
         parsed['invoice number'] = invoice_num_from_file_name(document) || invoice_num(meta_data)
         type_row = meta_data.select{|row| row.match(/type.*:?/i) }.first
-        parsed['Type'] = type_row.gsub(/type\W?/i,'')
+        parsed['Type'] = type_row.gsub(/type\W?/i,'').strip
         parsed
       end
 

@@ -60,6 +60,17 @@ class SpreadsheetService
 
     raw_rows = "Parsers::#{library}".constantize.parse_rows(document)
     "Mappers::#{library}".constantize.prepare_rows(raw_rows)
+  rescue StandardError => e
+    log_exception(e, document, parser)
+  end
+
+  def log_exception(exception, document, parser)
+    ParseMapException.create!(
+      parser: parser,
+      file_name: document_file_name(document),
+      content: document,
+      error_message: exception.message
+    )
   end
 
   def fetch_by_key(sheet_id)

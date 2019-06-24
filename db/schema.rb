@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_03_184532) do
+ActiveRecord::Schema.define(version: 2019_06_24_153942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,16 @@ ActiveRecord::Schema.define(version: 2019_05_03_184532) do
     t.bigint "parser_id"
     t.boolean "processed", default: false
     t.index ["parser_id"], name: "index_documents_on_parser_id"
+  end
+
+  create_table "parse_map_exceptions", force: :cascade do |t|
+    t.bigint "parser_id"
+    t.string "file_name"
+    t.text "content"
+    t.text "error_message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["parser_id"], name: "index_parse_map_exceptions_on_parser_id"
   end
 
   create_table "parsers", force: :cascade do |t|
@@ -54,5 +64,6 @@ ActiveRecord::Schema.define(version: 2019_05_03_184532) do
   end
 
   add_foreign_key "documents", "parsers"
+  add_foreign_key "parse_map_exceptions", "parsers"
   add_foreign_key "parsers", "users"
 end

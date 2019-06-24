@@ -1,6 +1,7 @@
 class Parser < ActiveRecord::Base
   belongs_to :user
   has_many :documents, dependent: :destroy
+  has_many :parse_map_exceptions, dependent: :destroy
 
   scope :active, -> { where.not(destination_id: nil) }
 

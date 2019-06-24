@@ -23,10 +23,18 @@ class SpreadsheetService
   end
 
   def prepare_doc(parser, document)
-    external_id = document.try(:id) || document.dig('id') # sheet, docparser
-    name = document.try(:name) || document.dig('file_name')
+    external_id = document_external_id(document)
+    file_name = document_file_name(document)
 
-    parser.documents.find_or_create_by(external_id: external_id, name: name)
+    parser.documents.find_or_create_by(external_id: external_id, name: file_name)
+  end
+
+  def document_external_id(document)
+    document.try(:id) || document.dig('id') # sheet, docparser
+  end
+
+  def document_file_name(document)
+    document.try(:name) || document.dig('file_name')
   end
 
   def get_documents(parser)

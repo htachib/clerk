@@ -1,5 +1,5 @@
 module Parsers
-  class KeheAdInvoice < Base
+  class KeheFreeFill < Base
     class << self
       def parse_rows(document)
         invoice_data(document).deep_merge(
@@ -25,8 +25,13 @@ module Parsers
       end
 
       def alt_invoice_num(meta_data, invoice_row)
-        idx = meta_data.index(invoice_row) + 1
-        meta_data[idx].split(' ').last
+        idx = meta_data.index(invoice_row)
+        meta_data[idx].split(/(\s|\:)/).last
+      end
+
+      def customer(meta_data)
+        customer_row = meta_data.select{|row| row.match(/free.*fill/i) }.first
+        customer_row ? customer_row.gsub(/[^a-zA-Z]free.*fill/i, '') : nil
       end
 
       def parsed_meta_data(document)
@@ -36,6 +41,7 @@ module Parsers
         end
 
         parsed['invoice number'] = invoice_num_from_file_name(document) || invoice_num(meta_data)
+        parsed['customer_name'] = customer(meta_data)
 
         type_row = meta_data.select{|row| row.match(/type.*:?/i) }.first
         parsed['Type'] = type_row.gsub(/type:?/i,'').strip
@@ -50,7 +56,7 @@ module Parsers
 
       def parsed_totals(document)
         totals = get_raw_data(document, 'totals').flatten
-        invoice_total_row = totals.select{|row| row.match(/invoice.*total/i) }.first
+        invoice_total_row = totals.select{|row| row.match(/total.*for.*kettle/i) }.first
         chargeback_str = invoice_total_row.match(/\$\d+\.?\d+/)[0].gsub('$','')
         chargeback_amount = str_to_dollars(chargeback_str)
 

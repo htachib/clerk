@@ -1,5 +1,5 @@
 module Parsers
-  class KeheAdInvoice < Base
+  class KeheScanInvoice < Base
     class << self
       def parse_rows(document)
         invoice_data(document).deep_merge(
@@ -11,11 +11,13 @@ module Parsers
 
       def invoice_data(document)
         parsed_meta_data(document).deep_merge(parsed_invoice_date(document)
-        ).deep_merge(parsed_totals(document))
+        ).deep_merge(parsed_totals(document)
+        ).deep_merge(parsed_customer(document))
       end
 
       def get_raw_data(document, type)
-        document[type].map {|row| row.values }
+        return nil if !document[type]
+        document[type].map { |row| row.values }
       end
 
       def invoice_num(meta_data)
@@ -29,6 +31,28 @@ module Parsers
         meta_data[idx].split(' ').last
       end
 
+      def customer_row_idx(rows)
+        rows.find_index{|row| row.match?(/(phone|fax)/i)} + 1
+      end
+
+      def sanitized_customer(rows)
+        customer_row = rows.last
+        if customer_row.match?(/(chargeback.*invoice)/i)
+          idx = customer_row_idx(rows)
+          row = rows[idx]
+          customer_row = row.match?(/chargeback.*invoice/i) ? 'KeHE' : row
+        end
+
+        regex = /(date|\#|scans|scan|chargeback|invoice|reclamation|recovery|date.*invoice$)/i
+        customer_row.gsub(regex,'').strip
+      end
+
+      def parsed_customer(document)
+        rows = get_raw_data(document, 'customer').flatten
+        customer = sanitized_customer(rows)
+        {'detailed_customer' => customer}
+      end
+
       def parsed_meta_data(document)
         parsed = {}
         meta_data = get_raw_data(document,'meta_data').map do |row|
@@ -36,9 +60,8 @@ module Parsers
         end
 
         parsed['invoice number'] = invoice_num_from_file_name(document) || invoice_num(meta_data)
-
         type_row = meta_data.select{|row| row.match(/type.*:?/i) }.first
-        parsed['Type'] = type_row.gsub(/type:?/i,'').strip
+        parsed['Type'] = type_row.gsub(/type\W?/i,'').strip
         parsed
       end
 
@@ -50,15 +73,16 @@ module Parsers
 
       def parsed_totals(document)
         totals = get_raw_data(document, 'totals').flatten
-        invoice_total_row = totals.select{|row| row.match(/invoice.*total/i) }.first
-        chargeback_str = invoice_total_row.match(/\$\d+\.?\d+/)[0].gsub('$','')
-        chargeback_amount = str_to_dollars(chargeback_str)
+        invoice_total_row = totals.last
+        invoice_total = get_amount_str(invoice_total_row)
+        total_in_dollars = str_to_dollars(invoice_total)
 
-        ep_fee_row = totals.select{|row| row.match(/ep.*fee/i) }.first
-        ep_fee = !!ep_fee_row ? str_to_dollars(ep_fee_row.match(/\$\d+\.?\d+/)[0].gsub('$','')) : nil
+        ep_fee = totals.select{|row| row.match(/ep.*fee/i) }.first
+        ep_fee_str = get_amount_str(ep_fee)
+        ep_fee_in_dollars = str_to_dollars(ep_fee_str)
 
-        {'chargeback_amount' => chargeback_amount,
-          'ep_fee' => ep_fee}
+        {'chargeback_amount' => total_in_dollars,
+          'ep_fee' => ep_fee_in_dollars}
       end
     end
   end

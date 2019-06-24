@@ -1,5 +1,5 @@
 module Parsers
-  class KeheAdInvoice < Base
+  class KeheCustomerSpoilageAllowanceBillback < Base
     class << self
       def parse_rows(document)
         invoice_data(document).deep_merge(
@@ -21,12 +21,12 @@ module Parsers
       def invoice_num(meta_data)
         invoice_num_rows = meta_data.select{|row| row.match(/invoice.*#/i) }
         invoice_num = invoice_num_rows.first.gsub(/invoice.*#/i,'').strip
-        invoice_num.empty? ? alt_invoice_num(meta_data, invoice_num_rows.last) : invoice_num
+
+        invoice_num.empty? ? alt_invoice_num(document['file_name']) : invoice_num
       end
 
-      def alt_invoice_num(meta_data, invoice_row)
-        idx = meta_data.index(invoice_row) + 1
-        meta_data[idx].split(' ').last
+      def alt_invoice_num(name)
+        name.split(/(\s|-)/).first
       end
 
       def parsed_meta_data(document)

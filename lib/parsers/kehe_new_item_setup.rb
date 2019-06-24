@@ -1,5 +1,5 @@
 module Parsers
-  class KeheAdInvoice < Base
+  class KeheNewItemSetup < Base
     class << self
       def parse_rows(document)
         invoice_data(document).deep_merge(
@@ -21,6 +21,7 @@ module Parsers
       def invoice_num(meta_data)
         invoice_num_rows = meta_data.select{|row| row.match(/invoice.*#/i) }
         invoice_num = invoice_num_rows.first.gsub(/invoice.*#/i,'').strip
+
         invoice_num.empty? ? alt_invoice_num(meta_data, invoice_num_rows.last) : invoice_num
       end
 
@@ -50,15 +51,11 @@ module Parsers
 
       def parsed_totals(document)
         totals = get_raw_data(document, 'totals').flatten
-        invoice_total_row = totals.select{|row| row.match(/invoice.*total/i) }.first
-        chargeback_str = invoice_total_row.match(/\$\d+\.?\d+/)[0].gsub('$','')
-        chargeback_amount = str_to_dollars(chargeback_str)
+        invoice_total_row = totals.select{ |row| row.match(/$/)}.last
+        invoice_total = get_amount_str(invoice_total_row)
+        chargeback_amount = str_to_dollars(invoice_total)
 
-        ep_fee_row = totals.select{|row| row.match(/ep.*fee/i) }.first
-        ep_fee = !!ep_fee_row ? str_to_dollars(ep_fee_row.match(/\$\d+\.?\d+/)[0].gsub('$','')) : nil
-
-        {'chargeback_amount' => chargeback_amount,
-          'ep_fee' => ep_fee}
+        {'chargeback_amount' => chargeback_amount}
       end
     end
   end

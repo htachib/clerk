@@ -1,5 +1,5 @@
 module Parsers
-  class KeheAdInvoice < Base
+  class KeheLumperFeeChargebackInvoice < Base
     class << self
       def parse_rows(document)
         invoice_data(document).deep_merge(
@@ -20,13 +20,7 @@ module Parsers
 
       def invoice_num(meta_data)
         invoice_num_rows = meta_data.select{|row| row.match(/invoice.*#/i) }
-        invoice_num = invoice_num_rows.first.gsub(/invoice.*#/i,'').strip
-        invoice_num.empty? ? alt_invoice_num(meta_data, invoice_num_rows.last) : invoice_num
-      end
-
-      def alt_invoice_num(meta_data, invoice_row)
-        idx = meta_data.index(invoice_row) + 1
-        meta_data[idx].split(' ').last
+        invoice_num_rows ? invoice_num_rows.first.gsub(/invoice.*#/i,'').strip : nil
       end
 
       def parsed_meta_data(document)
@@ -36,9 +30,8 @@ module Parsers
         end
 
         parsed['invoice number'] = invoice_num_from_file_name(document) || invoice_num(meta_data)
-
         type_row = meta_data.select{|row| row.match(/type.*:?/i) }.first
-        parsed['Type'] = type_row.gsub(/type:?/i,'').strip
+        parsed['Type'] = type_row.gsub(/type\W?/i,'').strip
         parsed
       end
 
@@ -48,17 +41,29 @@ module Parsers
         {'invoice_date' => date}
       end
 
+      def calc_grand_total(one, two)
+        one && two ? one + two : nil
+      end
+
       def parsed_totals(document)
         totals = get_raw_data(document, 'totals').flatten
-        invoice_total_row = totals.select{|row| row.match(/invoice.*total/i) }.first
-        chargeback_str = invoice_total_row.match(/\$\d+\.?\d+/)[0].gsub('$','')
-        chargeback_amount = str_to_dollars(chargeback_str)
+        subtotal = totals.select{|row| row.match(/(promo|chargeback)/i) }.first
+        subtotal_str = get_amount_str(subtotal)
+        subtotal_in_dollars = str_to_dollars(subtotal_str)
 
-        ep_fee_row = totals.select{|row| row.match(/ep.*fee/i) }.first
-        ep_fee = !!ep_fee_row ? str_to_dollars(ep_fee_row.match(/\$\d+\.?\d+/)[0].gsub('$','')) : nil
+        ep_fee = totals.select{|row| row.match(/ep.*fee/i) }.first
+        ep_fee_str = get_amount_str(ep_fee)
+        ep_fee_in_dollars = str_to_dollars(ep_fee_str)
+
+        grand_total = totals.select{|row| row.match(/invoice.*total/i) }.first
+        grand_total_str = get_amount_str(grand_total)
+        grand_total_in_dollars = str_to_dollars(grand_total_str)
+
+        chargeback_amount = grand_total_in_dollars ||
+                            calc_grand_total(subtotal_in_dollars, ep_fee_in_dollars)
 
         {'chargeback_amount' => chargeback_amount,
-          'ep_fee' => ep_fee}
+          'ep_fee' => ep_fee_in_dollars}
       end
     end
   end

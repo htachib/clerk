@@ -1,5 +1,5 @@
 module Parsers
-  class UNFIEastChargeback
+  class UNFIEastChargeback < Base
     class << self
       def parse_rows(document)
         row = document['meta_data'][0].deep_merge(

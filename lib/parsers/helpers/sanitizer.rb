@@ -3,8 +3,8 @@ module Parsers
     module Sanitizer
       def str_to_dollars(str_amount)
         return nil if !str_amount
-        dollar_cents_arr = str_amount.gsub(/\,/,'').split(/(\.|\s)/).select{ |str| str.match(/\d/) }
-
+        amount = str_amount.to_s.gsub(/(\,|\$)/,'')
+        dollar_cents_arr = amount.split(/(\.|\s)/).select{ |str| str.match?(/\d/) }
         if dollar_cents_arr && dollar_cents_arr.length == 2
           return (dollar_cents_arr.first.to_f) + (dollar_cents_arr.last.to_f / 100)
         else
@@ -29,6 +29,20 @@ module Parsers
         substring = string.split('-')
         "#{substring[1]}/#{substring[2]}/#{substring[0]}"
       end
+
+      def string_match(string, regex)
+        regex_match = string.to_s.match(regex)
+        regex_match ? regex_match[0].to_s : nil
+      end
+
+      def string_match_from_arr(arr, regex)
+        arr.select{ |row| row.match?(regex) }.try(:first) || nil
+      end
+
+      def get_raw_data(document, type)
+        document[type].map {|row| row.values } || []
+      end
+
     end
   end
 end

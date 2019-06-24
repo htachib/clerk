@@ -14,5 +14,6 @@ RSpec.describe Parser, type: :model do
   describe 'ActiveRecord associations' do
     it { expect(subject).to belong_to(:user) }
     it { expect(subject).to have_many(:documents) }
+    it { expect(subject).to have_many(:parse_map_exceptions) }
   end
 end

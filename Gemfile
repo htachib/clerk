@@ -43,6 +43,7 @@ gem 'gcloud' # only requiring to suppress `bin/rails: No such file or directory 
 
 group :development do
   gem 'web-console', '~> 3.5.0'
+  gem 'letter_opener'
 end
 
 group :development, :test do

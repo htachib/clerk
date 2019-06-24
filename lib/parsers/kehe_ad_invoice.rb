@@ -15,7 +15,7 @@ module Parsers
       end
 
       def invoice_num(meta_data)
-        invoice_num_rows = meta_data.select{|row| row.match?(/invoice.*#/i) } ## check
+        invoice_num_rows = meta_data.select{|row| row.match?(/invoice.*#/i) }
         invoice_num = invoice_num_rows.first.to_s.gsub(/invoice.*#/i,'').strip
         invoice_num.empty? ? alt_invoice_num(meta_data, invoice_num_rows.last) : invoice_num
       end
@@ -33,8 +33,9 @@ module Parsers
 
         parsed['invoice number'] = invoice_num_from_file_name(document) || invoice_num(meta_data)
 
-        type_row = meta_data.select{|row| row.match(/type.*:?/i) }.first
+        type_row = string_match_from_arr(meta_data, /type.*:?/i)
         parsed['Type'] = type_row.to_s.gsub(/type:?/i,'').strip
+        
         parsed
       end
 

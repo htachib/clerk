@@ -1,59 +1,40 @@
 module Parsers
   class KeheAdInvoice < Base
     class << self
-      def parse_rows(document)
-        invoice_data(document).deep_merge(
-        'file_name' => document['file_name']
-        ).deep_merge(
-        'uploaded_at' => document['uploaded_at']
-        )
-      end
-
-      def invoice_data(document)
-        parsed_meta_data(document).deep_merge(parsed_invoice_date(document)
-        ).deep_merge(parsed_totals(document))
-      end
-
-      def invoice_num(meta_data)
-        invoice_num_rows = meta_data.select{|row| row.match?(/invoice.*#/i) }
-        invoice_num = invoice_num_rows.first.to_s.gsub(/invoice.*#/i,'').strip
-        invoice_num.empty? ? alt_invoice_num(meta_data, invoice_num_rows.last) : invoice_num
-      end
-
-      def alt_invoice_num(meta_data, invoice_row)
-        idx = meta_data.index(invoice_row) + 1
-        idx ? meta_data[idx].split(' ').last : nil
+      include Parsers::Helpers::KeheSanitizers
+      
+      def parsed_invoice_number(meta_data)
+        row_regex = /invoice.*#/i
+        str_regex = /invoice.*#/i
+        sanitize_invoice_num(meta_data, row_regex, str_regex)
       end
 
       def parsed_meta_data(document)
-        parsed = {}
-        meta_data = get_raw_data(document,'meta_data').map do |row|
-          row.join(' ')
-        end
+        meta_data = get_meta_data(document)
 
-        parsed['invoice number'] = invoice_num_from_file_name(document) || invoice_num(meta_data)
+        invoice_number = invoice_num_from_file_name(document) || parsed_invoice_number(meta_data)
 
-        type_row = string_match_from_arr(meta_data, /type.*:?/i)
-        parsed['Type'] = type_row.to_s.gsub(/type:?/i,'').strip
-        
-        parsed
+        type_regex = /type.*:?/i
+        type_row = string_match_from_arr(meta_data, type_regex)
+        type = type_row.to_s.gsub(/type:?/i,'').strip
+
+        {'invoice number' => invoice_number,
+          'Type' => type}
       end
 
       def parsed_invoice_date(document)
         invoice_date_row = get_raw_data(document, 'invoice_date')
-        date = invoice_date_row ? invoice_date_row.try(:flatten).try(:first) : invoice_date_from_file_name(document)
+        date = get_invoice_date(invoice_date_row, document)
         {'invoice_date' => date}
       end
 
       def parsed_totals(document)
-        totals = get_raw_data(document, 'totals').try(:flatten) || []
-        invoice_total_row = string_match_from_arr(totals, /invoice.*total/i)
-        chargeback_str = string_match(invoice_total_row, /\$\d+\.?\d+/)
-        chargeback_amount = str_to_dollars(chargeback_str)
+        invoice_total_regex = /invoice.*total/i
+        ep_fee_regex = /ep.*fee/i
 
-        ep_fee_row = string_match_from_arr(totals, /ep.*fee/i)
-        ep_fee_str = string_match(ep_fee_row, /\$\d+\.?\d+/)
-        ep_fee_amount = str_to_dollars(ep_fee_str)
+        totals = get_totals(document)
+        chargeback_amount = get_total_in_dollars(totals, invoice_total_regex)
+        ep_fee_amount = get_total_in_dollars(totals, ep_fee_regex)
 
         {'chargeback_amount' => chargeback_amount,
           'ep_fee' => ep_fee_amount}

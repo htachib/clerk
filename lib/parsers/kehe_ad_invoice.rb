@@ -2,21 +2,23 @@ module Parsers
   class KeheAdInvoice < Base
     class << self
       include Parsers::Helpers::KeheSanitizers
-      
+
       def parsed_invoice_number(meta_data)
         row_regex = /invoice.*#/i
         str_regex = /invoice.*#/i
         sanitize_invoice_num(meta_data, row_regex, str_regex)
       end
 
+      def parsed_type(meta_data)
+        regex = /type.*:?/i
+        type_row = string_match_from_arr(meta_data, regex)
+        type_row.to_s.gsub(/type:?/i,'').strip
+      end
+
       def parsed_meta_data(document)
         meta_data = get_meta_data(document)
-
         invoice_number = invoice_num_from_file_name(document) || parsed_invoice_number(meta_data)
-
-        type_regex = /type.*:?/i
-        type_row = string_match_from_arr(meta_data, type_regex)
-        type = type_row.to_s.gsub(/type:?/i,'').strip
+        type = parsed_type(meta_data)
 
         {'invoice number' => invoice_number,
           'Type' => type}

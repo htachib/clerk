@@ -1,7 +1,7 @@
 module Parsers
   module Helpers
     module Base
-      include Sanitizer
+      include GlobalSanitizers
     end
   end
 end

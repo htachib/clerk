@@ -1,6 +1,6 @@
 module Parsers
   module Helpers
-    module Sanitizer
+    module GlobalSanitizers
       def str_to_dollars(str_amount)
         return nil if !str_amount
         amount = str_amount.to_s.gsub(/(\,|\$)/,'')
@@ -42,7 +42,6 @@ module Parsers
       def get_raw_data(document, type)
         document[type].map {|row| row.values } || []
       end
-
     end
   end
 end

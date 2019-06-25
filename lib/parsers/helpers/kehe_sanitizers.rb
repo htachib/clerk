@@ -18,13 +18,13 @@ module Parsers
         meta_data.select{ |row| row.match?(row_regex) }
       end
 
-      def get_invoice_number(meta_data, str_regex)
+      def get_invoice_number(invoice_rows, str_regex)
         invoice_rows.first.to_s.gsub(str_regex,'').strip
       end
 
       def sanitize_invoice_num(meta_data, row_regex, str_regex, alt_index = 1)
         invoice_rows = invoice_rows(meta_data, row_regex)
-        invoice_number = get_invoice_number(meta_data, str_regex)
+        invoice_number = get_invoice_number(invoice_rows, str_regex)
         invoice_number.empty? ? alt_invoice_number(meta_data, invoice_rows.last, alt_idx) : invoice_number
       end
 

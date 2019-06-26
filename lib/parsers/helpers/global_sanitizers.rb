@@ -17,11 +17,11 @@ module Parsers
       end
 
       def invoice_num_from_file_name(document)
-        document['file_name'].split(' ').first.match(/([a-zA-Z]|\d){5,}/)[0]
+        document['file_name'].split(' ').first.match(/([a-zA-Z]|\d){5,}/).try(:[], 0)
       end
 
       def invoice_date_from_file_name(document)
-        date_str = document["file_name"].match(/\d{2,4}-\d{1,2}-\d{1,2}/)[0]
+        date_str = document["file_name"].match(/\d{2,4}-\d{1,2}-\d{1,2}/).try(:[], 0)
         sanitize_date_year_month_day(date_str)
       end
 

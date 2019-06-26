@@ -1,13 +1,7 @@
 module Parsers
   class KeheLateDeliveryFee < Base
     class << self
-      def parse_rows(document)
-        invoice_data(document).deep_merge(
-        'file_name' => document['file_name']
-        ).deep_merge(
-        'uploaded_at' => document['uploaded_at']
-        )
-      end
+      include Parsers::Helpers::KeheSanitizers
 
       def invoice_data(document)
         parsed_meta_data(document).deep_merge(parsed_invoice_date(document)
@@ -16,16 +10,9 @@ module Parsers
         ).deep_merge(parsed_totals(document))
       end
 
-      def get_raw_data(document, type)
-        document[type].map {|row| row.values }
-      end
-
       def parsed_meta_data(document)
         parsed = {}
-        meta_data = get_raw_data(document,'meta_data').map do |row|
-          row.join(' ')
-        end
-
+        meta_data = get_meta_data(document)
         parsed['invoice number'] = meta_data[0].split('#').last.strip
         parsed['PO #'] = meta_data[2].split('#').last.strip
         parsed['DC #'] = meta_data[3].split(':').last.strip
@@ -45,8 +32,8 @@ module Parsers
 
       def parsed_broker_details(document)
         broker_details = get_raw_data(document, 'broker_details').join(' ')
-        broker_id = broker_details.scan(/broker\s+#\s*.\s*\d+/i)[0].scan(/\d+/)[0]
-        department_id = broker_details.scan(/DEPT\s+#\s*.\s*\d+/i)[0].scan(/\d+/)[0]
+        broker_id = broker_details.scan(/broker\s+#\s*.\s*\d+/i)[0].to_s.scan(/\d+/)[0]
+        department_id = broker_details.scan(/DEPT\s+#\s*.\s*\d+/i)[0].to_s.scan(/\d+/)[0]
         {'broker_id' => broker_id, 'department_id' => department_id}
       end
 

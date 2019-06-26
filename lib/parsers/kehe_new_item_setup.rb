@@ -32,7 +32,7 @@ module Parsers
 
       def parsed_totals(document)
         totals = get_raw_data(document, 'totals').flatten
-        invoice_total_row = totals.select{ |row| row.match(/$/)}.last
+        invoice_total_row = totals ? totals.select{ |row| row.match(/$/)}.last : nil
         invoice_total = get_amount_str(invoice_total_row)
         chargeback_amount = str_to_dollars(invoice_total)
 

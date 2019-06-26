@@ -1,55 +1,58 @@
 module Parsers
   class KehePassThroughPromotion < Base
     class << self
-      def parse_rows(document)
-        invoice_data(document).deep_merge(
-        'file_name' => document['file_name']
-        ).deep_merge(
-        'uploaded_at' => document['uploaded_at']
-        )
-      end
+      include Parsers::Helpers::KeheSanitizers
 
       def invoice_data(document)
-        parsed_meta_data_cover(document).deep_merge(parsed_meta_data(document)
-        ).deep_merge(parsed_invoice_details(document)
+        parsed_meta_data(document).deep_merge(parsed_invoice_date(document)
         ).deep_merge(parsed_totals(document)
-        ).deep_merge(parsed_customer_data(document))
+        ).deep_merge(parsed_customer_and_type(document))
       end
 
-      def get_raw_data(document, type)
-        document[type].map {|row| row.values }
+      def parsed_invoice_number(meta_data)
+        row_regex = /invoice.*#/i
+        str_regex = /invoice.*#/i
+        sanitize_invoice_num(meta_data, row_regex, str_regex)
       end
 
-      def parsed_customer_data(document)
-        parsed = {}
-        data = get_raw_data(document,'customer_data').map { |row| row.join(' ') }
-        parsed['customer_name'] = data[0].split(' ').first.strip
-        parsed['invoice_type'] = data[0].split(' ').last.strip
-        parsed
+      def alt_invoice_number(meta_data, invoice_row)
+        idx = meta_data.index(invoice_row)
+        idx ? meta_data[idx].split(/(\s|\:)/).last : nil
       end
 
-      def parsed_meta_data_cover(document)
-        parsed = {}
-        data = get_raw_data(document,'meta_data_cover').map { |row| row.join(' ') }
+      def parsed_customer_and_type(document)
+        customer_data = get_customer_data(document)
+        customer_str_method_one(customer_data)
+      end
 
-        parsed['invoice number'] = data[0].split('#').last.strip
-        parsed['PO #'] = data[2].split('#').last.strip
-        parsed['DC #'] = data[3].split(':').last.strip
-        parsed['Type'] = data[4].split(':').last.strip
-        parsed
+      def customer_str_method_one(data)
+        regex = /kehe.*distributors?(,?\s*llc)?/i
+        distributor_row = string_match_from_arr(data, regex)
+        customer_str = distributor_row.to_s.gsub(regex,'').strip
+        customer_str.empty? ? nil : get_customer_and_type(customer_str)
+      end
+
+      def get_customer_and_type(string)
+        type = string.to_s.split(/\s/).last
+        customer = string.to_s.gsub(type, '').strip
+        {'customer' => customer,
+         'type' => type}
       end
 
       def parsed_meta_data(document)
-        parsed = {}
-        data = get_raw_data(document,'meta_data').flatten
-        parsed['division'] = parse_cell(data, /division/i).scan(/\d+/)[0]
-        parsed['invoice date'] = parse_cell(data, /invoice\s*date/i).scan(/\d+\/\d+\/\d+/)[0]
-        parsed['broker_id'] = parse_cell(data, /broker/i).scan(/\d+/)[0]
-        parsed
+        meta_data = get_meta_data(document)
+        invoice_number = invoice_num_from_file_name(document) || parsed_invoice_number(meta_data)
+
+        {'invoice number' => invoice_number}
       end
 
-      def parse_cell(data, regex)
-        data.select { |cell| cell.match?(regex) }.first
+      def parsed_invoice_date(document)
+        meta_data = get_meta_data(document)
+        regex_row = /\d{1,2}\/\d{1,2}\/\d{2,4}.*\d{1,2}\/\d{1,2}\/\d{2,4}/
+        regex_str = /\d{1,2}\/\d{1,2}\/\d{2,4}/
+        date_row = string_match_from_arr(meta_data, regex_row)
+        date_range = date_row.to_s.scan(regex_str)
+        {'invoice_date_range' => date_range}
       end
 
       def parsed_invoice_details(document)
@@ -58,11 +61,18 @@ module Parsers
       end
 
       def parsed_totals(document)
-        data = document['totals'].map { |row| row.values.join(' ') }
-        total_chargeback_amount = data.last.split('$').last
-        ep_fee = data[-2].split('$').last
-        {'chargeback_amount' => total_chargeback_amount,
-          'ep_fee' => ep_fee}
+        invoice_total_regex = /invoice.*total/i
+        ep_fee_regex = /ep.*fee/i
+
+        totals = get_totals(document)
+        invoice_total_row = totals ? totals.select{ |row| row.match(/$/)}.last : nil
+        invoice_total = get_amount_str(invoice_total_row)
+        chargeback_amount = str_to_dollars(invoice_total)
+
+        ep_fee_amount = get_total_in_dollars(totals, ep_fee_regex)
+
+        {'chargeback_amount' => chargeback_amount,
+          'ep_fee' => ep_fee_amount}
       end
     end
   end

@@ -38,8 +38,9 @@ module Parsers
       end
 
       def parsed_totals(document)
-        totals = get_raw_data(document, 'totals')
-        total_chargeback_amount = totals.last.join('').split('$').last
+        invoice_total_row = totals ? totals.select{ |row| row.match(/$/)}.last : nil
+        invoice_total = get_amount_str(invoice_total_row)
+        chargeback_amount = str_to_dollars(invoice_total)
         ep_fee = totals[-2].last.split('$').last
         {'chargeback_amount' => total_chargeback_amount,
           'ep_fee' => ep_fee}

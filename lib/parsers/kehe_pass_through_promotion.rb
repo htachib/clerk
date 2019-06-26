@@ -61,7 +61,6 @@ module Parsers
       end
 
       def parsed_totals(document)
-        invoice_total_regex = /invoice.*total/i
         ep_fee_regex = /ep.*fee/i
 
         totals = get_totals(document)

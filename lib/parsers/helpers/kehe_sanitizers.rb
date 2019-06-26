@@ -22,14 +22,14 @@ module Parsers
         invoice_rows.first.to_s.gsub(str_regex,'').strip
       end
 
-      def sanitize_invoice_num(meta_data, row_regex, str_regex, alt_index = 1)
+      def sanitize_invoice_num(meta_data, row_regex, str_regex)
         invoice_rows = invoice_rows(meta_data, row_regex)
         invoice_number = get_invoice_number(invoice_rows, str_regex)
-        invoice_number.empty? ? alt_invoice_number(meta_data, invoice_rows.last, alt_idx) : invoice_number
+        invoice_number.empty? ? alt_invoice_number(meta_data, invoice_rows.last) : invoice_number
       end
 
-      def alt_invoice_number(meta_data, invoice_row, alt_idx)
-        idx = meta_data.index(invoice_row) + alt_index
+      def alt_invoice_number(meta_data, invoice_row, alt_idx = 1)
+        idx = meta_data.index(invoice_row) + alt_idx
         idx ? meta_data[idx].split(' ').last : nil
       end
 

@@ -41,6 +41,10 @@ module Parsers
         get_raw_data(document, 'totals').try(:flatten) || []
       end
 
+      def get_customer_data(document)
+        get_raw_data(document, 'customer').try(:flatten) || []
+      end
+
       def get_total_in_dollars(amounts_arr, regex)
         amount_row = string_match_from_arr(amounts_arr, regex)
         amount_str = string_match(amount_row, /\$\d+(\.|\s)?\d+/)

@@ -1,23 +1,8 @@
 module Parsers
   class KeheRetailerStorePlacement < Base
     class << self
-      def parse_rows(document)
-        invoice_data(document).deep_merge(
-        'file_name' => document['file_name']
-        ).deep_merge(
-        'uploaded_at' => document['uploaded_at']
-        )
-      end
-
-      def invoice_data(document)
-        parsed_meta_data(document).deep_merge(parsed_invoice_date(document)
-        ).deep_merge(parsed_totals(document))
-      end
-
-      def get_raw_data(document, type)
-        document[type].map { |row| row.values }
-      end
-
+      include Parsers::Helpers::KeheSanitizers
+      ## next optimization
       def invoice_num(meta_data)
         invoice_num_rows = meta_data.select{|row| row.match(/invoice.*#/i) }
         invoice_num = invoice_num_rows.first.gsub(/invoice.*#/i,'').strip

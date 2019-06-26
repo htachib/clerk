@@ -1,6 +1,8 @@
 module Parsers
   class KeheScanInvoice < Base
     class << self
+      include Parsers::Helpers::KeheSanitizers
+      
       def parse_rows(document)
         invoice_data(document).deep_merge(
         'file_name' => document['file_name']

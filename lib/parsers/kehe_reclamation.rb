@@ -1,22 +1,12 @@
 module Parsers
   class KeheReclamation < Base
     class << self
-      def parse_rows(document)
-        invoice_data(document).deep_merge(
-        'file_name' => document['file_name']
-        ).deep_merge(
-        'uploaded_at' => document['uploaded_at']
-        )
-      end
+      include Parsers::Helpers::KeheSanitizers
 
       def invoice_data(document)
         parsed_meta_data(document).deep_merge(parsed_invoice_date(document)
         ).deep_merge(parsed_totals(document)
         ).deep_merge(parsed_customer(document))
-      end
-
-      def get_raw_data(document, type)
-        document[type].map { |row| row.values }
       end
 
       def invoice_num(meta_data)

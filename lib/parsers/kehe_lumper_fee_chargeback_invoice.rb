@@ -35,19 +35,30 @@ module Parsers
       end
 
       def parsed_totals(document)
-        invoice_total_regex = /invoice.*total/i
-        subtotal_regex = /(promo|chargeback)/i
-        ep_fee_regex = /ep.*fee/i
-
         totals = get_totals(document)
-        total_amount = get_total_in_dollars(totals, invoice_total_regex)
-        subtotal_amount = get_total_in_dollars(totals, subtotal_regex)
-        ep_fee_amount = get_total_in_dollars(totals, ep_fee_regex)
+        total_amount = parsed_chargeback(totals)
+        subtotal_amount = parsed_subtotal(totals)
+        ep_fee_amount = parsed_ep_fee(totals)
         chargeback_amount = total_amount ||
                             calc_grand_total(subtotal_amount, ep_fee_amount)
 
         {'chargeback_amount' => chargeback_amount,
           'ep_fee' => ep_fee_amount}
+      end
+
+      def parsed_chargeback(totals)
+        invoice_total_regex = /invoice.*total/i
+        get_total_in_dollars(totals, invoice_total_regex)
+      end
+
+      def parsed_subtotal(totals)
+        subtotal_regex = /(promo|chargeback)/i
+        get_total_in_dollars(totals, subtotal_regex)
+      end
+
+      def parsed_ep_fee(totals)
+        ep_fee_regex = /ep.*fee/i
+        ep_fee_amount = get_total_in_dollars(totals, ep_fee_regex)
       end
     end
   end

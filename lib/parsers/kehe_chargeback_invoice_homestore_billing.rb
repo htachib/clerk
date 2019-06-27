@@ -31,16 +31,25 @@ module Parsers
       end
 
       def parsed_totals(document)
-        ep_fee_regex = /ep.*fee/i
-
-        invoice_total_row = totals ? totals.select{ |row| row.match(/$/)}.last : nil
-        invoice_total = get_amount_str(invoice_total_row)
-        chargeback_amount = str_to_dollars(invoice_total)
-        ep_fee_amount = get_total_in_dollars(totals, ep_fee_regex)
+        totals = get_totals(document)
+        chargeback_amount = parsed_chargeback(totals)
+        ep_fee_amount = parsed_ep_fee(totals)
 
         {'chargeback_amount' => chargeback_amount,
           'ep_fee' => ep_fee_amount}
       end
+
+      def parsed_chargeback(totals)
+        invoice_total_row = totals ? totals.select{ |row| row.match(/$/)}.last : nil
+        invoice_total = get_amount_str(invoice_total_row)
+        str_to_dollars(invoice_total)
+      end
+
+      def parsed_ep_fee(totals)
+        ep_fee_regex = /ep.*fee/i
+        get_total_in_dollars(totals, ep_fee_regex)
+      end
+
     end
   end
 end

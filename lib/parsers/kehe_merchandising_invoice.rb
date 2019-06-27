@@ -62,6 +62,7 @@ module Parsers
       def parsed_totals(document)
         ep_fee_regex = /ep.*fee/i
 
+        totals = get_totals(document)
         invoice_total_row = totals ? totals.select{ |row| row.match(/$/)}.last : nil
         invoice_total = get_amount_str(invoice_total_row)
         chargeback_amount = str_to_dollars(invoice_total)

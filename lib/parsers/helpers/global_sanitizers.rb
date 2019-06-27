@@ -13,7 +13,7 @@ module Parsers
       end
 
       def get_amount_str(totals_arr)
-        totals_arr ? totals_arr.match(/\$(\d|\,|\.){1,}/)[0].gsub('$','') : nil
+        totals_arr ? totals_arr.match(/\$(\d|\,|\.){1,}/).try(:[], 0).gsub('$','') : nil
       end
 
       def invoice_num_from_file_name(document)

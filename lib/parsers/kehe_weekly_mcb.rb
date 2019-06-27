@@ -61,15 +61,15 @@ module Parsers
 
       def parse_header(rows)
         header = {}
-        header['SEND TO'] = rows['first'].join().split(':').last
-        header['ADDRESS'] = rows['second'].join.split('TOL').first
-        header['TOL User'] = rows['second'].join.split(': ').last
-        header['Customer ID'] = rows['third'].first
-        location = rows['third'].join.split(/^\d+/).last.split('TELEPHONE').first
-        city_state = location.match(/[a-zA-Z]+/)[0]
-        header['city'] = city_state[0..-3]
-        header['state'] = city_state[-2..-1]
-        header['telephone'] = rows['third'].join.split('TELEPHONE: ').last
+        header['SEND TO'] = rows['first'].try(:join).try(:split, ':').try(:last)
+        header['ADDRESS'] = rows['second'].try(:join).try(:split, 'TOL').try(:first)
+        header['TOL User'] = rows['second'].try(:join).try(:split, ': ').try(:last)
+        header['Customer ID'] = rows['third'].try(:first)
+        location = rows['third'].try(:join).try(:split, /^\d+/).try(:last).to_s.try(:split, 'TELEPHONE').try(:first)
+        city_state = location.to_s.match(/[a-zA-Z]+/).try(:[],0)
+        header['city'] = city_state ? city_state[0..-3] : nil
+        header['state'] = city_state ? city_state[-2..-1] : nil
+        header['telephone'] = rows['third'].try(:join).try(:split, 'TELEPHONE: ').try(:last)
         header
       end
 
@@ -110,9 +110,9 @@ module Parsers
         header_rows = {}
         section.each do |row|
           row_string = row.join()
-          header_rows['first'] = row if row_string.match?(/sold.*to:/i)
-          header_rows['second'] = row if row_string.match?(/tol.*user/i)
-          header_rows['third'] = row if row_string.match?(/telephone:/i)
+          header_rows['first'] = row if row_string.to_s.match?(/sold.*to:/i)
+          header_rows['second'] = row if row_string.to_s.match?(/tol.*user/i)
+          header_rows['third'] = row if row_string.to_s.match?(/telephone:/i)
         end
         header_rows
       end
@@ -121,7 +121,7 @@ module Parsers
         body_rows = []
         section.each do |row|
           last_column = row.last
-          body_rows.push(row) if last_column.match?(/\d+/)
+          body_rows.push(row) if last_column.to_s.match?(/\d+/)
         end
         body_rows
       end

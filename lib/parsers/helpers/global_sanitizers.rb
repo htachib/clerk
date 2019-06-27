@@ -40,6 +40,7 @@ module Parsers
       end
 
       def get_raw_data(document, type)
+        return [] if !document[type]
         document[type].map {|row| row.values } || []
       end
     end

@@ -52,7 +52,8 @@ module Parsers
       end
 
       def get_invoice_date(row, document)
-        row ? row.try(:flatten).try(:first) : invoice_date_from_file_name(document)
+        date = row.try(:flatten).try(:first)
+        date ? date : invoice_date_from_file_name(document)
       end
     end
   end

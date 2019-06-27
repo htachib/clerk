@@ -16,23 +16,24 @@ module Parsers
       end
 
       def customer_row_idx(rows)
-        rows.find_index{|row| row.match?(/(phone|fax)/i)} + 1
+        row_idx = rows.find_index{|row| row.to_s.match?(/(phone|fax)/i)}
+        row_idx ? row_idx + 1 : nil
       end
 
       def sanitized_customer(rows)
-        customer_row = rows.last
-        if customer_row.match?(/(chargeback.*invoice)/i)
+        customer_row = rows.try(:last)
+        if customer_row.to_s.match?(/(chargeback.*invoice)/i)
           idx = customer_row_idx(rows)
-          row = rows[idx]
-          customer_row = row.match?(/chargeback.*invoice/i) ? 'KeHE' : row
+          row = rows.try(:[], idx)
+          customer_row = row.to_s.match?(/chargeback.*invoice/i) ? 'KeHE' : row
         end
 
         regex = /(date|\#|scans|scan|chargeback|invoice|reclamation|recovery|date.*invoice$)/i
-        customer_row.gsub(regex,'').strip
+        customer_row.to_s.gsub(regex,'').strip
       end
 
       def parsed_customer(document)
-        rows = get_raw_data(document, 'customer').flatten
+        rows = get_customer_data(document)
         customer = sanitized_customer(rows)
         {'detailed_customer' => customer}
       end

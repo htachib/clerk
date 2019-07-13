@@ -55,6 +55,21 @@ module Parsers
         date = row.try(:flatten).try(:first)
         date ? date : invoice_date_from_file_name(document)
       end
+
+      def titleize_with_spaces(string)
+        return string if string.try(:match?, /[A-Z]{3}/)
+        result = ''
+        no_whitespace = string.try(:scan,/\S+/).try(:join,'')
+        no_whitespace.try(:split, '').each do |ch|
+          ch = ' ' + ch if ch.match?(/([A-Z]|\/)/)
+          result += ch
+        end
+        result.try(:strip)
+      end
+
+      def date_formatted_promo(year_int, month_int, date_int)
+        DateTime.new(year_int.to_i, month_int.to_i, date_int.to_i).strftime("%m/%d/%y")
+      end
     end
   end
 end

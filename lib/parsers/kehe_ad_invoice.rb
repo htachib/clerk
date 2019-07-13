@@ -81,17 +81,13 @@ module Parsers
         {'promo_dates' => get_promo_dates(promo_dates)}
       end
 
-      def date_promo_month(year_int, month_int, date_int)
-        DateTime.new(year_int, month_int, date_int).strftime("%m/%d/%y")
-      end
-
       def get_promo_dates(string)
         if string.match?(/[a-z]{3,}/i)
           month_string = string.match(/[a-z]+/i).try(:[], 0)
           month_int = month_int_from_string(month_string)
           year_int = string.scan(/[0-9]+/i).first.to_i
-          start_date = date_promo_month(year_int, month_int, 1)
-          end_date = date_promo_month(year_int, month_int, -1)
+          start_date = date_formatted_promo(year_int, month_int, 1)
+          end_date = date_formatted_promo(year_int, month_int, -1)
         elsif string.scan(/\//i).count == 4
           start_date, end_date = string.try(:scan, /\d{1,2}\/\d{1,2}\/\d{2,4}/)
         end

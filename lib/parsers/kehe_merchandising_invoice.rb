@@ -4,9 +4,12 @@ module Parsers
       include Parsers::Helpers::KeheSanitizers
 
       def invoice_data(document)
-        parsed_meta_data(document).deep_merge(parsed_invoice_date(document)
-        ).deep_merge(parsed_totals(document)
-        ).deep_merge(parsed_customer(document))
+        parsed_meta_data(document).deep_merge(
+        parsed_invoice_date(document)).deep_merge(
+        parsed_totals(document)).deep_merge(
+        parsed_customer(document)).deep_merge(
+        parsed_promo_date_range(document)).deep_merge(
+        parsed_deduction_description(document))
       end
 
       def parsed_invoice_number(meta_data)
@@ -77,6 +80,52 @@ module Parsers
       def parsed_ep_fee(totals)
         ep_fee_regex = /ep.*fee/i
         get_total_in_dollars(totals, ep_fee_regex)
+      end
+
+      def parsed_promo_date_range(document)
+        options = ['promo_dates_option_1', 'promo_dates_option_2']
+        promo_dates_data = options.map { |option| get_raw_data(document, option) }.flatten.try(:first) # [], ["201811"], ["201810"], ["1/1/19-3/2/19"]
+        {'promo_dates' => get_promo_dates(document, promo_dates_data)}
+      end
+
+      def get_promo_dates(document, string)
+        start_date = parsed_invoice_date(document).try(:[], 'invoice_date')
+        end_date = parsed_invoice_date(document).try(:[], 'invoice_date')
+        if date_string(string).try(:count) == 2
+          dates = date_string(string).try(:flatten)
+          start_date = dates.first
+          end_date = dates.last
+        elsif string.try(:match?, /\d+{6}/)
+          digits = string.try(:match, /\d+/).try(:[], 0)
+          month_int = digits[-2..-1]
+          year_int = digits[0..3]
+          start_date = date_formatted_promo(year_int, month_int, 1)
+          end_date = date_formatted_promo(year_int, month_int, -1)
+        end
+        {'start_date' => start_date,
+         'end_date' => end_date}
+      end
+
+      def date_string(string)
+        string.try(:scan, /(\d{1,4}\/\d{1,4}\/\d{1,4})/)
+      end
+
+      def parsed_deduction_description(document)
+        options = ['deduction_description_option_1', 'deduction_description_option_2',
+                   'deduction_description_option_3']
+        data = options.map { |option| get_raw_data(document, option) }.flatten
+        filtered = data.select {|d| d.length < 100 && d.length > 3 }
+        description = longer_description(filtered)
+        shortened_descr = remove_chargeback_invoice_language(description)
+        {'deduction_description' => titleize_with_spaces(shortened_descr)}
+      end
+
+      def longer_description(arr)
+        arr.max_by(&:length)
+      end
+
+      def remove_chargeback_invoice_language(string)
+        string.try(:gsub, /^chargeback.*invoice/i, '').try(:strip)
       end
     end
   end

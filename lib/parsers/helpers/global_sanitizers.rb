@@ -43,6 +43,15 @@ module Parsers
         return [] if !document[type]
         document[type].map {|row| row.values } || []
       end
+
+      def month_int_from_string(string)
+        all_months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                      'Jul', 'Aug', 'Sep', 'Oct', 'Nov',
+                      'Dec']
+        idx = all_months.each_index.select{ |i| string.include? all_months[i] }.first
+        idx + 1
+      end
+
     end
   end
 end

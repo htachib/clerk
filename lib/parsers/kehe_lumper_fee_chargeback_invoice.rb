@@ -3,6 +3,13 @@ module Parsers
     class << self
       include Parsers::Helpers::KeheSanitizers
 
+      def invoice_data(document)
+        parsed_meta_data(document).deep_merge(
+        parsed_invoice_date(document)).deep_merge(
+        parsed_totals(document)).deep_merge(
+        parsed_deduction_type(document))
+      end
+
       def parsed_invoice_number(meta_data)
         row_regex = /invoice.*#/i
         str_regex = /invoice.*#/i
@@ -59,6 +66,13 @@ module Parsers
       def parsed_ep_fee(totals)
         ep_fee_regex = /ep.*fee/i
         ep_fee_amount = get_total_in_dollars(totals, ep_fee_regex)
+      end
+
+      def parsed_deduction_type(document)
+        options = ['deduction_type_option_1', 'deduction_type_option_2']
+        deduction_type_data = options.map { |option| get_raw_data(document, option) }.flatten
+        deduction_type = deduction_type_data.select { |c| c.length > 3 && c.match?(/charge|invoice|back/i) }.try(:first)
+        {'deduction_type' => deduction_type}
       end
     end
   end

@@ -3,6 +3,15 @@ module Parsers
     class << self
       include Parsers::Helpers::KeheSanitizers
 
+      def invoice_data(document)
+        parsed_meta_data(document).deep_merge(
+        parsed_invoice_date(document)).deep_merge(
+        parsed_totals(document)).deep_merge(
+        parsed_deduction_description(document)).deep_merge(
+        parsed_customer_chain(document)).deep_merge(
+        parsed_promo_date_range(document))
+      end
+
       def parsed_invoice_number(meta_data)
         row_regex = /invoice.*#/i
         str_regex = /invoice.*#/i
@@ -50,6 +59,24 @@ module Parsers
         get_total_in_dollars(totals, ep_fee_regex)
       end
 
+      def parsed_promo_date_range(document)
+        data = get_raw_data(document,'promo_dates').flatten.try(:first)
+        month_int, year_int = data.try(:scan,/[\d\s]+/).try(:first).try(:split, /\s/)
+        start_date = date_formatted_promo(year_int, month_int, 1)
+        end_date = date_formatted_promo(year_int, month_int, -1)
+        {'start_date' => start_date,
+         'end_date' => end_date}
+      end
+
+      def parsed_deduction_description(document)
+        data = get_raw_data(document,'deduction_description').flatten.try(:first)
+        {'deduction_description' => titleize_with_spaces(data)}
+      end
+
+      def parsed_customer_chain(document)
+        data = get_raw_data(document,'customer_chain').flatten.try(:first).try(:strip)
+        {'customer_chain' => data }
+      end
     end
   end
 end

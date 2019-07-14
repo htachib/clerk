@@ -3,6 +3,15 @@ module Parsers
     class << self
       include Parsers::Helpers::KeheSanitizers
 
+      def invoice_data(document)
+        parsed_meta_data(document).deep_merge(
+        parsed_invoice_date(document)).deep_merge(
+        parsed_totals(document)).deep_merge(
+        parsed_deduction_description(document)).deep_merge(
+        parsed_customer_chain(document)).deep_merge(
+        parsed_promo_date_range(document))
+      end
+
       def parsed_invoice_number(meta_data)
         row_regex = /invoice.*#/i
         str_regex = /invoice.*#/i
@@ -53,6 +62,43 @@ module Parsers
       def parsed_ep_fee(totals)
         ep_fee_regex = /ep.*fee/i
         get_total_in_dollars(totals, ep_fee_regex)
+      end
+
+      def parsed_deduction_description(document)
+        options = ['deduction_description_option_1', 'deduction_description_option_2']
+        data = options.map { |option| get_raw_data(document, option) }.flatten
+        filtered = data.select { |row| row.length > 5 }
+        description = longer_description(filtered)
+        titled = titleize_with_spaces(description)
+        syntax = titled.try(:gsub, /\(.*\)$/, '')
+        {'deduction_description' => syntax}
+      end
+
+      def longer_description(arr)
+        arr.max_by(&:length)
+      end
+
+      def parsed_customer_chain(document)
+        if (document['customer_chain_option_1'].count > 1)
+          data = get_raw_data(document,'customer_chain_option_2').try(:flatten).try(:first)
+        else
+          data = get_raw_data(document,'customer_chain_option_1').try(:flatten).try(:first)
+        end
+        {'customer_chain' => data}
+      end
+
+      def parsed_promo_date_range(document)
+        date = get_promo_date(document)
+        {'promo_date' => date}
+      end
+
+      def get_promo_date(document)
+        option_one = get_raw_data(document,'promo_date_option_1').try(:flatten).try(:first)
+        option_two = get_raw_data(document,'promo_date_option_2').try(:flatten).try(:first)
+        option_three = get_raw_data(document,'promo_date_option_3').try(:flatten).try(:first)
+        return option_one if option_one.try(:match?, /\d{1,2}\/\d{1,2}\/\d{2,4}/)
+        return option_two if option_two.try(:match?, /\d{1,2}\/\d{1,2}\/\d{2,4}/)
+        return option_three if option_three.try(:match?, /\d{1,2}\/\d{1,2}\/\d{2,4}/)
       end
     end
   end

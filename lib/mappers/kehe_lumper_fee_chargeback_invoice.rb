@@ -11,7 +11,7 @@ module Mappers
         prepared_row['Deduction Post Date'] = Date.parse(raw_rows['uploaded_at']).strftime("%m/%d/%Y")
         prepared_row['Promo End Date'] = raw_rows['invoice_date']
         prepared_row['Promo Start Date'] = raw_rows['start_date']
-        prepared_row['Deduction Type'] = raw_rows['Type']
+        prepared_row['Deduction Type'] = raw_rows['deduction_type']
         prepared_row['Deduction Description'] = ''
         prepared_row['Customer Chain ID'] = 'KeHE'
         prepared_row['Customer Detailed Name'] = 'KeHE'

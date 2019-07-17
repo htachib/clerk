@@ -20,8 +20,33 @@ module Parsers
           row.deep_merge('file_name' => document['file_name']
           ).deep_merge(
           'uploaded_at' => document['uploaded_at']
+          ).deep_merge(
+            parsed_invoice_date(document)
           )
         end
+      end
+
+      def parsed_invoice_date(document)
+        row = get_raw_data(document, 'invoice_date')
+        date_string = row.try(:flatten).try(:first)
+        date = get_promo_date(date_string)
+        start_date = get_promo_start_date(date)
+        end_date = get_promo_end_date(date)
+        {'start_date' => start_date,
+         'end_date' => end_date}
+      end
+
+      def get_promo_start_date(input)
+        date = input - 6.days
+        date.strftime("%m/%d/%Y")
+      end
+
+      def get_promo_date(input)
+        Date.strptime(input, '%m/%d/%Y')
+      end
+
+      def get_promo_end_date(input)
+        input.strftime('%m/%d/%Y')
       end
 
       def invoice_data(document)

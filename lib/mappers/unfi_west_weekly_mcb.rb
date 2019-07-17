@@ -12,10 +12,8 @@ module Mappers
           invoice_number = get_invoice_number(file_name)
           prepared_row['Invoice Number'] = invoice_number
           prepared_row['Deduction Post Date'] = Date.parse(raw_row['uploaded_at']).strftime("%m/%d/%Y")
-          promo_date = get_promo_date(invoice_number)
-          promo_end_date = get_promo_end_date(promo_date)
-          prepared_row['Promo End Date'] = promo_end_date
-          prepared_row['Promo Start Date'] = get_promo_start_date(promo_date)
+          prepared_row['Promo End Date'] = raw_row['end_date']
+          prepared_row['Promo Start Date'] = raw_row['start_date']
           prepared_row['Deduction Type'] = raw_row['MCB Category']
           prepared_row['Deduction Description'] = ''
           prepared_row['Customer Chain ID'] = raw_row['abbreviation']
@@ -43,21 +41,6 @@ module Mappers
       def get_invoice_number(input)
         file_name = input.split(' ')[0]
       end
-
-      def get_promo_start_date(input)
-        date = input - 6.days
-        date.strftime("%m/%d/%Y")
-      end
-
-      def get_promo_date(input)
-        date_string = input.gsub('MCB', '')
-        Date.strptime(date_string, '%Y%m%d')
-      end
-
-      def get_promo_end_date(input)
-        input.strftime('%m/%d/%Y')
-      end
-
     end
   end
 end

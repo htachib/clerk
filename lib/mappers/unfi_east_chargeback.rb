@@ -7,7 +7,7 @@ module Mappers
           prepared_row = OutputHeaders::ROW_FIELDS.deep_dup
           prepared_row['Customer'] = 'UNFI East'
           prepared_row['Parser'] = 'UNFI East Chargeback'
-          prepared_row['File Name'] = raw_row['file_name'].gsub('.pdf','')
+          prepared_row['File Name'] = raw_row['file_name'].try(:gsub, '.pdf','')
           prepared_row['Invoice Number'] = raw_row['vendor_invoice']
           prepared_row['Deduction Post Date'] = Date.parse(raw_row['uploaded_at']).strftime("%m/%d/%Y")
           prepared_row['Promo Start Date'] = format_date(raw_row['chargeback_date'])
@@ -43,7 +43,7 @@ module Mappers
       end
 
       def get_chargeback_amount(input)
-        input.gsub('-','').to_f
+        input.try(:gsub,'-','').to_f
       end
 
       def format_date(input)

@@ -50,8 +50,8 @@ module Parsers
       end
 
       def invoice_data(document)
-        data = document['invoice_details'].map {|row| row.values }
-        invoice_headers = data[0]
+        data = document.try(:[], 'invoice_details').map {|row| row.values }
+        invoice_headers = data.try(:[], 0)
         category_sections = divide_by_section(data)
         data_by_section = sort_section(category_sections, invoice_headers)
         parser_headers = ['MCB Category', data_by_section.first.values.first[:customers].first.keys - ['invoices'], invoice_headers].flatten
@@ -105,21 +105,21 @@ module Parsers
         current_category_id = ''
 
         section.each do |row|
-          if row.join.match?(/(Category [A-Z]+)/)
+          if row.try(:join).try(:match?, /(Category [A-Z]+)/) #row begins new category
             new_category = add_category(row)
             parsed_data[new_category] = {"customers": []}
             current_category_id = new_category
-          elsif row.join.match?(/Customer Totals /)
+          elsif row.try(:join).try(:match?, /Customer Totals /) #row ends customer section
             next
-          elsif row.join.match?(/Customer /)
+          elsif row.try(:join).try(:match?, /Customer /) #row begins customer section
             new_customer = add_customer(row)
-            parsed_data[current_category_id][:customers] << new_customer
+            parsed_data.try(:[], current_category_id)[:customers] << new_customer
             current_customer_id = parsed_data[current_category_id][:customers].length - 1
-          elsif row[9].strip == '%' || row[8].strip == '%'
+          elsif row.try(:[], 9).try(:strip) == '%' || row.try(:[], 8).try(:strip) == '%'
             next
-          elsif row[9].include?('MCB%')
+          elsif row.try(:[], 9).try(:include?, 'MCB%') #row is page header
             next
-          elsif row[9].include?('%') || row[8].include?('%')
+          elsif row.try(:[], 9).try(:include?, '%') || row.try(:[], 8).try(:include?, '%')
             parsed_data[current_category_id][:customers][current_customer_id]['invoices'] << add_invoice(row, invoice_headers)
           end
         end
@@ -127,17 +127,17 @@ module Parsers
       end
 
       def add_category(row)
-        return row.join.split(' ')[1]
+        return row.join.try(:split, ' ').try(:[], 1)
       end
 
       def add_customer(row)
         customer = {}
-        id = /\[(.*?)\]/.match(row.join)[1]
-        abbreviation = /\((.*?)\)/.match(row.join)[1]
-        location = /\(.*?\) ([\s\S]*)/.match(row.join)[1]
-        city = location.split(',')[0]
-        state = location.split(',')[1].strip
-        details = row.join.split("Customer : ")[1]
+        id = /\[(.*?)\]/.match(row.join).try(:[], 1)
+        abbreviation = /\((.*?)\)/.match(row.join).try(:[], 1)
+        location = /\(.*?\) ([\s\S]*)/.match(row.join).try(:[], 1)
+        city = location.try(:split, ',').try(:[], 0)
+        state = location.try(:split, ',').try(:[], 1).try(:strip)
+        details = row.join.try(:split, "Customer : ").try(:[], 1)
 
         customer["id"] = id
         customer["abbreviation"] = abbreviation

@@ -7,12 +7,11 @@ module Mappers
           prepared_row = OutputHeaders::ROW_FIELDS.deep_dup
           prepared_row['Customer'] = 'UNFI East'
           prepared_row['Parser'] = 'UNFI East Deduction Quarterly'
-          prepared_row['File Name'] = raw_row['file_name'].gsub('.pdf','')
+          prepared_row['File Name'] = raw_row['file_name'].try(:gsub,'.pdf','')
           prepared_row['Invoice Number'] = raw_row['deduction_num']
           prepared_row['Deduction Post Date'] = Date.parse(raw_row['uploaded_at']).strftime("%m/%d/%Y")
-          performance_dates = raw_row['performance_dates']
-          prepared_row['Promo Start Date'] = get_promo_start_date(performance_dates)
-          prepared_row['Promo End Date'] = get_promo_end_date(performance_dates)
+          prepared_row['Promo Start Date'] = raw_row['start_date']
+          prepared_row['Promo End Date'] = raw_row['end_date']
           billing_desc = raw_row['billing_desc']
           prepared_row['Deduction Type'] = get_deduction_type(billing_desc)
           prepared_row['Deduction Description'] = billing_desc

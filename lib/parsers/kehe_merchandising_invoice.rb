@@ -32,7 +32,7 @@ module Parsers
 
       def sanitized_customer(rows)
         customer_str = customer_string(rows)
-        customer_str.gsub(/(invoice\s*#?|charge|date|program|merchandising)/i,'').strip
+        customer_str.try(:gsub,/(invoice\s*#?|charge|date|program|merchandising)/i,'').strip
       end
 
       def parsed_customer(document)
@@ -44,7 +44,7 @@ module Parsers
       def parsed_type(meta_data)
         regex = /type.*:?/i
         type_row = string_match_from_arr(meta_data, regex)
-        type_row.to_s.gsub(/type\W?/i,'').strip
+        type_row.to_s.try(:gsub,/type\W?/i,'').strip
       end
 
       def parsed_meta_data(document)

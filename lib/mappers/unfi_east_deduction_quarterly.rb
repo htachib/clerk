@@ -18,7 +18,7 @@ module Mappers
           prepared_row['Customer Chain ID'] = 'UNFI East'
           prepared_row['Customer Detailed Name'] = 'UNFI East'
           amount = raw_row['amount']
-          prepared_row['Chargeback Amount'] = amount.gsub(/[^\d\.]/, '').to_f
+          prepared_row['Chargeback Amount'] = amount.try(:gsub,/[^\d\.]/,'').to_f
           prepared_row['Customer Number'] = ''
           prepared_row['Customer Location'] = ''
           prepared_row['Customer City'] = ''

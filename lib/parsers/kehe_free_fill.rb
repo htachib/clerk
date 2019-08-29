@@ -25,13 +25,13 @@ module Parsers
       def parsed_type(meta_data)
         regex = /type.*:?/i
         type_row = string_match_from_arr(meta_data, regex)
-        type_row.to_s.gsub(/type:?/i,'').strip
+        type_row.to_s.try(:gsub,/type:?/i,'').strip
       end
 
       def parsed_customer(meta_data)
         regex = /free.*fill/i
         customer_row = string_match_from_arr(meta_data, regex)
-        customer_row ? customer_row.to_s.gsub(/[^a-zA-Z]free.*fill/i,'').strip : nil
+        customer_row ? customer_row.to_s.try(:gsub,/[^a-zA-Z]free.*fill/i,'').strip : nil
       end
 
       def parsed_meta_data(document)

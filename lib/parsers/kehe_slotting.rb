@@ -27,7 +27,7 @@ module Parsers
 
         parsed['invoice number'] = data[0].split('#').last.strip
         parsed['PO #'] = data[2].split('#').last.strip
-        parsed['DC #'] = data[3].gsub('|','').split('#').last.strip
+        parsed['DC #'] = data[3].try(:gsub,'|','').split('#').last.strip
         parsed['Type'] = data[4].split(' ').last.strip
         parsed
       end
@@ -39,7 +39,7 @@ module Parsers
       def parsed_invoice_details(document)
         parsed = {}
         data = get_raw_data(document,'invoice_details').flatten
-        parsed['chain'] = parse_cell(data, /chain/i).split(':').last.strip.gsub(/\W/,'')
+        parsed['chain'] = parse_cell(data, /chain/i).split(':').last.strip.try(:gsub,/\W/,'')
         slotting_fee = parse_cell(data, /slotting.*cost/i).split('$').last.strip
         ep_fee = parse_cell(data, /ep.*fee/i).split('$').last
         parsed['chargeback_amount'] = string_to_float(slotting_fee) + string_to_float(ep_fee)
@@ -48,7 +48,7 @@ module Parsers
       end
 
       def string_to_float(input)
-        input.gsub(',','').to_f
+        input.try(:gsub,',','').to_f
       end
 
       def parsed_invoice_date(document)

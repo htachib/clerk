@@ -28,13 +28,13 @@ module Parsers
       def customer_str_method_one(data)
         regex = /kehe.*distributors?(,?\s*llc)?/i
         distributor_row = string_match_from_arr(data, regex)
-        customer_str = distributor_row.to_s.gsub(regex,'').strip
+        customer_str = distributor_row.to_s.try(:gsub,regex,'').strip
         customer_str.empty? ? nil : get_customer_and_type(customer_str)
       end
 
       def get_customer_and_type(string)
         type = string.to_s.split(/\s/).last
-        customer = string.to_s.gsub(type, '').strip
+        customer = string.to_s.try(:gsub,type, '').strip
         {'customer' => customer,
          'type' => type}
       end

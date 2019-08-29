@@ -7,7 +7,7 @@ module Mappers
           prepared_row = OutputHeaders::ROW_FIELDS.deep_dup
           prepared_row['Customer'] = 'UNFI West'
           prepared_row['Parser'] = 'UNFI West Weekly MCB'
-          file_name = raw_row['file_name'].gsub('.pdf','')
+          file_name = raw_row['file_name'].try(:gsub,'.pdf','')
           prepared_row['File Name'] = file_name
           invoice_number = get_invoice_number(file_name)
           prepared_row['Invoice Number'] = invoice_number

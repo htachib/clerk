@@ -22,7 +22,7 @@ module Parsers
         customer_row = rows.last
         return nil if customer_row.to_s.match?(/(chargeback.*invoice)/i)
         regex = /(shelf|activity|fee|date.*invoice$)/i
-        customer_row.gsub(regex,'').strip
+        customer_row.try(:gsub,regex,'').strip
       end
 
       def parsed_customer(document)
@@ -34,7 +34,7 @@ module Parsers
       def parsed_type(meta_data)
         regex = /type.*:?/i
         type_row = string_match_from_arr(meta_data, regex)
-        type_row.to_s.gsub(/type\W?/i,'').strip
+        type_row.to_s.try(:gsub,/type\W?/i,'').strip
       end
 
       def parsed_meta_data(document)

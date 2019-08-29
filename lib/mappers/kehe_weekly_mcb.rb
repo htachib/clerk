@@ -7,7 +7,7 @@ module Mappers
           prepared_row = OutputHeaders::ROW_FIELDS.deep_dup
           prepared_row['Customer'] = 'KeHE'
           prepared_row['Parser'] = 'KeHE Weekly MCB Report'
-          file_name = raw_row['file_name'].gsub('.pdf','').gsub('.PDF','')
+          file_name = raw_row['file_name'].try(:gsub,'.pdf','').try(:gsub,'.PDF','')
           prepared_row['File Name'] = file_name
           prepared_row['Invoice Number'] = file_name.split('-').first
           prepared_row['Deduction Post Date'] = Date.parse(raw_row['uploaded_at']).strftime("%m/%d/%Y")

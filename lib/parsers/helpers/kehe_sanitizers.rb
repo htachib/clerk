@@ -19,7 +19,7 @@ module Parsers
       end
 
       def get_invoice_number(invoice_rows, str_regex)
-        invoice_rows.first.to_s.gsub(str_regex,'').strip
+        invoice_rows.first.to_s.try(:gsub,str_regex,'').strip
       end
 
       def sanitize_invoice_num(meta_data, row_regex, str_regex)

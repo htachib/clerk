@@ -7,7 +7,7 @@ module Mappers
           prepared_row = OutputHeaders::ROW_FIELDS.deep_dup
           prepared_row['Customer'] = 'UNFI East'
           prepared_row['Parser'] = 'UNFI East Reclamation'
-          prepared_row['File Name'] = raw_row['file_name'].gsub('.pdf','')
+          prepared_row['File Name'] = raw_row['file_name'].try(:gsub,'.pdf','')
           prepared_row['Invoice Number'] = raw_row['invoice_number']
           uploaded_date = Date.parse(raw_row['uploaded_at']).strftime("%m/%d/%Y")
           prepared_row['Deduction Post Date'] = uploaded_date

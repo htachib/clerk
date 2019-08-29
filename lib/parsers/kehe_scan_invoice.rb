@@ -33,7 +33,7 @@ module Parsers
         end
 
         regex = /(date|\#|scans|scan|chargeback|invoice|reclamation|recovery|date.*invoice$)/i
-        customer_row.to_s.gsub(regex,'').strip
+        customer_row.to_s.try(:gsub,regex,'').strip
       end
 
       def parsed_customer(document)
@@ -45,7 +45,7 @@ module Parsers
       def parsed_type(meta_data)
         regex = /type.*:?/i
         type_row = string_match_from_arr(meta_data, regex)
-        type_row.to_s.gsub(/type\W?/i,'').strip
+        type_row.to_s.try(:gsub,/type\W?/i,'').strip
       end
 
       def parsed_meta_data(document)

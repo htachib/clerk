@@ -15,7 +15,7 @@ module Parsers
             line[headers[idx]] = cell
           end
 
-          line['file_name'] = document.name.gsub('.CSV', '').gsub('.csv', '')
+          line['file_name'] = document.name.try(:gsub,'.CSV', '').try(:gsub,'.csv', '')
           line['uploaded_at'] = document.created_time.strftime("%m/%d/%Y")
           line_with_headers.push(line)
         end

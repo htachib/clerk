@@ -21,7 +21,7 @@ module Parsers
       def parsed_type(meta_data)
         regex = /type.*:?/i
         type_row = string_match_from_arr(meta_data, regex)
-        type_row.to_s.gsub(/type:?/i,'').strip
+        type_row.to_s.try(:gsub,/type:?/i,'').strip
       end
 
       def parsed_meta_data(document)
@@ -62,7 +62,7 @@ module Parsers
       def parsed_deduction_description(document)
         data = get_raw_data(document,'deduction_description').flatten
         filtered = data.select { |row| row.length > 5 }
-        deduction_description = filtered.join(' ').gsub(/[^\s^\w^\/]/,'')
+        deduction_description = filtered.join(' ').try(:gsub,/[^\s^\w^\/]/,'')
         {'deduction_description' => deduction_description}
       end
 

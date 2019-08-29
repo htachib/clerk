@@ -17,7 +17,10 @@ class SpreadsheetService
 
         # todo, could check spreadsheet headers and ensure they match?
         data = parse_and_prepare_rows(document, parser) # parses and prepares rows
-        doc.process! if add_rows(parser, data) # returns true/false
+
+        if data
+          doc.process! if add_rows(parser, data) # returns true/false
+        end
       end
     end
   end
@@ -62,6 +65,7 @@ class SpreadsheetService
     "Mappers::#{library}".constantize.prepare_rows(raw_rows)
   rescue StandardError => e
     log_exception(e, document, parser)
+    nil
   end
 
   def log_exception(exception, document, parser)

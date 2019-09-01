@@ -2,7 +2,7 @@ module Parsers
   class KeheSlotting < Base
     class << self
       include Parsers::Helpers::KeheSanitizers
-      
+
       def parse_rows(document)
         invoice_data(document).deep_merge(
         'file_name' => document['file_name']
@@ -33,7 +33,7 @@ module Parsers
       end
 
       def parse_cell(data, regex)
-        data.select { |cell| cell.match?(regex) }.first
+        data.select { |cell| cell.match?(regex) }.try(:first)
       end
 
       def parsed_invoice_details(document)
@@ -52,7 +52,7 @@ module Parsers
       end
 
       def parsed_invoice_date(document)
-        invoice_date = document['meta_data'].first['invoice_date']
+        invoice_date = document['meta_data'].try(:first, 'invoice_date') || get_raw_data(document, 'invoice_date').try(:fkatten).try(:first)
         {'invoice_date' => invoice_date}
       end
     end

@@ -39,8 +39,8 @@ module Parsers
       def parsed_invoice_details(document)
         parsed = {}
         data = get_raw_data(document,'invoice_details').flatten
-        parsed['chain'] = parse_cell(data, /chain/i).try(:split,':').try(:last).strip.try(:gsub,/\W/,'')
-        slotting_fee = parse_cell(data, /slotting.*cost/i).try(:split,'$').try(:last).strip
+        parsed['chain'] = parse_cell(data, /chain/i).try(:split,':').try(:last).try(:strip).try(:gsub,/\W/,'')
+        slotting_fee = parse_cell(data, /slotting.*cost/i).try(:split,'$').try(:last).try(:strip)
         ep_fee = parse_cell(data, /ep.*fee/i).try(:split,'$').try(:last)
         parsed['chargeback_amount'] = string_to_float(slotting_fee) + string_to_float(ep_fee)
         parsed['ep_fee'] = ep_fee
@@ -52,7 +52,7 @@ module Parsers
       end
 
       def parsed_invoice_date(document)
-        invoice_date = document['meta_data'].try(:first, 'invoice_date') || get_raw_data(document, 'invoice_date').try(:fkatten).try(:first)
+        invoice_date = document['meta_data'].try(:first, 'invoice_date') || get_raw_data(document, 'invoice_date').try(:flatten).try(:first)
         {'invoice_date' => invoice_date}
       end
     end

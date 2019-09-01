@@ -38,7 +38,7 @@ gem 'httparty'
 # google
 gem 'googleauth'
 gem 'google-api-client'
-gem 'google_drive', git: 'https://github.com/gimite/google-drive-ruby.git'
+gem 'google_drive', git: 'https://github.com/touchsell/google-drive-ruby.git', branch: 'spreadsheet_append' # 'https://github.com/gimite/google-drive-ruby.git'
 gem 'gcloud' # only requiring to suppress `bin/rails: No such file or directory - gcloud`
 
 group :development do

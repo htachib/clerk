@@ -49,13 +49,11 @@ class SpreadsheetService
   end
 
   def add_rows(parser, data) # ['bob', 'jimbob@gmail.com', false, '2/01/2019']
-    sheet = fetch_by_key(parser.destination_id)
+    workbook = session.spreadsheet_by_key(parser.destination_id)
 
-    new_row = sheet.num_rows + 1
     data = data.count == data.flatten.count ? [data] : data # single + multiple row collections
 
-    sheet.insert_rows(new_row, data)
-    sheet.save
+    workbook.append('master!A1', data)
   end
 
   def parse_and_prepare_rows(document, parser)

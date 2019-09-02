@@ -29,12 +29,18 @@ module Parsers
         regex = /kehe.*distributors?(,?\s*llc)?/i
         distributor_row = string_match_from_arr(data, regex)
         customer_str = distributor_row.to_s.try(:gsub,regex,'').strip
-        customer_str.empty? ? nil : get_customer_and_type(customer_str)
+        get_customer_and_type(customer_str)
       end
 
       def get_customer_and_type(string)
-        type = string.to_s.split(/\s/).last
-        customer = string.to_s.try(:gsub,type, '').strip
+        if !string || string.empty?
+          type = ''
+          customer = ''
+        else
+          type = string.to_s.split(/\s/).last
+          customer = string.to_s.try(:gsub,type, '').strip
+        end
+
         {'customer' => customer,
          'type' => type}
       end
@@ -52,6 +58,12 @@ module Parsers
         regex_str = /\d{1,2}\/\d{1,2}\/\d{2,4}/
         date_row = string_match_from_arr(meta_data, regex_row)
         date_range = date_row.to_s.scan(regex_str)
+
+        if date_range.empty?
+          alt_range = string_match_from_arr(meta_data, regex_str).to_s.scan(regex_str).try(:first)
+          date_range = [alt_range, alt_range]
+        end
+
         {'invoice_date_range' => date_range}
       end
 

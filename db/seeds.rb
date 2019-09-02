@@ -2,7 +2,7 @@ admin_params = { email: User::ADMIN_EMAIL }
 admin = User.find_by(admin_params)
 User.create!(admin_params.merge('password' => 'password', 'password_confirmation' => 'password')) if admin.nil?
 
-production_spreadsheet = '1hq58D2r5_U30632TgPBLGoi6iY0lwD_DtLl4RIJAlC0' # changed to new month
+production_spreadsheet = '1pWmdUxPRO7Id3HkhlsDJfTViGLKzdfIVKZ_Ad0memkE' # changed to new month
 # prepare: Parser.all.map {|p| p.attributes.except('created_at', 'id', 'updated_at', 'user_id')}
 parsers = [
   {"external_id"=>"1Z5by0rrvu1tVw5K2nXZRAJL3ct2TM7GS", "name"=>"UNFI East Weekly MCB", "destination_id" => production_spreadsheet, "settings"=>{"source"=>"google_drive", "library"=>"UNFIEastWeeklyMCB"}},

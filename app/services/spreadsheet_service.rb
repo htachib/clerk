@@ -75,10 +75,6 @@ class SpreadsheetService
     )
   end
 
-  def fetch_by_key(sheet_id)
-    session.spreadsheet_by_key(sheet_id).worksheets[0]
-  end
-
   def fetch_documents_from_folder(folder_id)
     folder = session.file_by_id(folder_id)
     sheets = folder.spreadsheets

@@ -37,8 +37,10 @@ module Mappers
       end
 
       def get_deduction_type(input)
-        type = input.split(/\d\s/).last
-        if type == 'Ad Agreements'
+        type = input.try(:split, /\d\s/).try(:last)
+        if !type
+          'Ad Fee'
+        elsif type == 'Ad Agreements'
           'Ad Fee'
         else
           type

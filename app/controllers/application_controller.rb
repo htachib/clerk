@@ -6,8 +6,8 @@ class ApplicationController < ActionController::Base
 		@user = current_user if current_user
 	end
 
-	# def after_sign_in_path_for(resource)
-	# 	(if something true) ? send_user_here : send_user_elsewhere
-	# end
+	def after_sign_in_path_for(resource)
+		# current_user.admin? ? admin_path : dashboard_path
+	end
 
 end

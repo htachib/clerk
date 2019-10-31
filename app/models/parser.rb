@@ -9,4 +9,8 @@ class Parser < ActiveRecord::Base
 
   validates_presence_of :destination_id
   validates_uniqueness_of :external_id, scope: :user_id
+
+  def last_processed_document
+    documents.processed.order(updated_at: :desc).first
+  end
 end

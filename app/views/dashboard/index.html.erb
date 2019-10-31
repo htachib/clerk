@@ -1,2 +1,52 @@
-<h1>Dashboard#index</h1>
-<p>Find me in app/views/dashboard/index.html.erb</p>
+<h1>Dashboard</h1>
+
+<div class="grid">
+  <%= render partial: 'stat', locals: { value: @parsers.count, title: 'Parsers', color: 'orange' } %>
+  <%= render partial: 'stat', locals: { value: @documents.count, title: 'Documents Processed', color: 'blue' } %>
+</div>
+
+<div class="grid">
+  <div class="col-6">
+    <h3>Parsers</h3>
+    <table class="table table--fixed table--compact table--border-bottom">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Docs Processed</th>
+          <th>Last Used</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @parsers[0..9].each do |parser| %>
+          <tr>
+            <td><%= parser.name %></td>
+            <td><%= parser.documents.count %></td>
+            <td><%= last_processed(parser) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-6">
+    <h3>Documents</h3>
+    <table class="table table--fixed table--compact table--border-bottom">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Processed</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @documents[0..9].each do |document| %>
+          <tr>
+            <td><%= document.name %></td>
+            <td><%= time_ago_in_words(document.updated_at) %> ago</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="gap"></div>

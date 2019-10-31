@@ -3,6 +3,7 @@
 <div class="grid">
   <%= render partial: 'stat', locals: { value: @parsers.count, title: 'Parsers', color: 'orange' } %>
   <%= render partial: 'stat', locals: { value: @documents.count, title: 'Documents Processed', color: 'blue' } %>
+  <%= render partial: 'stat', locals: { value: ((@documents.count * 5) / 60), title: 'Hours Saved', color: 'green' } %>
 </div>
 
 <div class="grid">
@@ -21,7 +22,7 @@
         <% @parsers[0..9].each do |parser| %>
           <tr>
             <td><%= parser.name %></td>
-            <td><%= parser.documents.count %></td>
+            <td><%= number_with_delimiter(parser.documents.count) %></td>
             <td><%= last_processed(parser) %></td>
           </tr>
         <% end %>

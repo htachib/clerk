@@ -9,6 +9,6 @@ class DashboardController < ApplicationController
 
   def set_stats
     @parsers = current_user.parsers
-    @documents = current_user.documents
+    @documents = current_user.documents.order(updated_at: :desc)
   end
 end

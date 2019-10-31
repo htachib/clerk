@@ -17,7 +17,6 @@ gem 'listen', '>= 3.0.5', '< 3.2'
 gem 'puma', '~> 3.11'
 
 # speedrail
-gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
 gem 'font-awesome-rails'
 gem 'simple_form'
 gem 'jquery-turbolinks'
@@ -26,7 +25,6 @@ gem 'gravatarify', '~> 3.0.0'
 gem 'metamagic' # easily insert metatags for SEO / opengraph
 gem 'rails_12factor'
 gem 'pg'
-gem 'bootstrap-sass'
 gem 'paperclip', '~> 5.2.0' # incomplete setup - must add resource to existing model
 gem 'aws-sdk-s3' # configure in config/application.rb
 gem 'seed_dump' # import / export seed data from existing db (https://github.com/rroblak/seed_dump)
@@ -40,6 +38,8 @@ gem 'googleauth'
 gem 'google-api-client'
 gem 'google_drive', git: 'https://github.com/forkequity/google-drive-ruby.git', branch: 'spreadsheet_append'
 gem 'gcloud' # only requiring to suppress `bin/rails: No such file or directory - gcloud`
+
+gem 'orange-rails'
 
 group :development do
   gem 'web-console', '~> 3.5.0'

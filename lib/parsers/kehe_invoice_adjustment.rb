@@ -1,8 +1,6 @@
 module Parsers
   class KeheInvoiceAdjustment < Base
     class << self
-      include Parsers::Helpers::KeheSanitizers
-
       def parsed_invoice_number(meta_data)
         row_regex = /invoice.*number/i
         str_regex = /invoice.*number.*:/i

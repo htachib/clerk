@@ -1,8 +1,6 @@
 module Parsers
   class KehePromotion < Base
     class << self
-      include Parsers::Helpers::KeheSanitizers
-
       def invoice_data(document)
         parsed_meta_data_cover(document).deep_merge(
           parsed_invoice_details(document)

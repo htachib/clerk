@@ -1,8 +1,6 @@
 module Parsers
   class KeheLateDeliveryFee < Base
     class << self
-      include Parsers::Helpers::KeheSanitizers
-
       def invoice_data(document)
         parsed_meta_data(document).deep_merge(parsed_invoice_date(document)
         ).deep_merge(parsed_address(document)

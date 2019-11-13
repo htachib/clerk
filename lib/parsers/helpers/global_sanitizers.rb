@@ -1,6 +1,8 @@
 module Parsers
   module Helpers
     module GlobalSanitizers
+      MONTHS_LIST =  %w(jan feb mar apr may jun jul aug sep oct nov dec)
+
       def str_to_dollars(str_amount)
         return nil if !str_amount
         amount = str_amount.to_s.try(:gsub,/(\,|\$)/,'')
@@ -45,13 +47,9 @@ module Parsers
       end
 
       def month_int_from_string(string)
-        all_months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                      'Jul', 'Aug', 'Sep', 'Oct', 'Nov',
-                      'Dec']
-        idx = all_months.each_index.select{ |i| string.include? all_months[i] }.first
-        idx + 1
+        idx = MONTHS_LIST.each_index.select{ |i| string.downcase.include? MONTHS_LIST[i] }.first
+        idx ? idx + 1 : nil
       end
-
     end
   end
 end

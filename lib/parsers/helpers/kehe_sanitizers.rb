@@ -67,7 +67,8 @@ module Parsers
         result.try(:strip)
       end
 
-      def date_formatted_promo(year, month, day)
+      def date_formatted_promo(year, month, day = 1)
+        return nil unless (year && month)
         DateTime.new(year.to_i, [month.to_i, 12].min, [day.to_i, 31].min).strftime("%m/%d/%y")
       end
     end

@@ -449,6 +449,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
+    rb-readline (0.5.5)
     rbtree (0.4.2)
     rdoc (4.3.0)
     regexp_parser (1.3.0)
@@ -614,6 +615,7 @@ DEPENDENCIES
   rails (~> 5.2.0)
   rails-controller-testing
   rails_12factor
+  rb-readline
   rename
   rspec-rails (~> 3.6.0)
   sass-rails

@@ -13,10 +13,15 @@ module Mappers
           promo_end_date = raw_row['Period End']
           prepared_row['Promo End Date'] = format_date_year(promo_end_date)
           prepared_row['Promo Start Date'] = get_promo_start_date(promo_end_date)
-          prepared_row['Deduction Type'] = raw_row['MCB Category']
-          prepared_row['Deduction Description'] = ''
-          prepared_row['Customer Chain ID'] = raw_row['Chain']
-          prepared_row['Customer Detailed Name'] = raw_row['Customer Name']
+          deduction_description = raw_row['MCB Category']
+          prepared_row['Deduction Description'] = deduction_description
+          mcb_rate = "#{raw_row['ChgBckPct']}%"
+          prepared_row['MCB%'] = mcb_rate
+          prepared_row['Deduction Type'] = deduction_type_mapping(mcb_rate, deduction_description)
+          detailed_name = raw_row['Customer Name']
+          chain = raw_row['Chain']
+          prepared_row['Customer Chain ID'] = sanitize_chain(chain, detailed_name)
+          prepared_row['Customer Detailed Name'] = detailed_name
           prepared_row['Chargeback Amount'] = raw_row['ChgBckAmt']
           prepared_row['Customer Number'] = raw_row['Cust #']
           prepared_row['Customer Location'] = [raw_row['City'], raw_row['State']].join(', ')
@@ -30,7 +35,6 @@ module Mappers
           prepared_row['Shipped'] = raw_row['QtyS']
           prepared_row['Whlse'] = raw_row['InvAmt']
           prepared_row['Total Discount%'] = ''
-          prepared_row['MCB%'] = "#{raw_row['ChgBckPct']}%"
 
           prepared_row.values # => [["UNFI East", "UNFI East Weekly MCB Report", "WE 2018-08-11 51304CASAD"]]
         end
@@ -49,6 +53,26 @@ module Mappers
       def format_date_year(input = nil)
         return '' unless input
         Date.strptime(input, '%m/%d/%y').strftime('%m/%d/%Y')
+      end
+
+      def deduction_type_mapping(mcb_rate, deduction_description)
+        sanitized_description = deduction_description.downcase.gsub(/\s+/, '')
+        mcb_rate_float = (mcb_rate.to_f) / 100
+        if sanitized_description.include?('openingorder')
+          return 'Free Fill'
+        elsif sanitized_description.include?('samples')
+          return 'Samples'
+        elsif mcb_rate_float < 0.5
+          return 'MCB'
+        elsif mcb_rate_float >= 0.5
+          return 'Free Fill'
+        else
+          return 'Undetermined'
+        end
+      end
+
+      def sanitize_chain(chain, full_name)
+        (!chain || chain.empty?) ? full_name : chain
       end
     end
   end

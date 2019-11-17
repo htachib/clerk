@@ -10,6 +10,7 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
+gem 'rb-readline'
 
 # rails 5.2 upgrades
 gem 'bootsnap', '>= 1.1.0', require: false

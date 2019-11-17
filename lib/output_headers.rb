@@ -31,6 +31,7 @@ class OutputHeaders
                 'Reference Number' => '',
                 'Reference Date' => '',
                 'KeHE Comment' => '',
-                'EP Fee' => ''
+                'EP Fee' => '',
+                'Variable Rate Per Unit' => ''
               }.freeze
 end

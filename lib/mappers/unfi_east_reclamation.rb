@@ -1,5 +1,5 @@
 module Mappers
-  class UNFIEastReclamation
+  class UNFIEastReclamation < Base
     class << self
 
       def prepare_rows(raw_rows)
@@ -25,6 +25,7 @@ module Mappers
           prepared_row['Customer Location'] = ''
           prepared_row['Customer City'] = ''
           prepared_row['Customer State'] = ''
+          prepared_row['Variable Rate Per Unit'] = set_variable_rate(prepared_row)
 
           prepared_row.values # => [['asdf', 'asdf', 'asdf']]
         end

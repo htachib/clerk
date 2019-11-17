@@ -1,5 +1,5 @@
 module Mappers
-  class KeheWeeklyMCB
+  class KeheWeeklyMCB < Base
     class << self
 
       def prepare_rows(raw_rows)
@@ -33,6 +33,7 @@ module Mappers
           prepared_row['Reference Number'] = raw_row['REFERENCE NBR'] || ''
           prepared_row['Reference Date'] = raw_row['REFERENCE DATE'] || ''
           prepared_row['KeHE Comment'] = raw_row['COMMENT'] || ''
+          prepared_row['Variable Rate Per Unit'] = set_variable_rate(prepared_row)
 
           prepared_row.values # => [['asdf', 'asdf', 'asdf']]
         end

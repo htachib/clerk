@@ -1,5 +1,5 @@
 module Mappers
-  class UNFIWestWeeklyMCB
+  class UNFIWestWeeklyMCB < Base
     class << self
 
       def prepare_rows(raw_rows)
@@ -33,6 +33,7 @@ module Mappers
           prepared_row['Whlse'] = raw_row['Whlse']
           prepared_row['Total Discount%'] = raw_row['Total Discount%']
           prepared_row['MCB%'] = raw_row['MCB%']
+          prepared_row['Variable Rate Per Unit'] = set_variable_rate(prepared_row)
 
           prepared_row.values # => [['asdf', 'asdf', 'asdf']]
         end

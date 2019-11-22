@@ -14,8 +14,10 @@ module Mappers
           prepared_row['Deduction Post Date'] = Date.parse(raw_row['uploaded_at']).strftime("%m/%d/%Y")
           prepared_row['Promo End Date'] = raw_row['end_date']
           prepared_row['Promo Start Date'] = raw_row['start_date']
-          prepared_row['Deduction Type'] = raw_row['MCB Category']
-          prepared_row['Deduction Description'] = ''
+          mcb_rate = raw_row['MCB%']
+          deduction_description = raw_row['MCB Category']
+          prepared_row['Deduction Type'] = deduction_type_mapping(mcb_rate, deduction_description)
+          prepared_row['Deduction Description'] = deduction_description
           prepared_row['Customer Chain ID'] = raw_row['abbreviation']
           prepared_row['Customer Detailed Name'] = raw_row['details']
           prepared_row['Chargeback Amount'] = raw_row['MCB']
@@ -32,7 +34,7 @@ module Mappers
           prepared_row['Shipped'] = raw_row['Shipped']
           prepared_row['Whlse'] = raw_row['Whlse']
           prepared_row['Total Discount%'] = raw_row['Total Discount%']
-          prepared_row['MCB%'] = raw_row['MCB%']
+          prepared_row['MCB%'] =
           prepared_row['Variable Rate Per Unit'] = set_variable_rate(prepared_row)
 
           prepared_row.values # => [['asdf', 'asdf', 'asdf']]
@@ -42,6 +44,25 @@ module Mappers
       def get_invoice_number(input)
         file_name = input.split(' ')[0]
       end
+
+      def deduction_type_mapping(mcb_rate, deduction_description)
+        sanitized_description = deduction_description.downcase.gsub(/\s+/, '')
+        mcb_rate_float = (mcb_rate.to_f) / 100
+        if sanitized_description.include?('newadditions')
+          return 'Free Fill'
+        elsif sanitized_description.include?('newstoreopening/placement')
+          return 'Free Fill'
+        elsif sanitized_description.include?('samples')
+          return 'Samples'
+        elsif mcb_rate_float < 0.5
+          return 'MCB'
+        elsif mcb_rate_float >= 0.5
+          return 'Free Fill'
+        else
+          return 'Undetermined'
+        end
+      end
+
     end
   end
 end

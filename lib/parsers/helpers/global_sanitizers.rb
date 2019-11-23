@@ -10,7 +10,7 @@ module Parsers
         if dollar_cents_arr && dollar_cents_arr.length == 2
           return (dollar_cents_arr.first.to_f) + (dollar_cents_arr.last.to_f / 100)
         else
-          return 'Unable to Read'
+          return ''
         end
       end
 
@@ -50,6 +50,11 @@ module Parsers
         idx = MONTHS_LIST.each_index.select{ |i| string.downcase.include? MONTHS_LIST[i] }.first
         idx ? idx + 1 : nil
       end
+
+      def soft_fail(string)
+        defined?(string) ? string : ''
+      end
+
     end
   end
 end

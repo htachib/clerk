@@ -15,10 +15,11 @@ module Mappers
           billing_desc = raw_row['billing_desc']
           prepared_row['Deduction Type'] = raw_row['deduction_type']
           prepared_row['Deduction Description'] = billing_desc
-          prepared_row['Customer Chain ID'] = raw_row['customer']
+          chain = raw_row.try(:[], 'chain')
+          prepared_row['Customer Chain ID'] = chain || raw_row['customer']
           prepared_row['Customer Detailed Name'] = raw_row['customer']
           amount = raw_row['amount']
-          prepared_row['Chargeback Amount'] = amount.try(:gsub,/[^\d\.]/,'').to_f
+          prepared_row['Chargeback Amount'] = raw_row['chargeback_amount']
           prepared_row['Customer Number'] = ''
           prepared_row['Customer Location'] = ''
           prepared_row['Customer City'] = ''

@@ -10,8 +10,6 @@ module Parsers
         ).deep_merge(
           'uploaded_at' => document['uploaded_at']
         ).deep_merge(
-          parsed_amount(document)
-        ).deep_merge(
           parsed_invoice_summary(document)
         )
 
@@ -32,47 +30,105 @@ module Parsers
         header.try(:downcase).try(:include?, 'customer')
       end
 
+      def first_row(document, rule)
+        data = document.try(:[], rule)
+        data.try(:first)
+      end
+
       def parsed_invoice_summary(document)
         binding.pry
-        data_option_one = document.try(:[], 'invoice_summary_option_1')
-        data_option_two = document.try(:[], 'invoice_summary_option_2')
-        data_option_three = document.try(:[], 'invoice_summary_option_3')
-        data_option_four = document.try(:[], 'invoice_summary_option_4').try(:first)
-        data_str = data_option_three.map{|r| r.try(:values)}.try(:flatten).try(:join, '')
-        if data_option_one.nil? && data_str.try(:downcase).try(:include?, 'annual') && data_str.try(:downcase).try(:include?, 'annual')
-          parse_eagle(data_option_four)
-        elsif data_option_three.try(:count) > 2 && invoice_collection?(data_option_three)
-          parse_collection_invoice(data_option_three).deep_merge(parsed_invoice_date(document))
-        elsif data_option_three.try(:count) > 2
-          parse_collection_invoice_no_header(data_str)
+        # assign document to specific set of parser rules depending on column header
+        headers = document.try(:[], 'headers').try(:first).try(:values).try(:first)
+        if headers.match?(/po\#\/reference/i) # eagle - option 4
+          parser_four(document)
+        elsif headers.match?(/dbs\s*sj\#/i) # 51304CASA - 00488823WEGMNS
+          parser_five(document)
+        elsif headers.match?(/(billing.*description.*upc.*perform)/i) # FSRGEFEB
+          parser_one(document)
+        elsif headers.match?(/mcb.*type.*chain.*whole.*billback/i) # 51304CASA - URMTO177106121HCM
+          parser_three(document)
         else
-          parse_single_invoice(data_option_one).deep_merge(parsed_invoice_date(document))
+          nil
         end
       end
 
-      def parse_collection_invoice_no_header(data_str)
+      def meta_amount(document)
+        chargeback_str = document.try(:[], 'amount').try(:first).try(:values).try(:first)
+        str_to_dollars(chargeback_str)
+      end
 
-        chargeback_amount = data_str.try(:scan, /\${1}\d*\,?\d+\.?\d*/).try(:last)
+      def parser_three(document)
+        row = first_row(document, 'invoice_summary_option_3')
+        mcb_type = row.try(:[], 'mcb_type')
+        customer = row.try(:[], 'customer_name')
+        chain = row.try(:[], 'quantity')
+
+        meta_data = get_meta_data(document)
+        meta_data_str = meta_data.try(:join, ' ')
+        date_str = string_to_date(meta_data_str).try(:first) if defined?(meta_data_str)
+        month_int = month_int_from_string(mcb_type)
+        date = Date.strptime(date_str, '%m/%d/%Y')
+        year_int = date.try(:year)
+        start_date = date_formatted_promo(year_int, month_int, 1) || nil
+        end_date = date_formatted_promo(year_int, month_int, -1) || nil
+        chargeback_amount = meta_amount(document)
+
         {
+          'billing_desc' => mcb_type,
+          'deduction_type' => 'MCB',
+          'customer' =>  customer,
+          'chain' => chain,
           'chargeback_amount' => chargeback_amount,
-          
+          'start_date' => start_date,
+          'end_date' => end_date
         }
       end
 
-      def parsed_invoice_date(document)
-        meta_section = document['meta_data'].map{ |row| row.try(:values) }.try(:flatten).try(:join, '')
-        start_date, end_date = meta_section.try(:scan, /\d{1,2}\/\d{1,2}\/\d{2,4}/).try(:first)
-        {'start_date' => start_date,
-          'end_date' => end_date}
+      def parser_one(document)
+        row = first_row(document, 'invoice_summary_option_1')
+        meta_data = get_meta_data(document)
+
+        meta_data_str = meta_data.try(:join, ' ')
+        perform_dates = row.try(:[], 'perform_dates')
+        month_int = month_int_from_string(perform_dates)
+        year_int = perform_dates.try(:scan,/\d{2,4}/).try(:first).try(:to_i)
+
+        start_date = date_formatted_promo(year_int, month_int, 1) || nil
+        end_date = date_formatted_promo(year_int, month_int, -1) || nil
+
+        customer = row.try(:[], 'customer_name')
+        chargeback_amount = meta_amount(document)
+
+        {
+          'billing_desc' => 'TBD',
+          'deduction_type' => 'TBD',
+          'customer' =>  customer,
+          'chargeback_amount' => chargeback_amount,
+          'start_date' => start_date,
+          'end_date' => end_date
+        }
       end
 
-      def parse_single_invoice(data)
-        rows = data.try(:last)
-        admin_fee_str = rows.try(:[], 'key_6')
+      def get_meta_data(document)
+        document.try(:[], 'meta_data').map{ |d| d.try(:values) }.try(:flatten)
+      end
+
+      def parser_five(document)
+        row = first_row(document, 'invoice_summary_option_5')
+        chargeback_str = row.try(:[], 'total')
+        chargeback_amount = str_to_dollars(chargeback_str)
+
+        shipped_str = row.try(:[], 'amount')
+        shipped = str_to_dollars(shipped_str)
+
+        billing_desc = row.try(:[], 'billing_description')
+        meta_data = get_meta_data(document)
+        meta_data_str = meta_data.try(:join, ' ')
+        date = string_to_date(meta_data_str).try(:first) if defined?(meta_data_str)
+        start_date = end_date = date
+
+        admin_fee_str = row.try(:[], 'admin_fee')
         admin_fee = str_to_dollars(admin_fee_str) if defined?(admin_fee_str)
-        billing_desc = rows.try(:[], 'key_2')
-        shipped_str = rows.try(:[], 'key_5')
-        shipped = str_to_dollars(shipped_str) if defined?(shipped_str)
 
         deduction_detail = parsed_deduction_detail(billing_desc)
         deduction_type = deduction_detail.try(:[], 'deduction_type')
@@ -80,19 +136,35 @@ module Parsers
 
         {
           'billing_desc' => billing_desc,
-          'deduction_type' => soft_fail(deduction_type),
-          'customer' =>  soft_fail(customer),
-          'admin_fee' => soft_fail(admin_fee),
-          'shipped' => soft_fail(shipped)
+          'deduction_type' => deduction_type,
+          'customer' =>  customer,
+          'admin_fee' => admin_fee,
+          'shipped' => shipped,
+          'chargeback_amount' => chargeback_amount,
+          'start_date' => start_date,
+          'end_date' => end_date
         }
       end
 
-      def parse_eagle(data)
-        chargeback_str = data.try(:[], 'total')
-        chargeback_amount = get_amount_str(chargeback_str)
-        billing_desc = data.try(:[], 'billing_desc')
+      def month_strings(description)
+
+      end
+
+      def parser_four(document)
+        row = first_row(document, 'invoice_summary_option_4')
+        chargeback_str = row.try(:[], 'total')
+        chargeback_amount = str_to_dollars(chargeback_str)
+        billing_desc = row.try(:[], 'billing_desc')
         year = billing_desc.scan(/\d{4}/).try(:first).try(:to_i)
-        month_start_str, month_end_str = billing_desc.try(:split, '-')
+        month_count = month_count_from_string(billing_desc)
+        if month_count == 2
+          month_start_str, month_end_str = billing_desc.try(:split, '-')
+        elsif month_count == 1
+          month_start_str = month_end_str = billing_desc
+        else
+          month_start_str = month_end_str = nil
+        end
+
         month_start = month_int_from_string(month_start_str)
         month_end = month_int_from_string(month_end_str)
         start_date = Date.new(year, month_start, 1)
@@ -106,12 +178,6 @@ module Parsers
           'start_date' => start_date,
           'end_date' => end_date
         }
-      end
-
-      def parse_collection_invoice(data)
-        first_row = data.try(:[], 3).try(:values)
-        customer = first_row.try(:[], 1)
-        return { 'customer' => customer }
       end
 
       def parsed_deduction_detail(input)
@@ -135,11 +201,6 @@ module Parsers
         else
           return type
         end
-      end
-
-      def parsed_amount(document)
-        amount = document.try(:[], 'amount').try(:first).try(:values).try(:first)
-        {'amount' => amount}
       end
     end
   end

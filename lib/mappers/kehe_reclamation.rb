@@ -1,5 +1,5 @@
 module Mappers
-  class KeheReclamation
+  class KeheReclamation < Base
     class << self
       def prepare_rows(raw_rows)
         prepared_row = OutputHeaders::ROW_FIELDS.deep_dup
@@ -17,6 +17,7 @@ module Mappers
         prepared_row['Customer Detailed Name'] = raw_rows['detailed_customer']
         prepared_row['Chargeback Amount'] = raw_rows['chargeback_amount']
         prepared_row['EP Fee'] = raw_rows['ep_fee']
+        prepared_row['Variable Rate Per Unit'] = set_variable_rate(prepared_row)
         prepared_row.values # => [['asdf', 'asdf', 'asdf']]
       end
     end

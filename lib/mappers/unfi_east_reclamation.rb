@@ -1,5 +1,5 @@
 module Mappers
-  class UNFIEastReclamation
+  class UNFIEastReclamation < Base
     class << self
 
       def prepare_rows(raw_rows)
@@ -13,8 +13,9 @@ module Mappers
           prepared_row['Deduction Post Date'] = uploaded_date
           promo_date = raw_row['promo_date']
           promo_end_date = get_promo_end_date(promo_date)
+          promo_start_date = get_promo_start_date(promo_end_date)
           prepared_row['Promo End Date'] = promo_end_date
-          prepared_row['Promo Start Date'] = promo_end_date
+          prepared_row['Promo Start Date'] = promo_start_date
           prepared_row['Deduction Type'] = 'Reclamation'
           deduction_description = raw_row['deduction_description']
           prepared_row['Deduction Description'] = deduction_description
@@ -25,6 +26,7 @@ module Mappers
           prepared_row['Customer Location'] = ''
           prepared_row['Customer City'] = ''
           prepared_row['Customer State'] = ''
+          prepared_row['Variable Rate Per Unit'] = set_variable_rate(prepared_row)
 
           prepared_row.values # => [['asdf', 'asdf', 'asdf']]
         end
@@ -32,6 +34,12 @@ module Mappers
 
       def get_promo_end_date(input)
         Date.parse(input).end_of_month.strftime("%m/%d/%Y")
+      end
+
+      def get_promo_start_date(end_date = nil)
+        return '' unless end_date
+        full_date = Date.strptime(end_date,'%m/%d/%Y')
+        full_date.at_beginning_of_month if full_date
       end
 
       def get_customer_chain(input)

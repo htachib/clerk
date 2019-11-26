@@ -10,7 +10,7 @@ module Parsers
         if dollar_cents_arr && dollar_cents_arr.length == 2
           return (dollar_cents_arr.first.to_f) + (dollar_cents_arr.last.to_f / 100)
         else
-          return 'Unable to Read'
+          return ''
         end
       end
 
@@ -47,8 +47,20 @@ module Parsers
       end
 
       def month_int_from_string(string)
-        idx = MONTHS_LIST.each_index.select{ |i| string.downcase.include? MONTHS_LIST[i] }.first
+        idx = MONTHS_LIST.each_index.select{ |i| string.try(:downcase).include? MONTHS_LIST[i] }.try(:first)
         idx ? idx + 1 : nil
+      end
+
+      def month_count_from_string(string)
+        MONTHS_LIST.each_index.select{ |i| string.try(:downcase).include? MONTHS_LIST[i] }.try(:count)
+      end
+
+      def soft_fail(string)
+        defined?(string) ? string : ''
+      end
+
+      def string_to_date(string)
+        string.try(:scan, /\d{1,2}\/\d{1,2}\/\d{2,4}/)
       end
     end
   end

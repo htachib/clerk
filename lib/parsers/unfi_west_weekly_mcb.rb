@@ -106,7 +106,6 @@ module Parsers
         current_category_id = ''
 
         section.each do |row|
-          # binding.pry if row.join.includes?('Customer : [50152]')
           if row.try(:join).try(:match?, /(Category [A-Z]+)/) #row begins new category
             new_category = add_category(row)
             parsed_data[new_category] = {"customers": []}
@@ -139,9 +138,6 @@ module Parsers
         location = /\(.*?\) ([\s\S]*)/.match(row.join).try(:[], 1) || /\S+\,\s(.*)\z/.match(row.join).try(:[], 0) || ''
         city = location.try(:split, ',').try(:[], 0) || ''
         state = location.try(:split, ',').try(:[], 1).try(:strip) || ''
-        # if row.join.downcase.include?('manz')
-          # binding.pry
-        # end
         details = row.join.try(:split, "Customer : ").try(:[], 1)
 
         customer["id"] = id

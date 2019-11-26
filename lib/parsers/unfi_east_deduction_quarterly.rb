@@ -36,7 +36,6 @@ module Parsers
       end
 
       def parsed_invoice_summary(document)
-        binding.pry
         # assign document to specific set of parser rules depending on column header
         headers = document.try(:[], 'headers').try(:first).try(:values).try(:first)
         if headers.match?(/po\#\/reference/i) # eagle - option 4

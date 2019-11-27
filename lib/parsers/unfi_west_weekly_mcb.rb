@@ -93,13 +93,14 @@ module Parsers
         return category_sections
       end
 
-      def sort_section(category_sections, invoice_headers)
-        category_sections.map do |section|
-          parse_section(section, invoice_headers)
+      def sort_section(category_sections, invoice_headers, pry = nil)
+        category_sections.map.with_index do |section, idx|
+          pry = true if idx == 1
+          parse_section(section, invoice_headers, pry)
         end
       end
 
-      def parse_section(section, invoice_headers)
+      def parse_section(section, invoice_headers, pry)
         parsed_data = {}
         current_customer_id = ''
         current_category_id = ''
@@ -134,9 +135,9 @@ module Parsers
         customer = {}
         id = /\[(.*?)\]/.match(row.join).try(:[], 1)
         abbreviation = /\((.*?)\)/.match(row.join).try(:[], 1)
-        location = /\(.*?\) ([\s\S]*)/.match(row.join).try(:[], 1)
-        city = location.try(:split, ',').try(:[], 0)
-        state = location.try(:split, ',').try(:[], 1).try(:strip)
+        location = /\(.*?\) ([\s\S]*)/.match(row.join).try(:[], 1) || /\S+\,\s(.*)\z/.match(row.join).try(:[], 0) || ''
+        city = location.try(:split, ',').try(:[], 0) || ''
+        state = location.try(:split, ',').try(:[], 1).try(:strip) || ''
         details = row.join.try(:split, "Customer : ").try(:[], 1)
 
         customer["id"] = id

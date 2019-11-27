@@ -87,7 +87,7 @@ module Parsers
           start_date = date_formatted_promo(year_int, month_int, 1) || nil
           end_date = date_formatted_promo(year_int, month_int, -1) || nil
         elsif string.scan(/\//i).count == 4
-          start_date, end_date = string.try(:scan, /\d{1,2}\/\d{1,2}\/\d{2,4}/)
+          start_date, end_date = string_to_date(string)
         end
         {'start_date' => start_date,
          'end_date' => end_date}

@@ -35,6 +35,7 @@ module Parsers
 
         {'invoice number' => invoice_number,
           'Type' => type,
+          'customer' => customer,
           'chain' => customer}
       end
 

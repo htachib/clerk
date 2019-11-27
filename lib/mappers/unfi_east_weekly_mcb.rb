@@ -1,5 +1,5 @@
 module Mappers
-  class UNFIEastWeeklyMCB
+  class UNFIEastWeeklyMCB < Base
     class << self
 
       def prepare_rows(raw_rows)
@@ -35,6 +35,7 @@ module Mappers
           prepared_row['Shipped'] = raw_row['QtyS']
           prepared_row['Whlse'] = raw_row['InvAmt']
           prepared_row['Total Discount%'] = ''
+          prepared_row['Variable Rate Per Unit'] = set_variable_rate(prepared_row)
 
           prepared_row.values # => [["UNFI East", "UNFI East Weekly MCB Report", "WE 2018-08-11 51304CASAD"]]
         end

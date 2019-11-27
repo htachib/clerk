@@ -52,7 +52,7 @@ module Parsers
       def parsed_invoice_date(document)
         invoice_date_one = document['meta_data'].try(:first).try(:[], 'invoice_date')
         invoice_date_two = get_raw_data(document, 'invoice_date').try(:flatten).try(:first)
-        invoice_date =  invoice_date_one.gsub(/([^0-9\/])/,'') || invoice_date_two
+        invoice_date =  invoice_date_one.try(:gsub,/([^0-9\/])/,'') || invoice_date_two
         {'invoice_date' => invoice_date}
       end
     end

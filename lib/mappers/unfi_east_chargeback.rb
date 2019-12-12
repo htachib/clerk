@@ -30,13 +30,13 @@ module Mappers
       end
 
       def get_deduction_type(input)
-        input.split(' ').last
+        input.try(:split, ' ').try(:last)
       end
 
       def get_deduction_description(type, po)
-        if (type.downcase == 'pricing')
+        if (type.try(:downcase) == 'pricing')
           "Price Discrepancy - PO #{po}"
-        elsif (type.downcase == 'quantity')
+        elsif (type.try(:downcase) == 'quantity')
           "Over/Short Ship - PO #{po}"
         else
           "Unrecognized - PO #{po}"

@@ -38,13 +38,13 @@ module Parsers
       def parsed_invoice_summary(document)
         # assign document to specific set of parser rules depending on column header
         headers = document.try(:[], 'headers').try(:first).try(:values).try(:first)
-        if headers.match?(/po\#\/reference/i) # eagle - option 4
+        if headers.try(:match?, /po\#\/reference/i) # eagle - option 4
           parser_four(document)
-        elsif headers.match?(/dbs\s*sj\#/i) # 51304CASA - 00488823WEGMNS
+        elsif headers.try(:match?, /dbs\s*sj\#/i) # 51304CASA - 00488823WEGMNS
           parser_five(document)
-        elsif headers.match?(/(billing.*description.*upc.*perform)/i) # FSRGEFEB
+        elsif headers.try(:match?, /(billing.*description.*upc.*perform)/i) # FSRGEFEB
           parser_one(document)
-        elsif headers.match?(/mcb.*type.*chain.*whole.*billback/i) # 51304CASA - URMTO177106121HCM
+        elsif headers.try(:match?, /mcb.*type.*chain.*whole.*billback/i) # 51304CASA - URMTO177106121HCM
           parser_three(document)
         else
           nil

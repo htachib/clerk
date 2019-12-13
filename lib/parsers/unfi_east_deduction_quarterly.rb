@@ -47,7 +47,7 @@ module Parsers
         elsif headers.try(:match?, /mcb.*type.*chain.*whole.*billback/i) # 51304CASA - URMTO177106121HCM
           parser_three(document)
         else
-          nil
+          {}
         end
       end
 

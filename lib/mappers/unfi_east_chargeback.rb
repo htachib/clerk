@@ -1,7 +1,6 @@
 module Mappers
   class UNFIEastChargeback < Base
     class << self
-
       def prepare_rows(raw_rows)
         raw_rows.map do |raw_row|
           prepared_row = OutputHeaders::ROW_FIELDS.deep_dup
@@ -48,6 +47,7 @@ module Mappers
       end
 
       def format_date(input)
+        return nil if !input
         Date.strptime(input, "%m/%d/%y").strftime("%m/%d/%Y")
       end
     end

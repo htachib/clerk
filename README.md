@@ -4,7 +4,7 @@
 1. Clone the repo
 2. Run `gem install bundle && bundle install`
 3. Run `rails db:setup && rails db:migrate` to create db and included Users table
-4. To use Figaro / application.yml, run `bundle exec figaro install`
+4. Retrieve `config/application.yml` secrets from repo admin
 
 ## Development
 ```sh

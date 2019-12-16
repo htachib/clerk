@@ -28,7 +28,8 @@ parsers = [
   {"external_id"=>"jmqonywollnj", "name"=>"KeHE Reclamation Recovery", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheReclamationRecovery"}},
   {"external_id"=>"xaewjhkmblpm", "name"=>"KeHE Retailer Store Placement", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheRetailerStorePlacement"}},
   {"external_id"=>"ccyfadqnatez", "name"=>"KeHE Scan Invoice", "destination_id"=>production_spreadsheet, "is_active"=>false, "settings"=>{"library"=>"KeheScanInvoice"}},
-  {"external_id"=>"agleizvdevis", "name"=>"KeHE HEB Shelf Activity Chargeback Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheHebShelfActivityChargebackInvoice"}}
+  {"external_id"=>"agleizvdevis", "name"=>"KeHE HEB Shelf Activity Chargeback Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheHebShelfActivityChargebackInvoice"}},
+  {"external_id"=>"wmgpevzcxqis", "name"=>"KeHE Albertsons Merchandising Program Chargeback Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheAlbertsonsMerchandisingProgramChargebackInvoice"}}
 ]
 # CHANGE DESTINATION IDS before production!!
 

@@ -3,7 +3,7 @@ class Parser < ActiveRecord::Base
   has_many :documents, dependent: :destroy
   has_many :parse_map_exceptions, dependent: :destroy
 
-  scope :active, -> { where.not(destination_id: nil) }
+  scope :active, -> { where is_active: true }
 
   serialize :settings, Hash
 

@@ -1,5 +1,5 @@
 module Parsers
-  class KeheCouponInvoice < Base
+  class KeheHebCoupons < Base
     class << self
       def invoice_data(document)
         parsed_meta_data(document).deep_merge(

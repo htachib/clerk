@@ -1,5 +1,5 @@
 module Parsers
-  class KeheShelfActivityFee < Base
+  class KeheHebShelfActivityChargebackInvoice < Base
     class << self
       def invoice_data(document)
         parsed_meta_data(document).deep_merge(

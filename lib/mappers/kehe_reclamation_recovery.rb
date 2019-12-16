@@ -1,10 +1,10 @@
 module Mappers
-  class KeheShelfActivityFee < Base
+  class KeheReclamationRecovery < Base
     class << self
       def prepare_rows(raw_rows)
         prepared_row = OutputHeaders::ROW_FIELDS.deep_dup
         prepared_row['Customer'] = 'KeHE'
-        prepared_row['Parser'] = 'KeHE Shelf Actviity Fee'
+        prepared_row['Parser'] = 'KeHE Reclamation'
         file_name = raw_rows['file_name'].try(:gsub,'.pdf','').try(:gsub,'.PDF','')
         prepared_row['File Name'] = file_name
         prepared_row['Invoice Number'] = raw_rows['invoice number']

@@ -1,5 +1,5 @@
 module Mappers
-  class KeheCouponInvoice < Base
+  class KeheHebCoupons < Base
     class << self
       def prepare_rows(raw_rows)
         prepared_row = OutputHeaders::ROW_FIELDS.deep_dup

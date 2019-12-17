@@ -1,7 +1,6 @@
 module Mappers
   class KeheWeeklyMcb < Base
     class << self
-
       def prepare_rows(raw_rows)
         raw_rows.map do |raw_row|
           prepared_row = OutputHeaders::ROW_FIELDS.deep_dup

@@ -684,6 +684,7 @@ module UnfiEastDeductionInvoice
       lookup = LOOKUP_TABLE[table_id]
 
       {
+        "Parser"=>lookup['Parser'],
         "Customer"=>lookup['Customer'],
         "Promo Start Date"=>dates['start_date'],
         "Promo End Date"=>dates['end_date'],

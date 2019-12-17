@@ -62,6 +62,44 @@ module Parsers
       def string_to_date(string)
         string.try(:scan, /\d{1,2}\/\d{1,2}\/\d{2,4}/)
       end
+
+      def date_formatted_promo(year, month, day = 1)
+        return nil unless (year && month)
+        DateTime.new(year.to_i, [month.to_i, 12].min, [day.to_i, 31].min).strftime("%m/%d/%y")
+      end
+
+      def format_month_year(digits)
+        return nil unless [4, 5, 6, 7].include?(digits.to_s.length)
+
+        case digits.to_s.length
+        when 4 #mmyy
+          month = digits.try(:to_s).try(:[], 0..1)
+          year_int = digits.try(:[], -2..-1).try(:to_i)
+          year = year_int + (year_int < 70 ? 2000 : 1900)
+        when 5 #mmmyy
+          month_string = digits.try(:to_s).try(:[], 0..2)
+          month = month_int_from_string(month_string)
+          year_int = digits.try(:[], -2..-1).try(:to_i)
+          year = year_int + (year_int < 70 ? 2000 : 1900)
+        when 6 #mmyyyy
+          month = digits.try(:to_s).try(:[], 0..1)
+          year = digits.try(:[], -4..-1).try(:to_i)
+        when 7 #mmmyyyy
+          month_string = digits.try(:to_s).try(:[], 0..2)
+          month = month_int_from_string(month_string)
+          year = digits.try(:[], -4..-1).try(:to_i)
+        end
+
+        return month, year
+      end
+
+      def date_string_to_promo_dates(date_string)
+        month, year = format_month_year(date_string)
+        {
+          'start_date' => date_formatted_promo(year.to_i, month.to_i, 1) || nil,
+          'end_date' => date_formatted_promo(year.to_i, month.to_i, -1) || nil
+        }
+      end
     end
   end
 end

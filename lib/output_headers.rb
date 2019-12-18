@@ -1,6 +1,7 @@
 class OutputHeaders
   # order of key values matters!
-  ROW_FIELDS = {'Customer' => '',
+  ROW_FIELDS = {'Clerk ID' => '',
+                'Customer' => '',
                 'Parser' => '',
                 'File Name' => '',
                 'Invoice Number' => '',

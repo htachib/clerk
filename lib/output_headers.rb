@@ -11,11 +11,14 @@ class OutputHeaders
                 'Deduction Category' => '',
                 'Deduction Account' => '',
                 'Deduction Type' => '',
+                'Deduction Description' => '',
                 'Retail Chain Name' => '',
                 'Planning Retailer' => '',
                 'Customer Chain ID' => '',
                 'Customer Detailed Name' => '',
                 'Chargeback Amount' => '',
+                'Shipped' => '',
+                'Variable Rate Per Unit' => '',
                 'Customer Number' => '',
                 'Customer Location' => '',
                 'Customer City' => '',
@@ -26,7 +29,6 @@ class OutputHeaders
                 'Description' => '',
                 'Invoice' => '',
                 'Ordered' => '',
-                'Shipped' => '',
                 'Whlse' => '',
                 'Total Discount%' => '',
                 'MCB%' => '',
@@ -35,7 +37,6 @@ class OutputHeaders
                 'Reference Number' => '',
                 'Reference Date' => '',
                 'KeHE Comment' => '',
-                'EP Fee' => '',
-                'Variable Rate Per Unit' => ''
+                'EP / Admin Fee' => '',
               }.freeze
 end

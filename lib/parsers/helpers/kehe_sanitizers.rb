@@ -18,9 +18,9 @@ module Parsers
         meta_data.select{ |row| row.match?(row_regex) }
       end
 
-      def get_invoice_number(invoice_rows, str_regex)
-        invoice_rows.first.to_s.try(:gsub,str_regex,'').strip
-      end
+      # def get_invoice_number(invoice_rows, str_regex)
+      #   invoice_rows.first.to_s.try(:gsub,str_regex,'').strip
+      # end
 
       def sanitize_invoice_num(meta_data, row_regex, str_regex)
         invoice_rows = invoice_rows(meta_data, row_regex)
@@ -31,40 +31,6 @@ module Parsers
       def alt_invoice_number(meta_data, invoice_row, alt_idx = 1)
         idx = meta_data.index(invoice_row) + alt_idx
         idx ? meta_data[idx].split(' ').last : nil
-      end
-
-      def get_meta_data(document)
-        get_raw_data(document,'meta_data').map { |row| row.join(' ') }
-      end
-
-      def get_totals(document)
-        get_raw_data(document, 'totals').try(:flatten) || []
-      end
-
-      def get_customer_data(document)
-        get_raw_data(document, 'customer').try(:flatten) || []
-      end
-
-      def get_total_in_dollars(amounts_arr, regex)
-        amount_row = string_match_from_arr(amounts_arr, regex)
-        amount_str = string_match(amount_row, /\$\d+(\.|\s)?\d+/)
-        str_to_dollars(amount_str)
-      end
-
-      def get_invoice_date(row, document)
-        date = row.try(:flatten).try(:first)
-        date ? date : invoice_date_from_file_name(document)
-      end
-
-      def titleize_with_spaces(string)
-        return string if string.try(:match?, /[A-Z]{3}/)
-        result = ''
-        no_whitespace = string.try(:scan,/\S+/).try(:join,'')
-        no_whitespace.try(:split, '').each do |ch|
-          ch = ' ' + ch if ch.match?(/([A-Z]|\/)/)
-          result += ch
-        end
-        result.try(:strip)
       end
     end
   end

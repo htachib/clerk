@@ -68,26 +68,73 @@ module Parsers
         DateTime.new(year.to_i, [month.to_i, 12].min, [day.to_i, 31].min).strftime("%m/%d/%y")
       end
 
-      def format_month_year(digits)
-        return nil unless [4, 5, 6, 7].include?(digits.to_s.length)
+      def format_month_year(string)
+        return nil unless [4, 5, 6, 7].include?(string.to_s.length)
 
-        case digits.to_s.length
-        when 4 #mmyy
-          month = digits.try(:to_s).try(:[], 0..1)
-          year_int = digits.try(:[], -2..-1).try(:to_i)
-          year = year_int + (year_int < 70 ? 2000 : 1900)
-        when 5 #mmmyy
-          month_string = digits.try(:to_s).try(:[], 0..2)
-          month = month_int_from_string(month_string)
-          year_int = digits.try(:[], -2..-1).try(:to_i)
-          year = year_int + (year_int < 70 ? 2000 : 1900)
+        case string.try(:to_s).try(:length)
+        when 4 #yyyy or mmyy
+          month, year = four_digit_date(string)
+        when 5 #mmmyy or #yymmm
+          month, year = five_digit_date(string)
         when 6 #mmyyyy
-          month = digits.try(:to_s).try(:[], 0..1)
-          year = digits.try(:[], -4..-1).try(:to_i)
+          month, year = six_digit_date(string)
         when 7 #mmmyyyy
-          month_string = digits.try(:to_s).try(:[], 0..2)
+          month, year = seven_digit_date(string)
+        end
+
+        return month, year
+      end
+
+      def four_digit_date(string)
+        if string.try(:first).try(:to_i) > 1 #yyyy
+          month = 12 # end of year report if no month is stated
+          year = string.try(:to_i)
+        else #mmyy
+          month = string.try(:to_s).try(:[], 0..1)
+          year_int = string.try(:[], -2..-1).try(:to_i)
+          year = year_int + (year_int < 70 ? 2000 : 1900)
+        end
+
+        return month, year
+      end
+
+      def five_digit_date(string)
+        if string.try(:first).try(:to_i) > 1 #yymmm
+          month_string = string.try(:to_s).try(:[], -3..-1)
           month = month_int_from_string(month_string)
-          year = digits.try(:[], -4..-1).try(:to_i)
+          year_int = string.try(:[], 0..1).try(:to_i)
+          year = year_int + (year_int < 70 ? 2000 : 1900)
+        else #mmmyy
+          month_string = string.try(:to_s).try(:[], 0..2)
+          month = month_int_from_string(month_string)
+          year_int = string.try(:[], -2..-1).try(:to_i)
+          year = year_int + (year_int < 70 ? 2000 : 1900)
+        end
+
+        return month, year
+      end
+
+      def six_digit_date(string)
+        if string.try(:first).try(:to_i) > 1 #yyyymm
+          month = string.try(:[], -2..-1).try(:to_i)
+          year = string.try(:to_s).try(:[], 0..3).try(:to_i)
+        else #mmyyyy
+          month = string.try(:to_s).try(:[], 0..1).try(:to_i)
+          year = string.try(:[], -4..-1).try(:to_i)
+        end
+
+        return month, year
+      end
+
+      def seven_digit_date(string)
+        if string.try(:first).try(:to_i) > 1 #yyyymmm
+          month_string = string.try(:[], -3..-1)
+          month = month_int_from_string(month_string)
+          year = string.try(:to_s).try(:[], 0..3).try(:to_i)
+        else #mmmyyyy
+          month_string = string.try(:to_s).try(:[], 0..2)
+          month = month_int_from_string(month_string)
+          year = string.try(:[], -4..-1).try(:to_i)
         end
 
         return month, year
@@ -95,10 +142,53 @@ module Parsers
 
       def date_string_to_promo_dates(date_string)
         month, year = format_month_year(date_string)
+        return nil if month.nil? || year.nil? || !(1..13).to_a.include?(month)
         {
-          'start_date' => date_formatted_promo(year.to_i, month.to_i, 1) || nil,
-          'end_date' => date_formatted_promo(year.to_i, month.to_i, -1) || nil
+          'start_date' => date_formatted_promo(year, month, 1) || nil,
+          'end_date' => date_formatted_promo(year, month, -1) || nil
         }
+      end
+
+      def get_meta_data(document)
+        get_raw_data(document,'meta_data').map { |row| row.join(' ') }
+      end
+
+      def get_totals(document)
+        parsed_data(document, 'totals', false)
+      end
+
+      def get_customer_data(document)
+        parsed_data(document, 'customer')
+      end
+
+      def get_invoice_date(document)
+        parsed_data(document, 'invoice_date')
+      end
+
+      def get_invoice_number(document)
+        parsed_data(document, 'invoice_number')
+      end
+
+      def parsed_data(document, key_field, single_output = true)
+        row = get_raw_data(document, key_field).try(:flatten) || []
+        single_output ? row.try(:first) : row
+      end
+
+      def get_total_in_dollars(amounts_arr, regex)
+        amount_row = string_match_from_arr(amounts_arr, regex)
+        amount_str = string_match(amount_row, /\$\d+(\.|\s)?\d+/)
+        str_to_dollars(amount_str)
+      end
+
+      def titleize_with_spaces(string)
+        return string if string.try(:match?, /[A-Z]{3}/)
+        result = ''
+        no_whitespace = string.try(:scan,/\S+/).try(:join,'')
+        no_whitespace.try(:split, '').each do |ch|
+          ch = ' ' + ch if ch.match?(/([A-Z]|\/)/)
+          result += ch
+        end
+        result.try(:strip)
       end
     end
   end

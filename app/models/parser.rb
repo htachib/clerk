@@ -4,6 +4,7 @@ class Parser < ActiveRecord::Base
   has_many :parse_map_exceptions, dependent: :destroy
 
   scope :active, -> { where is_active: true }
+  scope :inactive, -> { where is_active: false }
 
   serialize :settings, Hash
 

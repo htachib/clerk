@@ -25,7 +25,7 @@ module Mappers
           prepared_row['Customer City'] = ''
           prepared_row['Customer State'] = ''
           prepared_row['Shipped'] = raw_row['shipped']
-          prepared_row['EP Fee'] = raw_row['admin_fee']
+          prepared_row['EP / Admin Fee'] = raw_row['admin_fee']
           prepared_row['Variable Rate Per Unit'] = set_variable_rate(prepared_row)
 
           prepared_row.values # => [['asdf', 'asdf', 'asdf']]

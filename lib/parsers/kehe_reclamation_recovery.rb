@@ -1,5 +1,5 @@
 module Parsers
-  class KeheReclamation < Base
+  class KeheReclamationRecovery < Base
     class << self
       def invoice_data(document)
         parsed_meta_data(document).deep_merge(

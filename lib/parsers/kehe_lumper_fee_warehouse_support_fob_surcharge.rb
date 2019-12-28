@@ -1,12 +1,11 @@
 module Parsers
-  class KeheCouponInvoice < Base
+  class KeheLumperFeeWarehouseSupportFobSurcharge < Base
     class << self
       def invoice_data(document)
         parsed_meta_data(document).deep_merge(
         parsed_invoice_date(document)).deep_merge(
         parsed_totals(document)).deep_merge(
-        parsed_deduction_description(document)).deep_merge(
-        parsed_promo_date_range(document))
+        parsed_deduction_type(document))
       end
 
       def parsed_invoice_number(meta_data)
@@ -18,25 +17,16 @@ module Parsers
       def parsed_type(meta_data)
         regex = /type.*:?/i
         type_row = string_match_from_arr(meta_data, regex)
-        type_row.to_s.try(:gsub,/type:?/i,'').strip
-      end
-
-      def parsed_customer(meta_data)
-        regex = /master.*ref/i
-        customer_row = string_match_from_arr(meta_data, regex)
-        customer_row ? customer_row.to_s.try(:gsub,/coupon(.*)$/i,'').strip : nil
+        type_row.to_s.try(:gsub,/type\W?/i,'').strip
       end
 
       def parsed_meta_data(document)
         meta_data = get_meta_data(document)
         invoice_number = invoice_num_from_file_name(document) || parsed_invoice_number(meta_data)
         type = parsed_type(meta_data)
-        customer = parsed_customer(meta_data)
 
         {'invoice number' => invoice_number,
-          'Type' => type,
-          'customer' => customer,
-          'chain' => customer}
+          'Type' => type}
       end
 
       def parsed_invoice_date(document)
@@ -45,35 +35,42 @@ module Parsers
         {'invoice_date' => date}
       end
 
+      def calc_grand_total(one, two)
+        one && two ? one + two : nil
+      end
+
       def parsed_totals(document)
         totals = get_totals(document)
-        chargeback_amount = parsed_chargeback(totals)
+        total_amount = parsed_chargeback(totals)
+        subtotal_amount = parsed_subtotal(totals)
         ep_fee_amount = parsed_ep_fee(totals)
+        chargeback_amount = total_amount ||
+                            calc_grand_total(subtotal_amount, ep_fee_amount)
 
         {'chargeback_amount' => chargeback_amount,
           'ep_fee' => ep_fee_amount}
       end
 
       def parsed_chargeback(totals)
-        invoice_total_row = totals ? totals.select{ |row| row.match(/$/)}.last : nil
-        invoice_total = get_amount_str(invoice_total_row)
-        str_to_dollars(invoice_total)
+        invoice_total_regex = /invoice.*total/i
+        get_total_in_dollars(totals, invoice_total_regex)
+      end
+
+      def parsed_subtotal(totals)
+        subtotal_regex = /(promo|chargeback)/i
+        get_total_in_dollars(totals, subtotal_regex)
       end
 
       def parsed_ep_fee(totals)
         ep_fee_regex = /ep.*fee/i
-        get_total_in_dollars(totals, ep_fee_regex)
+        ep_fee_amount = get_total_in_dollars(totals, ep_fee_regex)
       end
 
-      def parsed_promo_date_range(document)
-        data = get_raw_data(document,'po_date').flatten.try(:first)
-        {'start_date' => data,
-         'end_date' => data}
-      end
-
-      def parsed_deduction_description(document)
-        data = get_raw_data(document,'deduction_description').flatten.try(:first)
-        {'deduction_description' => data}
+      def parsed_deduction_type(document)
+        options = ['deduction_type_option_1', 'deduction_type_option_2']
+        deduction_type_data = options.map { |option| get_raw_data(document, option) }.flatten
+        deduction_type = deduction_type_data.select { |c| c.length > 3 && c.match?(/charge|invoice|back/i) }.try(:first)
+        {'deduction_type' => deduction_type}
       end
     end
   end

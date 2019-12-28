@@ -17,7 +17,7 @@ parsers = [
   {"external_id"=>"hjczbplazgti", "name"=>"KeHE Slotting", "destination_id"=>production_spreadsheet, "is_active"=>false, "settings"=>{"library"=>"KeheSlotting"}},
   {"external_id"=>"goxipbcwmkda", "name"=>"KeHE Ad Invoice", "destination_id"=>production_spreadsheet, "is_active"=>false, "settings"=>{"library"=>"KeheAdInvoice"}},
   {"external_id"=>"lwaiygkncvdo", "name"=>"KeHE Homestore Billing Chargeback / Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheHomestoreBillingChargebackInvoice"}},
-  {"external_id"=>"gqcqsvamopbj", "name"=>"KeHE HEB Coupons", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheHebCoupons"}},
+  {"external_id"=>"gqcqsvamopbj", "name"=>"KeHE HEB Coupons", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheHebCouponsInactive"}},
   {"external_id"=>"pawpvontahrx", "name"=>"KeHE Customer Spoilage Allowance Billback", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheCustomerSpoilageAllowanceBillback"}},
   {"external_id"=>"lmncjdwbrpqy", "name"=>"KeHE Free Fill", "destination_id"=>production_spreadsheet, "is_active"=>false, "settings"=>{"library"=>"KeheFreeFill"}},
   {"external_id"=>"bepcjhlzdfsw", "name"=>"KeHE Invoice Adjustment", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheInvoiceAdjustment"}},
@@ -29,7 +29,11 @@ parsers = [
   {"external_id"=>"xaewjhkmblpm", "name"=>"KeHE Retailer Store Placement", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheRetailerStorePlacement"}},
   {"external_id"=>"ccyfadqnatez", "name"=>"KeHE Scan Invoice", "destination_id"=>production_spreadsheet, "is_active"=>false, "settings"=>{"library"=>"KeheScanInvoice"}},
   {"external_id"=>"agleizvdevis", "name"=>"KeHE HEB Shelf Activity Chargeback Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheHebShelfActivityChargebackInvoice"}},
-  {"external_id"=>"wmgpevzcxqis", "name"=>"KeHE Albertsons Merchandising Program Chargeback Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheAlbertsonsMerchandisingProgramChargebackInvoice"}}
+  {"external_id"=>"wmgpevzcxqis", "name"=>"KeHE Albertsons Merchandising Program Chargeback Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheAlbertsonsMerchandisingProgramChargebackInvoice"}},
+  {"external_id"=>"ulwnmxnybati", "name"=>"KeHE Roundy's Merchandising Charges", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheRoundysMerchandisingCharges"}},
+  {"external_id"=>"whbatzonpcsk", "name"=>"KeHE Fresh Thyme Ad Fee", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheFreshThymeAdFee"}},
+  {"external_id"=>"fxwngurhkizx", "name"=>"KeHE Fresh Thyme SAS Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheFreshThymeSasInvoice"}},
+  {"external_id"=>"gdpsylxkjmnl", "name"=>"KeHE HEB Coupons", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheHebCoupons"}}
 ]
 # CHANGE DESTINATION IDS before production!!
 

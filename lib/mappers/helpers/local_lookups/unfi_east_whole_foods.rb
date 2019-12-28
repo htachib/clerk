@@ -1,6 +1,5 @@
 module UnfiEastWholeFoods
   class Base
-    include GlobalSanitizers
 
     LOOKUP_TABLE = [
       {"Invoice # Format"=>/WFM(\d{3}\d{2})\w+ISEGRB"/,

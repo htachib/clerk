@@ -1,7 +1,5 @@
 module GiantEagleReclamationCharges
   class Base
-    include GlobalSanitizers
-
     def lookup_condition(invoice_number)
       /GERCLM\d{4}[a-z0-9]+TXAU/i === invoice_number
     end

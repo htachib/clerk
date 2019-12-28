@@ -1,6 +1,5 @@
 module UnfiEastDeductionInvoice
   class Base
-    include GlobalSanitizers
 
     LOOKUP_TABLE = [{
       "Invoice # Format"=>/\w+AHOLD/,

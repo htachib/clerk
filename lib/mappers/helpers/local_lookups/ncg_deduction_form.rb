@@ -1,6 +1,5 @@
 module NcgDeductionForm
   class Base
-    include GlobalSanitizers
 
     LOOKUP_TABLE = [{
       "Invoice # Format"=>/(\d{2}\d{2})NCG\w+CASA/,

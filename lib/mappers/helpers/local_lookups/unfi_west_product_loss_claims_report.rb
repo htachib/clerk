@@ -1,6 +1,5 @@
 module UnfiWestProductLossClaimsReport
   class Base
-    include GlobalSanitizers
 
     LOOKUP_TABLE = [{"Invoice # Format"=>/PLC(\d{3}\d{2})\s+CASA/,
       "Invoice # Condition"=>/^PLC/,

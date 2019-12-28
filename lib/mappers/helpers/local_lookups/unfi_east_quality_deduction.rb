@@ -1,6 +1,5 @@
 module UnfiEastQualityDeduction
   class Base
-    include GlobalSanitizers
 
     def lookup_condition(invoice_number)
       /CMQ\d{4}\w+/ === invoice_number

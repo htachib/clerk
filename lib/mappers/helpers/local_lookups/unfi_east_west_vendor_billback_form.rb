@@ -1,6 +1,5 @@
 module UnfiEastWestVendorBillbackForm
   class Base
-    include GlobalSanitizers
 
     LOOKUP_TABLE = [{"Invoice # Format"=>/GERCLM(\d{2}\d{2}\w+TXAU/,
       "Invoice # Condition"=>/^GERCLM/,

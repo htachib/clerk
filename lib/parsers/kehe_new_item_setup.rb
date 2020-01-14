@@ -30,12 +30,6 @@ module Parsers
           'Type' => type}
       end
 
-      def parsed_invoice_date(document)
-        invoice_date_row = get_raw_data(document, 'invoice_date')
-        date = get_invoice_date(invoice_date_row, document)
-        {'invoice_date' => date}
-      end
-
       def parsed_totals(document)
         totals = get_totals(document)
         chargeback_amount = parsed_chargeback(totals)

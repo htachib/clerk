@@ -29,12 +29,6 @@ module Parsers
           'Type' => type}
       end
 
-      def parsed_invoice_date(document)
-        invoice_date_row = get_raw_data(document, 'invoice_date')
-        date = get_invoice_date(invoice_date_row, document)
-        {'invoice_date' => date}
-      end
-
       def calc_grand_total(one, two)
         one && two ? one + two : nil
       end

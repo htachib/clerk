@@ -195,6 +195,11 @@ module Parsers
         end
         result.try(:strip)
       end
+
+      def parsed_invoice_date(document)
+        date = get_invoice_date(document)
+        {'invoice_date' => date}
+      end
     end
   end
 end

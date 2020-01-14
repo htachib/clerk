@@ -1,5 +1,5 @@
 module Parsers
-  class UNFIWestWeeklyMCB < Base
+  class UnfiWestWeeklyMcb < Base
     class << self
       SECTIONS = {
         'A' => 'Ad Deals',

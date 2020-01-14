@@ -1,5 +1,5 @@
 module Mappers
-  class UNFIEastReclamation < Base
+  class UnfiEastReclamation < Base
     class << self
 
       def prepare_rows(raw_rows)

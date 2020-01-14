@@ -1,5 +1,5 @@
 module Mappers
-  class UNFIEastDeductionQuarterly < Base
+  class UnfiEastDeductionQuarterly < Base
     class << self
 
       def prepare_rows(raw_rows)

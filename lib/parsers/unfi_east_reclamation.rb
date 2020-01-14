@@ -1,5 +1,5 @@
 module Parsers
-  class UNFIEastReclamation < Base
+  class UnfiEastReclamation < Base
     class << self
       def parse_rows(document)
         row = document['invoice_number'][0].deep_merge(

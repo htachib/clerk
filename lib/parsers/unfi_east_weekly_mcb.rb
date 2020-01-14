@@ -1,5 +1,5 @@
 module Parsers
-  class UNFIEastWeeklyMCB < Base
+  class UnfiEastWeeklyMcb < Base
     class << self
       def parse_rows(document)
         sheet = document.worksheets[0]

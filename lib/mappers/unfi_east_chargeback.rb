@@ -1,5 +1,5 @@
 module Mappers
-  class UNFIEastChargeback < Base
+  class UnfiEastChargeback < Base
     class << self
       def prepare_rows(raw_rows)
         raw_rows.map do |raw_row|

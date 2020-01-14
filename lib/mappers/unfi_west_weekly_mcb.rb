@@ -1,5 +1,5 @@
 module Mappers
-  class UNFIWestWeeklyMCB < Base
+  class UnfiWestWeeklyMcb < Base
     class << self
 
       def prepare_rows(raw_rows)

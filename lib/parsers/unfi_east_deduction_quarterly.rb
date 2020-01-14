@@ -1,5 +1,5 @@
 module Parsers
-  class UNFIEastDeductionQuarterly < Base
+  class UnfiEastDeductionQuarterly < Base
     DEDUCTION_TYPES = ['Scan', 'Ad Fee', 'Sales Report', 'Slotting', 'Trade Shows',
                        'Free Fill', 'Merchandising', 'Ads', 'PTY']
 

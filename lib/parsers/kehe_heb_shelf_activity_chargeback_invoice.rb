@@ -45,8 +45,7 @@ module Parsers
       end
 
       def parsed_invoice_date(document)
-        invoice_date_row = get_raw_data(document, 'invoice_date')
-        date = get_invoice_date(invoice_date_row, document)
+        date = get_invoice_date(document)
         {'invoice_date' => date}
       end
 

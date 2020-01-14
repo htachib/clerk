@@ -42,6 +42,7 @@ module Parsers
       end
 
       def string_match_from_arr(arr, regex)
+        return arr if arr.try(:class) == String
         arr.select{ |row| row.match?(regex) }.try(:first) || nil
       end
 

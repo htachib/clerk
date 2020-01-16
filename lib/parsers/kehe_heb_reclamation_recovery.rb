@@ -1,5 +1,5 @@
 module Parsers
-  class KeheFreshThymeSasInvoice < Base
+  class KeheHebReclamationRecovery < Base
     class << self
       def invoice_data(document)
         parsed_invoice_date(document).deep_merge(
@@ -14,10 +14,12 @@ module Parsers
       end
 
       def parsed_invoice_date(document)
-        invoice_date = get_invoice_date(document)
+        date_string = get_invoice_date(document)
+        invoice_date = date_string_to_promo_dates(date_string)
+
         {
-          'start_date' => invoice_date,
-          'end_date' => invoice_date
+          'start_date' => invoice_date['start_date'],
+          'end_date' => invoice_date['end_date']
         }
       end
 
@@ -31,7 +33,7 @@ module Parsers
       end
 
       def parsed_chargeback(totals)
-        regex = /invoice.*total/i
+        regex = /total.*amount/i
         get_total_in_dollars(totals, regex)
       end
 

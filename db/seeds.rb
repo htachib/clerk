@@ -33,7 +33,10 @@ parsers = [
   {"external_id"=>"ulwnmxnybati", "name"=>"KeHE Roundy's Merchandising Charges", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheRoundysMerchandisingCharges"}},
   {"external_id"=>"whbatzonpcsk", "name"=>"KeHE Fresh Thyme Ad Fee", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheFreshThymeAdFee"}},
   {"external_id"=>"fxwngurhkizx", "name"=>"KeHE Fresh Thyme SAS Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheFreshThymeSasInvoice"}},
-  {"external_id"=>"gdpsylxkjmnl", "name"=>"KeHE HEB Coupons", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheHebCoupons"}}
+  {"external_id"=>"gdpsylxkjmnl", "name"=>"KeHE HEB Coupons", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheHebCoupons"}},
+  {"external_id"=>"oulxzaysftaw", "name"=>"KeHE Albertsons-Safeway Required Free Goods", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheAlbertsonsSafewayRequiredFreeGoods"}},
+  {"external_id"=>"gbhblojzckps", "name"=>"KeHE Customer Spoilage Allowance Billback", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheCustomerSpoilageAllowanceBillback"}},
+  {"external_id"=>"pyiphgvkbjio", "name"=>"KeHE HEB Reclamation Recovery", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheHebReclamationRecovery"}}
 ]
 # CHANGE DESTINATION IDS before production!!
 

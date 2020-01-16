@@ -4,7 +4,8 @@ module Parsers
       def invoice_data(document)
         parsed_invoice_date(document).deep_merge(
         parsed_totals(document)).deep_merge(
-        parsed_invoice_number(document))
+        parsed_invoice_number(document)).deep_merge(
+        parsed_deduction_description(document))
       end
 
       def parsed_invoice_number(document)
@@ -37,6 +38,11 @@ module Parsers
       def parsed_ep_fee(totals)
         regex = /ep.*fee/i
         get_total_in_dollars(totals, regex)
+      end
+
+      def parsed_deduction_description(document)
+        deduction_description = parsed_data(document, 'deduction_description')
+        { 'deduction_description' => deduction_description }
       end
     end
   end

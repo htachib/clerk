@@ -9,14 +9,6 @@ module Mappers
 
         shipped == 0 || shipped == '' ? 0 : (chargeback_amount.to_f - ep_fee.to_f) / shipped.to_f
       end
-
-      def set_variable_rate_no_ep_fee(prepared_row)
-        chargeback_amount = prepared_row['Chargeback Amount'] || 0
-        shipped = prepared_row['Shipped'] || 0
-
-        shipped == 0 || shipped == '' ? 0 : chargeback_amount.to_f / shipped.to_f
-      end
-
     end
   end
 end

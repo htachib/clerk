@@ -28,7 +28,7 @@ parsers = [
   {"external_id"=>"jmqonywollnj", "name"=>"KeHE Reclamation Recovery", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheReclamationRecovery"}},
   {"external_id"=>"xaewjhkmblpm", "name"=>"KeHE Retailer Store Placement", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheRetailerStorePlacement"}},
   {"external_id"=>"ccyfadqnatez", "name"=>"KeHE Scan Invoice", "destination_id"=>production_spreadsheet, "is_active"=>false, "settings"=>{"library"=>"KeheScanInvoice"}},
-  {"external_id"=>"agleizvdevis", "name"=>"KeHE HEB Shelf Activity Chargeback Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheHebShelfActivityChargebackInvoice"}},
+  {"external_id"=>"agleizvdevis", "name"=>"KeHE HEB Shelf Activity Chargeback Invoice", "destination_id"=>production_spreadsheet, "is_active"=>false, "settings"=>{"library"=>"KeheHebShelfActivityChargebackInvoice"}},
   {"external_id"=>"wmgpevzcxqis", "name"=>"KeHE Albertsons Merchandising Program Chargeback Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheAlbertsonsMerchandisingProgramChargebackInvoice"}},
   {"external_id"=>"ulwnmxnybati", "name"=>"KeHE Roundy's Merchandising Charges", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheRoundysMerchandisingCharges"}},
   {"external_id"=>"whbatzonpcsk", "name"=>"KeHE Fresh Thyme Ad Fee", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheFreshThymeAdFee"}},
@@ -36,7 +36,10 @@ parsers = [
   {"external_id"=>"gdpsylxkjmnl", "name"=>"KeHE HEB Coupons", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheHebCoupons"}},
   {"external_id"=>"oulxzaysftaw", "name"=>"KeHE Albertsons-Safeway Required Free Goods", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheAlbertsonsSafewayRequiredFreeGoods"}},
   {"external_id"=>"gbhblojzckps", "name"=>"KeHE Customer Spoilage Allowance Billback", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheCustomerSpoilageAllowanceBillback"}},
-  {"external_id"=>"pyiphgvkbjio", "name"=>"KeHE HEB Reclamation Recovery", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheHebReclamationRecovery"}}
+  {"external_id"=>"pyiphgvkbjio", "name"=>"KeHE HEB Reclamation Recovery", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheHebReclamationRecovery"}},
+  {"external_id"=>"zafkysciprhj", "name"=>"KeHE HEB Shelf Activity Chargeback Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheHebShelfActivityChargebackInvoice"}},
+  {"external_id"=>"ymjzlsadbvox", "name"=>"KeHE Homestore Billing Chargeback / Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheHomestoreBillingChargebackInvoice"}},
+  {"external_id"=>"myhjpudjigxm", "name"=>"KeHE Lumper Fee, Warehouse Support, FOB Surcharge", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheLumperFeeWarehouseSupportFobSurcharge"}}
 ]
 # CHANGE DESTINATION IDS before production!!
 

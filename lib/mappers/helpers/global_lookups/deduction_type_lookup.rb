@@ -32,6 +32,8 @@ module Mappers
           DEDUCTION_TYPE_LOOKUP.each do |lookup|
             return lookup if lookup['Deduction Type'] == deduction_type
           end
+
+          nil
         end
       end
     end

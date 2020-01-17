@@ -53,6 +53,8 @@ module Mappers
           PARSER_TO_DEDUCTION_CUSTOMER_LOOKUP.each do |lookup|
             return lookup if lookup['Parser'] == parser_name
           end
+
+          nil
         end
       end
     end

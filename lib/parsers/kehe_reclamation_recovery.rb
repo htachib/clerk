@@ -2,44 +2,26 @@ module Parsers
   class KeheReclamationRecovery < Base
     class << self
       def invoice_data(document)
-        parsed_meta_data(document).deep_merge(
-        parsed_invoice_date(document)).deep_merge(
+        parsed_invoice_date(document).deep_merge(
         parsed_totals(document)).deep_merge(
-        parsed_customer(document)).deep_merge(
-        parsed_deduction_description(document)).deep_merge(
-        parsed_promo_date_range(document))
+        parsed_invoice_number(document)).deep_merge(
+        parsed_deduction_description(document))
       end
 
-      def parsed_invoice_number(meta_data)
-        row_regex = /invoice.*#/i
-        str_regex = /invoice.*#/i
-        sanitize_invoice_num(meta_data, row_regex, str_regex)
+      def parsed_invoice_number(document)
+        invoice_number = get_invoice_number(document)
+        {'invoice_number' => invoice_number}
       end
 
-      def sanitized_customer(rows)
-        regex = /(chargeback|invoice|reclamation|recovery|date.*invoice$)/i
-        rows.join('').try(:gsub,regex,'').strip
-      end
+      def parsed_invoice_date(document)
+        invoice_date_yyyymm = parsed_data(document, 'invoice_date_yyyymm')
+        invoice_date_mmddyy = document.try(:[], 'invoice_date_mmddyy').try(:first)
+        invoice_dates = invoice_date_yyyymm ? date_string_to_promo_dates(invoice_date_yyyymm) : invoice_date_mmddyy
 
-      def parsed_customer(document)
-        rows = get_raw_data(document, 'customer').flatten
-        customer = sanitized_customer(rows)
-        {'detailed_customer' => customer}
-      end
-
-      def parsed_type(meta_data)
-        regex = /type.*:?/i
-        type_row = string_match_from_arr(meta_data, regex)
-        type_row.to_s.try(:gsub,/type\W?/i,'').strip
-      end
-
-      def parsed_meta_data(document)
-        meta_data = get_meta_data(document)
-        invoice_number = invoice_num_from_file_name(document) || parsed_invoice_number(meta_data)
-        type = parsed_type(meta_data)
-
-        {'invoice number' => invoice_number,
-          'Type' => type}
+        {
+          'start_date' => invoice_dates.try(:[], 'start_date'),
+          'end_date' => invoice_dates.try(:[], 'end_date')
+        }
       end
 
       def parsed_totals(document)
@@ -52,32 +34,18 @@ module Parsers
       end
 
       def parsed_chargeback(totals)
-        invoice_total_row = totals ? totals.select{ |row| row.match(/$/)}.last : nil
-        invoice_total = get_amount_str(invoice_total_row)
-        str_to_dollars(invoice_total)
+        regex = /total.*amount/i
+        get_total_in_dollars(totals, regex)
       end
 
       def parsed_ep_fee(totals)
-        ep_fee_regex = /ep.*fee/i
-        get_total_in_dollars(totals, ep_fee_regex)
+        regex = /ep.*fee/i
+        get_total_in_dollars(totals, regex)
       end
 
       def parsed_deduction_description(document)
-        data = get_raw_data(document,'deduction_description').try(:flatten).try(:first)
-        { 'deduction_description' => data }
-      end
-
-      def parsed_promo_date_range(document)
-        data = get_raw_data(document,'promo_dates').try(:flatten).try(:first)
-        if data.try(:match?, /\d+{6}/)
-          digits = data.try(:match, /\d+/).try(:[], 0)
-          month_int = digits[-2..-1]
-          year_int = digits[0..3]
-          start_date = date_formatted_promo(year_int, month_int, 1)
-          end_date = date_formatted_promo(year_int, month_int, -1)
-        end
-        {'start_date' => start_date,
-         'end_date' => end_date}
+        deduction_description = parsed_data(document, 'deduction_description').try(:strip)
+        { 'deduction_description' => deduction_description }
       end
     end
   end

@@ -26,16 +26,19 @@ module Parsers
         document['file_name'].split(' ').first.match(/([a-zA-Z]|\d){5,}/).try(:[], 0)
       end
 
-      def invoice_number_compare_file_name(document, char_match_count)
+      def invoice_number_file_name_match?(document, char_match_count)
         file_name_invoice_number = invoice_num_from_file_name(document)
         parsed_invoice_number = get_invoice_number(document)
+        substring_match?(file_name_invoice_number, parsed_invoice_number, char_match_count)
+      end
 
-        n = parsed_invoice_number.length - char_match_count
+      def substring_match?(option_a, option_b, char_count)
+        n = option_b.length - char_count
         is_match = false
 
         n.times do |i|
-          substring = parsed_invoice_number[i..(i + char_match_count)]
-          is_match = true if file_name_invoice_number.include?(substring)
+          substring = option_b[i..(i + char_count)]
+          is_match = true if option_a.include?(substring)
         end
         is_match
       end

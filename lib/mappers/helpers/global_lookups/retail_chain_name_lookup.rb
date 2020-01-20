@@ -686,7 +686,7 @@ module Mappers
             end
           end
 
-          nil
+          {"Customer Chain ID"=>[customer_chain_id], "Retail Chain Name"=>"N/A in Retain Chain Name Lookup"}
         end
       end
     end

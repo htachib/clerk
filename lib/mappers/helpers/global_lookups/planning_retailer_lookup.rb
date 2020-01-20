@@ -255,8 +255,8 @@ module Mappers
           PLANNING_RETAILER_LOOKUP.each do |lookup|
             return lookup if lookup['Retail Chain Name'] == retail_chain_name
           end
-          
-          nil
+
+          {"Retail Chain Name"=>retail_chain_name, "Planning Retailer"=>"N/A in Planning Retailer Lookup"}
         end
       end
     end

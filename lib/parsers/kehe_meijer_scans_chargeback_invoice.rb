@@ -37,7 +37,7 @@ module Parsers
       end
 
       def parsed_chargeback(totals)
-        regex = /scan.*total/i
+        regex = /invoice.*total/i
         get_total_in_dollars(totals, regex)
       end
 

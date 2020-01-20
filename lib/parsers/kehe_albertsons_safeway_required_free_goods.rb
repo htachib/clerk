@@ -15,10 +15,15 @@ module Parsers
 
       def parsed_invoice_date(document)
         invoice_date = get_invoice_date(document)
-        {
-          'start_date' => invoice_date,
-          'end_date' => invoice_date
-        }
+
+        if invoice_date.include?('/')
+          { 'start_date' => invoice_date,
+            'end_date' => invoice_date }
+        else
+          invoice_dates = date_string_to_promo_dates(invoice_date)
+          { 'start_date' => invoice_dates['start_date'],
+            'end_date' => invoice_dates['end_date'] }
+        end
       end
 
       def parsed_totals(document)

@@ -54,7 +54,11 @@ module Mappers
             return lookup if lookup['Parser'] == parser_name
           end
 
-          nil
+          { "Parser"=>parser_name,
+            "Deduction Type"=>"N/A in Parser Lookup",
+            "Deduction Description"=>"N/A in Parser Lookup",
+            "Customer Chain ID"=>"N/A in Parser Lookup",
+            "Customer Detailed Name"=>"N/A in Parser Lookup" }
         end
       end
     end

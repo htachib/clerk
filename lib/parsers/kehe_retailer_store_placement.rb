@@ -33,12 +33,12 @@ module Parsers
       end
 
       def parsed_chargeback(totals)
-        regex = /(invoice.*total|total.*placement)/i
+        regex = /(invoice.*total|total\s*placement)/i
         get_total_in_dollars(totals, regex)
       end
 
       def parsed_ep_fee(totals)
-        regex = /ep.*fee/i
+        regex = /placement\s*fee/i
         get_total_in_dollars(totals, regex)
       end
 

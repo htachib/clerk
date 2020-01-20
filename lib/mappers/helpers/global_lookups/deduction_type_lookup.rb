@@ -33,7 +33,7 @@ module Mappers
             return lookup if lookup['Deduction Type'] == deduction_type
           end
 
-          nil
+          {"Deduction Type"=>deduction_type, "Deduction Category"=>"N/A in Deduction Type Lookup", "Deduction Account"=>"N/A in Deduction Type Lookup"}
         end
       end
     end

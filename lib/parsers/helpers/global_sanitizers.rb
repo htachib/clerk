@@ -197,8 +197,9 @@ module Parsers
       end
 
       def get_total_in_dollars(amounts_arr, regex)
+        return nil if !amounts_arr
         amount_row = string_match_from_arr(amounts_arr, regex)
-        amount_str = string_match(amount_row, /\$\d+(\.|\s|\,)?\d+/)
+        amount_str = string_match(amount_row, /\$\d+(\.|\s|\,)?\d+\.?\d*/)
         str_to_dollars(amount_str)
       end
 

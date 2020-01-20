@@ -22,9 +22,10 @@ module Parsers
       end
 
       def parsed_totals(document)
-        totals = get_totals(document)
-        chargeback_amount = parsed_chargeback(totals)
-        ep_fee_amount = parsed_ep_fee(totals)
+        chargeback_str = parsed_data(document, 'chargeback')
+        ep_fee_str = parsed_data(document, 'ep_fee')
+        chargeback_amount = parsed_chargeback(chargeback_str)
+        ep_fee_amount = parsed_ep_fee(ep_fee_str)
 
         {'chargeback_amount' => chargeback_amount,
           'ep_fee' => ep_fee_amount}

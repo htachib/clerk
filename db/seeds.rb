@@ -39,9 +39,23 @@ parsers = [
   {"external_id"=>"pyiphgvkbjio", "name"=>"KeHE HEB Reclamation Recovery", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheHebReclamationRecovery"}},
   {"external_id"=>"zafkysciprhj", "name"=>"KeHE HEB Shelf Activity Chargeback Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheHebShelfActivityChargebackInvoice"}},
   {"external_id"=>"ymjzlsadbvox", "name"=>"KeHE Homestore Billing Chargeback / Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheHomestoreBillingChargebackInvoice"}},
-  {"external_id"=>"myhjpudjigxm", "name"=>"KeHE Lumper Fee, Warehouse Support, FOB Surcharge", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheLumperFeeWarehouseSupportFobSurcharge"}}
+  {"external_id"=>"myhjpudjigxm", "name"=>"KeHE Lumper Fee, Warehouse Support, FOB Surcharge", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheLumperFeeWarehouseSupportFobSurcharge"}},
+  {"external_id"=>"krsizcxvlgen", "name"=>"KeHE Meijer Scans Chargeback Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheMeijerScansChargebackInvoice"}},
+  {"external_id"=>"ehkfzldmgixz", "name"=>"KeHE Placement Chargeback Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KehePlacementChargebackInvoice"}},
+  {"external_id"=>"jqenbzldutwy", "name"=>"KeHE Reclamation Recovery", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheReclamationRecovery"}},
+  {"external_id"=>"yjobtruvfgym", "name"=>"KeHE Retailer Store Placement", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheRetailerStorePlacement"}},
+  {"external_id"=>"yvbqzgolvhjg", "name"=>"KeHE Roundy's Scan Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheRoundysScanInvoice"}},
+  {"external_id"=>"gmzvcabkxufw", "name"=>"KeHE Safeway Promo Pass Through", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheSafewayPromoPassThrough"}},
+  {"external_id"=>"kfmbismjczyg", "name"=>"KeHE Safeway Scan Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheSafewayScanInvoice"}},
+  {"external_id"=>"kfmbismjczyg", "name"=>"KeHE Safeway Scan Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheSafewayScanInvoice"}},
+  {"external_id"=>"dymllehzmifp", "name"=>"KeHE Safeway Slotting Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheSafewaySlottingInvoice"}},
+  {"external_id"=>"cdhelmxwutgi", "name"=>"KeHE Spoilage", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheSpoilage"}},
+  {"external_id"=>"vfeaxqoegphy", "name"=>"KeHE Sprouts Advertisement", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheSproutsAdvertisement"}},
+  {"external_id"=>"asqxpidrhowu", "name"=>"KeHE Sprouts Placement", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheSproutsPlacement"}}
+
 ]
 # CHANGE DESTINATION IDS before production!!
+# temporary dev: 1Ay0FNPTrSjTTU8zBVhHYuQ0n_XOTgZDhBsWNuYJ9M7w
 
 parsers.each do |parser_attributes|
   admin.parsers.find_or_create_by(parser_attributes)

@@ -14,12 +14,11 @@ module Parsers
       end
 
       def parsed_invoice_date(document)
-        invoice_date = get_invoice_date(document)
-        promo_dates = date_string_to_promo_dates(invoice_date)
+        invoice_dates = document.try(:[], 'invoice_date').try(:first)
 
         {
-          'start_date' => promo_dates['start_date'],
-          'end_date' => promo_dates['end_date']
+          'start_date' => invoice_dates['start_date'],
+          'end_date' => invoice_dates['end_date']
         }
       end
 

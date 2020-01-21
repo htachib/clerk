@@ -27,11 +27,6 @@ module Parsers
         }
       end
 
-      def replace_year(date_string, year)
-        month_day = date_string.try(:scan, /^\d{1,4}\/\d{1,4}/).try(:first)
-        month_day + '/' +  year
-      end
-
       def parsed_totals(document)
         totals = get_totals(document)
         chargeback_amount = parsed_chargeback(totals)

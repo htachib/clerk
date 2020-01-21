@@ -218,6 +218,11 @@ module Parsers
         date = get_invoice_date(document)
         {'invoice_date' => date}
       end
+
+      def replace_year(date_string, year)
+        month_day = date_string.try(:scan, /^\d{1,4}\/\d{1,4}/).try(:first)
+        month_day + '/' +  year
+      end
     end
   end
 end

@@ -50,8 +50,9 @@ module Mappers
         ]
 
         def get_parser_lookup(parser_name)
+          parser_name = parser_name.try(:downcase).try(:strip)
           PARSER_TO_DEDUCTION_CUSTOMER_LOOKUP.each do |lookup|
-            return lookup if lookup['Parser'] == parser_name
+            return lookup if lookup['Parser'].try(:downcase) == parser_name
           end
 
           { "Parser"=>parser_name,

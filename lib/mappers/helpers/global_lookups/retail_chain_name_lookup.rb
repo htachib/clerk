@@ -679,10 +679,11 @@ module Mappers
         ]
 
         def get_retail_chain_name_lookup(customer_chain_id)
+          customer_chain_id = customer_chain_id.try(:downcase).try(:strip)
           RETAIL_CHAIN_NAME_LOOOKUP.each do |lookup|
             lookup_chain_id = lookup['Customer Chain ID']
             lookup_chain_id.each do |chain_id|
-                return lookup if (chain_id == customer_chain_id)
+                return lookup if (chain_id.try(:downcase) == customer_chain_id)
             end
           end
 

@@ -29,8 +29,9 @@ module Mappers
         ]
 
         def get_deduction_type_lookup(deduction_type)
+          deduction_type = deduction_type.try(:downcase).try(:strip)
           DEDUCTION_TYPE_LOOKUP.each do |lookup|
-            return lookup if lookup['Deduction Type'] == deduction_type
+            return lookup if lookup['Deduction Type'].try(:downcase) == deduction_type
           end
 
           {"Deduction Type"=>deduction_type, "Deduction Category"=>"N/A in Deduction Type Lookup", "Deduction Account"=>"N/A in Deduction Type Lookup"}

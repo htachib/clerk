@@ -252,8 +252,9 @@ module Mappers
         ]
 
         def get_planning_retailer_lookup(retail_chain_name)
+          retail_chain_name = retail_chain_name.try(:downcase).try(:strip)
           PLANNING_RETAILER_LOOKUP.each do |lookup|
-            return lookup if lookup['Retail Chain Name'] == retail_chain_name
+            return lookup if lookup['Retail Chain Name'].try(:downcase) == retail_chain_name
           end
 
           {"Retail Chain Name"=>retail_chain_name, "Planning Retailer"=>"N/A in Planning Retailer Lookup"}

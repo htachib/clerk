@@ -6,16 +6,10 @@ module Parsers
       def str_to_dollars(str_amount)
         return nil if !str_amount
         amount = str_amount.to_s.try(:gsub,/(\,|\$)/,'')
-        dollar_cents_arr = amount.split(/(\.|\s)/).select{ |str| str.match?(/\d/) }
-        if dollar_cents_arr
-          if dollar_cents_arr.length == 2
-            return (dollar_cents_arr.first.to_f) + (dollar_cents_arr.last.to_f / 100)
-          elsif dollar_cents_arr.length == 1
-            return (dollar_cents_arr.first.to_f)
-          else
-            return ''
-          end
-        end
+        cents_str = amount.try(:split, /(\.|\s)/).try(:last) || 0
+        dollar_str = amount.try(:split, /(\.|\s)/).try(:first) || 0
+        return '' if !cents_str && !dollar_str
+        (dollar_str.to_f) + (cents_str.to_f / 100)
       end
 
       def get_amount_str(totals_arr)
@@ -193,13 +187,13 @@ module Parsers
 
       def parsed_data(document, key_field, single_output = true)
         row = get_raw_data(document, key_field).try(:flatten) || []
-        single_output ? row.try(:first) : row
+        single_output ? row.try(:first).try(:strip) : row
       end
 
       def get_total_in_dollars(amounts_arr, regex)
         return nil if !amounts_arr
         amount_row = string_match_from_arr(amounts_arr, regex)
-        amount_str = string_match(amount_row, /\$?\d+(\.|\s|\,)?\d+\.?\d*/)
+        amount_str = string_match(amount_row, /\$?\d*(\.|\s|\,)?\d+\.?\d*/)
         str_to_dollars(amount_str)
       end
 

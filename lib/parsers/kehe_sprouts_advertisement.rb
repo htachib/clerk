@@ -19,7 +19,9 @@ module Parsers
 
         start_date_year_digits = start_date.try(:scan, /\d+$/).try(:first)
         end_date_year_digits = end_date.try(:scan, /\d+$/).try(:first)
-        end_date = replace_year(end_date, start_date_year_digits) if end_date_year_digits.length < start_date_year_digits.length
+        if !!start_date_year_digits && !!end_date_year_digits && end_date_year_digits.try(:length) < start_date_year_digits.try(:length)
+          end_date = replace_year(end_date, start_date_year_digits)
+        end
 
         {
           'start_date' => start_date,

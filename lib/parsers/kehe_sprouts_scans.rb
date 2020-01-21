@@ -1,5 +1,5 @@
 module Parsers
-  class KeheSproutsPromotionMerchandising < Base
+  class KeheSproutsScans < Base
     class << self
       def invoice_data(document)
         parsed_invoice_date(document).deep_merge(

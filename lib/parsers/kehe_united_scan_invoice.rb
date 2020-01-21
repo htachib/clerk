@@ -1,5 +1,5 @@
 module Parsers
-  class KeheSproutsPromotionMerchandising < Base
+  class KeheUnitedScanInvoice < Base
     class << self
       def invoice_data(document)
         parsed_invoice_date(document).deep_merge(
@@ -39,7 +39,7 @@ module Parsers
       end
 
       def parsed_chargeback(totals)
-        regex = /total.*for/i
+        regex = /invoice.*total/i
         get_total_in_dollars(totals, regex)
       end
 

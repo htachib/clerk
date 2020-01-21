@@ -19,6 +19,7 @@ module Mappers
           {"Parser"=>"KeHE HEB Reclamation Recovery", "Deduction Type"=>"Spoilage", "Deduction Description"=>nil, "Customer Chain ID"=>"HEB", "Customer Detailed Name"=>"HEB"},
           {"Parser"=>"KeHE HEB Shelf Activity Chargeback Invoice", "Deduction Type"=>"Merchandising", "Deduction Description"=>nil, "Customer Chain ID"=>"HEB", "Customer Detailed Name"=>"HEB"},
           {"Parser"=>"KeHE Homestore Billing Chargeback / Invoice", "Deduction Type"=>"MCB", "Deduction Description"=>"MCB Chargeback / Invoice", "Customer Chain ID"=>"Meijer", "Customer Detailed Name"=>"Meijer"},
+          {"Parser"=>"KeHE Invoice Adjustment", "Deduction Type"=>nil, "Deduction Description"=>nil, "Customer Chain ID"=>"KeHE", "Customer Detailed Name"=>"KeHE"},
           {"Parser"=>"KeHE Late Delivery Fee", "Deduction Type"=>"Freight", "Deduction Description"=>"Delivered Late Fee", "Customer Chain ID"=>"KeHE", "Customer Detailed Name"=>"KeHE"},
           {"Parser"=>"KeHE Lumper Fee, Warehouse Support, FOB Surcharge", "Deduction Type"=>"Freight", "Deduction Description"=>nil, "Customer Chain ID"=>"KeHE", "Customer Detailed Name"=>"KeHE"},
           {"Parser"=>"KeHE Meijer Scans Chargeback Invoice", "Deduction Type"=>"Scan", "Deduction Description"=>nil, "Customer Chain ID"=>"Meijer", "Customer Detailed Name"=>"Meijer"},

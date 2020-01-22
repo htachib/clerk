@@ -159,7 +159,7 @@ module Parsers
 
       def date_string_to_promo_dates(date_string)
         month, year = format_month_year(date_string)
-        return nil if month.nil? || year.nil? || !(1..13).to_a.include?(month)
+        return nil if month.nil? || year.nil? || !(1..13).to_a.include?(month.try(:to_i))
         {
           'start_date' => date_formatted_promo(year, month, 1) || nil,
           'end_date' => date_formatted_promo(year, month, -1) || nil

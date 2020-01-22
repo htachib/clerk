@@ -2,7 +2,7 @@ admin_params = { email: User::ADMIN_EMAIL }
 admin = User.find_by(admin_params)
 User.create!(admin_params.merge('password' => 'password', 'password_confirmation' => 'password')) if admin.nil?
 
-production_spreadsheet = '1pWmdUxPRO7Id3HkhlsDJfTViGLKzdfIVKZ_Ad0memkE' # changed to new month
+production_spreadsheet = '1HqExgCGtmkiB1XX3BRI67w-k8NHZSReE06Sih7P68mM' # changed to new month
 # prepare: Parser.all.map {|p| p.attributes.except('created_at', 'id', 'updated_at', 'user_id')}
 parsers = [
   {"external_id"=>"1Z5by0rrvu1tVw5K2nXZRAJL3ct2TM7GS", "name"=>"UNFI East Weekly MCB", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"source"=>"google_drive", "library"=>"UnfiEastWeeklyMcb"}},
@@ -47,15 +47,33 @@ parsers = [
   {"external_id"=>"yvbqzgolvhjg", "name"=>"KeHE Roundy's Scan Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheRoundysScanInvoice"}},
   {"external_id"=>"gmzvcabkxufw", "name"=>"KeHE Safeway Promo Pass Through", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheSafewayPromoPassThrough"}},
   {"external_id"=>"kfmbismjczyg", "name"=>"KeHE Safeway Scan Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheSafewayScanInvoice"}},
-  {"external_id"=>"kfmbismjczyg", "name"=>"KeHE Safeway Scan Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheSafewayScanInvoice"}},
   {"external_id"=>"dymllehzmifp", "name"=>"KeHE Safeway Slotting Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheSafewaySlottingInvoice"}},
   {"external_id"=>"cdhelmxwutgi", "name"=>"KeHE Spoilage", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheSpoilage"}},
   {"external_id"=>"vfeaxqoegphy", "name"=>"KeHE Sprouts Advertisement", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheSproutsAdvertisement"}},
-  {"external_id"=>"asqxpidrhowu", "name"=>"KeHE Sprouts Placement", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheSproutsPlacement"}}
+  {"external_id"=>"asqxpidrhowu", "name"=>"KeHE Sprouts Placement", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheSproutsPlacement"}},
+  {"external_id"=>"wfkubxvyarpt", "name"=>"KeHE Sprouts Promotion (Merchandising)", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheSproutsPromotionMerchandising"}},
+  {"external_id"=>"atbhnxjhmwfq", "name"=>"KeHE Sprouts Scans", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheSproutsScans"}},
+  {"external_id"=>"oxnriuwlfynj", "name"=>"KeHE United Scan Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheUnitedScanInvoice"}},
+  {"external_id"=>"atrhhxkrzmed", "name"=>"KeHE Vendor Chargeback Report", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheVendorChargebackReport"}},
+  {"external_id"=>"entzmqsvwhlo", "name"=>"KeHE Slotting / Placement", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheSlottingPlacement"}},
+  {"external_id"=>"sgxpwdeldmaf", "name"=>"KeHE Invoice Adjustment", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheInvoiceAdjustment"}},
+  {"external_id"=>"xvdfkaqiekms", "name"=>"Gelson's Markets Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"GelsonsMarketsDeductionForm"}},
+  {"external_id"=>"egemrhusqnpq", "name"=>"Lazy Acres Market Inc Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"LazyAcresMarketIncDeductionForm"}},
+  {"external_id"=>"pcwjyahbmeiw", "name"=>"Bristol Farms Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"BristolFarmsDeductionForm"}},
+  {"external_id"=>"fkbdqhfziyvw", "name"=>"Akins Natural Foods Supermarket Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"AkinsNaturalFoodsSupermarketDeductionForm"}},
+  {"external_id"=>"twylugwclujn", "name"=>"Bashas Inc Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"BashasIncDeductionForm"}},
+  {"external_id"=>"twylugwclujn", "name"=>"Mollie Stone's Market Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"MollieStonesMarketDeductionForm"}},
+  {"external_id"=>"fqxdkqidfyet", "name"=>"Raleys Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"RaleysDeductionForm"}},
+  {"external_id"=>"ejvuhpkkfxyz", "name"=>"Yoke's Fresh Market Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"YokesFreshMarketDeductionForm"}},
+  {"external_id"=>"ejvuhpkkfxyz", "name"=>"Yoke's Fresh Market Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"YokesFreshMarketDeductionForm"}}
+
 
 ]
 # CHANGE DESTINATION IDS before production!!
 # temporary dev: 1Ay0FNPTrSjTTU8zBVhHYuQ0n_XOTgZDhBsWNuYJ9M7w
+# Instructions for Prod:
+# 1. Add parsers to heroku run rails c
+# 2. Add input folders and add integration with Google Drive to Docparser
 
 parsers.each do |parser_attributes|
   admin.parsers.find_or_create_by(parser_attributes)

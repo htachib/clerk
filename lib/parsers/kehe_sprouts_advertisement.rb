@@ -14,8 +14,8 @@ module Parsers
 
       def parsed_invoice_date(document)
         invoice_dates = document.try(:[], 'invoice_date').try(:first)
-        start_date = invoice_dates['start_date']
-        end_date = invoice_dates['end_date']
+        start_date = invoice_dates.try(:[], 'start_date')
+        end_date = invoice_dates.try(:[], 'end_date')
 
         start_date_year_digits = start_date.try(:scan, /\d+$/).try(:first)
         end_date_year_digits = end_date.try(:scan, /\d+$/).try(:first)

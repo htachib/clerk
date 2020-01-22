@@ -63,6 +63,7 @@ module Parsers
       end
 
       def month_int_from_string(string)
+        return nil if !string
         idx = MONTHS_LIST.each_index.select{ |i| string.try(:downcase).include? MONTHS_LIST[i] }.try(:first)
         idx ? idx + 1 : nil
       end
@@ -217,6 +218,52 @@ module Parsers
         month_day = date_string.try(:scan, /^\d{1,4}\/\d{1,4}/).try(:first)
         month_day + '/' +  year
       end
+
+      def date_b_year_cutoff(date_a, date_b)
+        date_a_year_digits = date_a.try(:scan, /\d+$/).try(:first)
+        date_b_year_digits = date_b.try(:scan, /\d+$/).try(:first)
+        if !!date_a_year_digits && !!date_b_year_digits && date_b_year_digits.try(:length) < date_a_year_digits.try(:length)
+          date_b = replace_year(date_b, date_a_year_digits)
+        end
+
+        date_b
+      end
+
+      def add_years_missing_from_two_dates(date_a, date_b) #for 'slash' dates (ex. mm/dd/yyyy or mm/dd format)
+        if !date_a || !date_b
+          return [date_a, date_b]
+        elsif full_date?(date_b) && full_date?(date_a)
+          return [date_a, date_b]
+        elsif full_date?(date_b) && !full_date?(date_a)
+          year = date_b.try(:split, '/').try(:last)
+          date_a = date_a + "/#{year}"
+        elsif full_date?(date_a) && !full_date?(date_b)
+          year = date_a.try(:split, '/').try(:last)
+          date_b = date_b + "/#{year}"
+        else
+          date_a = add_years_missing_from_date(date_a)
+          year = date_a.try(:split, '/').try(:last)
+          date_b = date_b + "/#{year}"
+        end
+
+        [date_a, date_b]
+      end
+
+      def add_years_missing_from_date(date) #for 'slash' dates (ex. mm/dd/yyyy or mm/dd format)
+        today_year = Date.today.year
+        try_date = date + "/#{today_year}"
+        today_year -= 1 if future_date?(try_date)
+        date + "/#{today_year}"
+      end
+
+      def future_date?(date_string)
+        Date.today < Date.parse(date_string)
+      end
+
+      def full_date?(date_string)
+        date_string.try(:match?, /\d{1,4}\/\d{1,4}\/\d{1,4}/)
+      end
+
     end
   end
 end

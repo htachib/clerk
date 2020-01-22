@@ -1,5 +1,5 @@
 module Parsers
-  class KeheUnitedScanInvoice < Base
+  class BashasIncDeductionForm < Base
     class << self
       def invoice_data(document)
         parsed_invoice_date(document).deep_merge(
@@ -14,33 +14,22 @@ module Parsers
       end
 
       def parsed_invoice_date(document)
-        start_date = parsed_data(document, 'start_date')
-        end_date = parsed_data(document, 'end_date')
-        end_date = date_b_year_cutoff(start_date, end_date)
+        invoice_date = get_invoice_date(document)
 
         {
-          'start_date' => start_date,
-          'end_date' => end_date
+          'start_date' => invoice_date,
+          'end_date' => invoice_date
         }
       end
 
       def parsed_totals(document)
-        totals = get_totals(document)
-        chargeback_amount = parsed_chargeback(totals)
-        ep_fee_amount = parsed_ep_fee(totals)
+        invoice_total_str = parsed_data(document, 'invoice_total')
+        chargeback_str = parsed_data(document, 'chargeback')
+        invoice_total_amount = str_to_dollars(invoice_total_str)
+        chargeback_amount = str_to_dollars(chargeback_str)
 
         {'chargeback_amount' => chargeback_amount,
-          'ep_fee' => ep_fee_amount}
-      end
-
-      def parsed_chargeback(totals)
-        regex = /invoice.*total/i
-        get_total_in_dollars(totals, regex)
-      end
-
-      def parsed_ep_fee(totals)
-        regex = /ep.*fee/i
-        get_total_in_dollars(totals, regex)
+          'invoice_total' => invoice_total_amount}
       end
 
       def parsed_deduction_description(document)

@@ -17,8 +17,8 @@ module Parsers
         invoice_dates = document.try(:[], 'invoice_date').try(:first)
 
         {
-          'start_date' => invoice_dates['start_date'],
-          'end_date' => invoice_dates['end_date']
+          'start_date' => invoice_dates.try(:[], 'start_date'),
+          'end_date' => invoice_dates.try(:[], 'end_date')
         }
       end
 

@@ -52,8 +52,8 @@ module Parsers
       def parsed_invoice_date(document, row_idx)
         invoice_dates = document.try(:[], 'invoice_date').try(:[], row_idx)
         {
-          'start_date' => invoice_dates['start_date'],
-          'end_date' => invoice_dates['end_date']
+          'start_date' => invoice_dates.try(:[], 'start_date'),
+          'end_date' => invoice_dates.try(:[], 'end_date')
         }
       end
 

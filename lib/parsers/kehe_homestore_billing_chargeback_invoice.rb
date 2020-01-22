@@ -18,8 +18,8 @@ module Parsers
         invoice_dates = date_string_to_promo_dates(date_string)
 
         {
-          'start_date' => invoice_dates['start_date'],
-          'end_date' => invoice_dates['end_date']
+          'start_date' => invoice_dates.try(:[], 'start_date'),
+          'end_date' => invoice_dates.try(:[], 'end_date')
         }
       end
 

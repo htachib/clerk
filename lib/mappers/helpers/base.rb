@@ -3,6 +3,7 @@ module Mappers
     module Base
       include GlobalSanitizers
       include GlobalLookups::DeductionTypeLookup
+      include GlobalLookups::InvoiceNumberLookup
       include GlobalLookups::ParserLookup
       include GlobalLookups::PlanningRetailerLookup
       include GlobalLookups::RetailChainNameLookup

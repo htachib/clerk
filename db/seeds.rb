@@ -57,16 +57,16 @@ parsers = [
   {"external_id"=>"atrhhxkrzmed", "name"=>"KeHE Vendor Chargeback Report", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheVendorChargebackReport"}},
   {"external_id"=>"entzmqsvwhlo", "name"=>"KeHE Slotting / Placement", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheSlottingPlacement"}},
   {"external_id"=>"sgxpwdeldmaf", "name"=>"KeHE Invoice Adjustment", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheInvoiceAdjustment"}},
-  {"external_id"=>"xvdfkaqiekms", "name"=>"Gelson's Markets Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"GelsonsMarketsDeductionForm"}},
-  {"external_id"=>"egemrhusqnpq", "name"=>"Lazy Acres Market Inc Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"LazyAcresMarketIncDeductionForm"}},
-  {"external_id"=>"pcwjyahbmeiw", "name"=>"Bristol Farms Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"BristolFarmsDeductionForm"}},
-  {"external_id"=>"fkbdqhfziyvw", "name"=>"Akins Natural Foods Supermarket Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"AkinsNaturalFoodsSupermarketDeductionForm"}},
-  {"external_id"=>"twylugwclujn", "name"=>"Bashas Inc Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"BashasIncDeductionForm"}},
-  {"external_id"=>"twylugwclujn", "name"=>"Mollie Stone's Market Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"MollieStonesMarketDeductionForm"}},
-  {"external_id"=>"fqxdkqidfyet", "name"=>"Raleys Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"RaleysDeductionForm"}},
-  {"external_id"=>"ejvuhpkkfxyz", "name"=>"Yoke's Fresh Market Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"YokesFreshMarketDeductionForm"}},
-  {"external_id"=>"ejvuhpkkfxyz", "name"=>"Yoke's Fresh Market Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"YokesFreshMarketDeductionForm"}}
-
+  {"external_id"=>"xvdfkaqiekms", "name"=>"UNFI West Gelson's Markets Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestGelsonsMarketsDeductionForm"}},
+  {"external_id"=>"egemrhusqnpq", "name"=>"UNFI West Lazy Acres Market Inc Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestLazyAcresMarketIncDeductionForm"}},
+  {"external_id"=>"pcwjyahbmeiw", "name"=>"UNFI West Bristol Farms Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestBristolFarmsDeductionForm"}},
+  {"external_id"=>"fkbdqhfziyvw", "name"=>"UNFI West Akins Natural Foods Supermarket Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestAkinsNaturalFoodsSupermarketDeductionForm"}},
+  {"external_id"=>"twylugwclujn", "name"=>"UNFI West Bashas Inc Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestBashasIncDeductionForm"}},
+  {"external_id"=>"dxelskbnmvli", "name"=>"UNFI West Mollie Stone's Market Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestMollieStonesMarketDeductionForm"}},
+  {"external_id"=>"fqxdkqidfyet", "name"=>"UNFI West Raleys Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestRaleysDeductionForm"}},
+  {"external_id"=>"ejvuhpkkfxyz", "name"=>"UNFI West Yoke's Fresh Market Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestYokesFreshMarketDeductionForm"}},
+  {"external_id"=>"uowsqqfvhxcd", "name"=>"UNFI West Whole Foods In Store Execution Fee", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestWholeFoodsInStoreExecutionFee"}},
+  {"external_id"=>"ujgtsdufyfpq", "name"=>"UNFI West NCG Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestNcgDeductionForm"}}
 
 ]
 # CHANGE DESTINATION IDS before production!!

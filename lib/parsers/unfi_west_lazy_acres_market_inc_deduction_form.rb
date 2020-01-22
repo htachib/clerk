@@ -1,11 +1,10 @@
 module Parsers
-  class RaleysDeductionForm < Base
+  class UnfiWestLazyAcresMarketIncDeductionForm < Base
     class << self
       def invoice_data(document)
         parsed_invoice_date(document).deep_merge(
         parsed_totals(document)).deep_merge(
-        parsed_invoice_number(document)).deep_merge(
-        parsed_deduction_description(document))
+        parsed_invoice_number(document))
       end
 
       def parsed_invoice_number(document)
@@ -16,6 +15,7 @@ module Parsers
       def parsed_invoice_date(document)
         start_date = parsed_data(document, 'start_date')
         end_date = parsed_data(document, 'end_date')
+        start_date, end_date = add_years_missing_from_two_dates(start_date, end_date)
 
         {
           'start_date' => start_date,
@@ -31,15 +31,6 @@ module Parsers
 
         {'chargeback_amount' => chargeback_amount,
           'invoice_total' => invoice_total_amount}
-      end
-
-      def parsed_deduction_description(document)
-        deduction_description = parsed_data(document, 'deduction_description')
-        deduction_type = parsed_data(document, 'deduction_type')
-
-        {'deduction_description' => deduction_description,
-          'deduction_type' => deduction_type
-        }
       end
     end
   end

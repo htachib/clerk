@@ -1,11 +1,10 @@
 module Parsers
-  class BashasIncDeductionForm < Base
+  class UnfiWestGelsonsMarketsDeductionForm < Base
     class << self
       def invoice_data(document)
         parsed_invoice_date(document).deep_merge(
         parsed_totals(document)).deep_merge(
-        parsed_invoice_number(document)).deep_merge(
-        parsed_deduction_description(document))
+        parsed_invoice_number(document))
       end
 
       def parsed_invoice_number(document)
@@ -30,11 +29,6 @@ module Parsers
 
         {'chargeback_amount' => chargeback_amount,
           'invoice_total' => invoice_total_amount}
-      end
-
-      def parsed_deduction_description(document)
-        deduction_description = parsed_data(document, 'deduction_description')
-        { 'deduction_description' => deduction_description }
       end
     end
   end

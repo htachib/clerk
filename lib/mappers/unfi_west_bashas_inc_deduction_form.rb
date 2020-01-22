@@ -1,10 +1,10 @@
 module Mappers
-  class RaleysDeductionForm < Base
+  class UnfiWestBashasIncDeductionForm < Base
     class << self
       def prepare_rows(raw_rows)
         prepared_row = OutputHeaders::ROW_FIELDS.deep_dup
         prepared_row['Customer'] = 'UNFI West'
-        prepared_row['Parser'] = "Raleys Deduction Form"
+        prepared_row['Parser'] = "Bashas Inc Deduction Form"
         file_name = raw_rows['file_name'].try(:gsub,'.pdf','').try(:gsub,'.PDF','')
         prepared_row['File Name'] = file_name
         prepared_row['Invoice Number'] = raw_rows['invoice_number']
@@ -12,7 +12,7 @@ module Mappers
         prepared_row['Promo End Date'] = raw_rows['end_date']
         prepared_row['Promo Start Date'] = raw_rows['start_date']
         parser_lookup = get_parser_lookup(prepared_row['Parser'])
-        prepared_row['Deduction Type'] = raw_rows['deduction_type']
+        prepared_row['Deduction Type'] = parser_lookup['Deduction Type']
         prepared_row['Deduction Description'] = raw_rows['deduction_description']
         prepared_row['Customer Chain ID'] = parser_lookup['Customer Chain ID']
         prepared_row['Customer Detailed Name'] = parser_lookup['Customer Detailed Name']

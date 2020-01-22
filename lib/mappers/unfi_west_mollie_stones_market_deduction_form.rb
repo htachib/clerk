@@ -1,10 +1,10 @@
 module Mappers
-  class GelsonsMarketsDeductionForm < Base
+  class UnfiWestMollieStonesMarketDeductionForm < Base
     class << self
       def prepare_rows(raw_rows)
         prepared_row = OutputHeaders::ROW_FIELDS.deep_dup
         prepared_row['Customer'] = 'UNFI West'
-        prepared_row['Parser'] = "Gelson's Markets Deduction Form"
+        prepared_row['Parser'] = "Mollie Stone's Market Deduction Form"
         file_name = raw_rows['file_name'].try(:gsub,'.pdf','').try(:gsub,'.PDF','')
         prepared_row['File Name'] = file_name
         prepared_row['Invoice Number'] = raw_rows['invoice_number']

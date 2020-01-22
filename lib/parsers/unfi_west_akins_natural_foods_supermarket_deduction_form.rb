@@ -1,5 +1,5 @@
 module Parsers
-  class LazyAcresMarketIncDeductionForm < Base
+  class UnfiWestAkinsNaturalFoodsSupermarketDeductionForm < Base
     class << self
       def invoice_data(document)
         parsed_invoice_date(document).deep_merge(
@@ -13,13 +13,16 @@ module Parsers
       end
 
       def parsed_invoice_date(document)
-        start_date = parsed_data(document, 'start_date')
-        end_date = parsed_data(document, 'end_date')
-        start_date, end_date = add_years_missing_from_two_dates(start_date, end_date)
+        invoice_date = get_invoice_date(document)
+        month = month_int_from_string(invoice_date).try(:to_s)
+        year = invoice_date.try(:scan, /\d+$/i).try(:last)
+        month = month.try(:length).try(:<, 2) ? "0#{month}" : month
+        date_string = month + year if month && year
+        invoice_dates = date_string_to_promo_dates(date_string)
 
         {
-          'start_date' => start_date,
-          'end_date' => end_date
+          'start_date' => invoice_dates.try(:[], 'start_date'),
+          'end_date' => invoice_dates.try(:[], 'end_date')
         }
       end
 

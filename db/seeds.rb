@@ -66,7 +66,9 @@ parsers = [
   {"external_id"=>"fqxdkqidfyet", "name"=>"UNFI West Raleys Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestRaleysDeductionForm"}},
   {"external_id"=>"ejvuhpkkfxyz", "name"=>"UNFI West Yoke's Fresh Market Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestYokesFreshMarketDeductionForm"}},
   {"external_id"=>"uowsqqfvhxcd", "name"=>"UNFI West Whole Foods In Store Execution Fee", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestWholeFoodsInStoreExecutionFee"}},
-  {"external_id"=>"ujgtsdufyfpq", "name"=>"UNFI West NCG Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestNcgDeductionForm"}}
+  {"external_id"=>"ujgtsdufyfpq", "name"=>"UNFI West NCG Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestNcgDeductionForm"}},
+  {"external_id"=>"fvzthnbqssbv", "name"=>"UNFI West Chargeback", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestChargeback"}},
+  {"external_id"=>"vqzvmcimjhir", "name"=>"UNFI West Deduction Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestDeductionInvoice"}}
 
 ]
 # CHANGE DESTINATION IDS before production!!

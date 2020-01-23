@@ -6,10 +6,15 @@ module Parsers
       def str_to_dollars(str_amount)
         return nil if !str_amount
         amount = str_amount.to_s.try(:gsub,/(\,|\$)/,'')
-        cents_str = amount.try(:split, /(\.|\s)/).try(:last) || 0
-        dollar_str = amount.try(:split, /(\.|\s)/).try(:first) || 0
+        dollar_cent_split = amount.try(:split, /(\.|\s)/)
+        cents_str = dollar_cent_split.length == 3 ? dollar_cent_split.try(:last) : 0
+        dollar_str = dollar_cent_split.try(:first) || 0
         return '' if !cents_str && !dollar_str
         (dollar_str.to_f) + (cents_str.to_f / 100)
+      end
+
+      def pattern_match_currency(string)
+        string.try(:scan, /\$\d+,?\d*,?\d*,?\d*,?\d*\.?,?\d*/i).try(:flatten).try(:first)
       end
 
       def get_amount_str(totals_arr)
@@ -48,7 +53,7 @@ module Parsers
       end
 
       def string_match(string, regex)
-        regex_match = string.to_s.match(regex)
+        regex_match = string.try(:to_s).try(:match, regex)
         regex_match ? regex_match[0].to_s : nil
       end
 
@@ -159,6 +164,7 @@ module Parsers
 
       def date_string_to_promo_dates(date_string)
         month, year = format_month_year(date_string)
+        month = month.try(:gsub, /^O/, '') if month.class == String #remove leading letter "O"s
         return nil if month.nil? || year.nil? || !(1..13).to_a.include?(month.try(:to_i))
         {
           'start_date' => date_formatted_promo(year, month, 1) || nil,
@@ -194,6 +200,7 @@ module Parsers
       def get_total_in_dollars(amounts_arr, regex)
         return nil if !amounts_arr
         amount_row = string_match_from_arr(amounts_arr, regex)
+        amount_row = amount_row.gsub(/\s*/, '')
         amount_str = string_match(amount_row, /\$?\d*(\.|\s|\,)?\d+\.?\d*/)
         str_to_dollars(amount_str)
       end

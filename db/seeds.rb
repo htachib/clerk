@@ -68,7 +68,8 @@ parsers = [
   {"external_id"=>"uowsqqfvhxcd", "name"=>"UNFI West Whole Foods In Store Execution Fee", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestWholeFoodsInStoreExecutionFee"}},
   {"external_id"=>"ujgtsdufyfpq", "name"=>"UNFI West NCG Deduction Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestNcgDeductionForm"}},
   {"external_id"=>"fvzthnbqssbv", "name"=>"UNFI West Chargeback", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestChargeback"}},
-  {"external_id"=>"vqzvmcimjhir", "name"=>"UNFI West Deduction Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestDeductionInvoice"}}
+  {"external_id"=>"vqzvmcimjhir", "name"=>"UNFI West Deduction Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestDeductionInvoice"}},
+  {"external_id"=>"embozyybspxw", "name"=>"UNFI West Overpull Supplier Billing Report", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestOverpullSupplierBillingReport"}}
 
 ]
 # CHANGE DESTINATION IDS before production!!

@@ -73,7 +73,8 @@ parsers = [
   {"external_id"=>"pvggbzefsohh", "name"=>"UNFI West Product Loss Claims Report", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestProductLossClaimsReport"}},
   {"external_id"=>"edfhqquomghn", "name"=>"UNFI West Vendor Billback Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestVendorBillbackForm"}},
   {"external_id"=>"paonxvnoikme", "name"=>"Kroger Coupon", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KrogerCoupon"}},
-  {"external_id"=>"znoxesmkbaeo", "name"=>"Kroger KOMPASS Merchandising", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KrogerKompassMerchandising"}}
+  {"external_id"=>"znoxesmkbaeo", "name"=>"Kroger KOMPASS Merchandising", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KrogerKompassMerchandising"}},
+  {"external_id"=>"fdowpcikvbkt", "name"=>"Kroger Freight - Unloading Fees", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KrogerFreightUnloadingFees"}}
 
 ]
 # CHANGE DESTINATION IDS before production!!

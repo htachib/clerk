@@ -70,7 +70,8 @@ parsers = [
   {"external_id"=>"fvzthnbqssbv", "name"=>"UNFI West Chargeback", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestChargeback"}},
   {"external_id"=>"vqzvmcimjhir", "name"=>"UNFI West Deduction Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestDeductionInvoice"}},
   {"external_id"=>"embozyybspxw", "name"=>"UNFI West Overpull Supplier Billing Report", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestOverpullSupplierBillingReport"}},
-  {"external_id"=>"pvggbzefsohh", "name"=>"UNFI West Product Loss Claims Report", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestProductLossClaimsReport"}}
+  {"external_id"=>"pvggbzefsohh", "name"=>"UNFI West Product Loss Claims Report", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestProductLossClaimsReport"}},
+  {"external_id"=>"edfhqquomghn", "name"=>"UNFI West Vendor Billback Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestVendorBillbackForm"}}
 
 ]
 # CHANGE DESTINATION IDS before production!!

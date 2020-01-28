@@ -5,9 +5,10 @@ module Parsers
 
       def str_to_dollars(str_amount)
         return nil if !str_amount
-        amount = str_amount.to_s.try(:gsub,/(\,|\$)/,'')
+        amount = str_amount.to_s.try(:gsub,/(\,|\$|\s)/,'')
         dollar_cent_split = amount.try(:split, /(\.|\s)/)
-        cents_str = dollar_cent_split.length == 3 ? dollar_cent_split.try(:last) : 0
+        cents_str = dollar_cent_split.try(:length) == 3 ? dollar_cent_split.try(:last) : 0
+        cents_str += '0' if cents_str.try(:length) == 1
         dollar_str = dollar_cent_split.try(:first) || 0
         return '' if !cents_str && !dollar_str
         (dollar_str.to_f) + (cents_str.to_f / 100)
@@ -88,6 +89,10 @@ module Parsers
       def date_formatted_promo(year, month, day = 1)
         return nil unless (year && month)
         DateTime.new(year.to_i, [month.to_i, 12].min, [day.to_i, 31].min).strftime("%m/%d/%y")
+      end
+
+      def date_to_string(date)
+        date.try(:strftime, '%m/%d/%Y')
       end
 
       def format_month_year(string)

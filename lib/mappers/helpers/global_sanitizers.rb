@@ -16,17 +16,13 @@ module Mappers
 
       def str_to_dollars(str_amount)
         return nil if !str_amount
-        amount = str_amount.to_s.try(:gsub,/(\,|\$)/,'')
-        dollar_cents_arr = amount.split(/(\.|\s)/).select{ |str| str.match?(/\d/) }
-        if dollar_cents_arr
-          if dollar_cents_arr.length == 2
-            return (dollar_cents_arr.first.to_f) + (dollar_cents_arr.last.to_f / 100)
-          elsif dollar_cents_arr.length == 1
-            return (dollar_cents_arr.first.to_f)
-          else
-            return ''
-          end
-        end
+        amount = str_amount.to_s.try(:gsub,/(\,|\$|\s)/,'')
+        dollar_cent_split = amount.try(:split, /(\.|\s)/)
+        cents_str = dollar_cent_split.try(:length) == 3 ? dollar_cent_split.try(:last) : 0
+        cents_str += '0' if cents_str.try(:length) == 1
+        dollar_str = dollar_cent_split.try(:first) || 0
+        return '' if !cents_str && !dollar_str
+        (dollar_str.to_f) + (cents_str.to_f / 100)
       end
     end
   end

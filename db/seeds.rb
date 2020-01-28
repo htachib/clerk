@@ -76,7 +76,9 @@ parsers = [
   {"external_id"=>"znoxesmkbaeo", "name"=>"Kroger KOMPASS Merchandising", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KrogerKompassMerchandising"}},
   {"external_id"=>"fdowpcikvbkt", "name"=>"Kroger Freight - Unloading Fees", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KrogerFreightUnloadingFees"}},
   {"external_id"=>"xroudvlnczed", "name"=>"Kroger KATS", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KrogerKats"}},
-  {"external_id"=>"abfutsnywgwo", "name"=>"DPI Customer Reset Deductions - Kroger", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"DpiCustomerResetDeductionsKroger"}}
+  {"external_id"=>"abfutsnywgwo", "name"=>"DPI Customer Reset Deductions - Kroger", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"DpiCustomerResetDeductionsKroger"}},
+  {"external_id"=>"dkupzwlmncau", "name"=>"DPI MCB", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"DpiMcb"}},
+  {"external_id"=>"1KXsS6ewb6U9C_gOIKEmS9EK6JzxA4IU1", "name"=>"DPI Spoilage", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"source"=>"google_drive", "library"=>"DpiSpoilage"}}
 
 ]
 # CHANGE DESTINATION IDS before production!!

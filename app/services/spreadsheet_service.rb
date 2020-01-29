@@ -42,7 +42,7 @@ class SpreadsheetService
 
   def get_documents(parser)
     if parser.settings.dig('source') == 'google_drive'
-      fetch_documents_from_folder(parser.external_id)
+      fetch_documents_from_folder(parser)
     else # TODO: only fetch documents where created_at > last import
       DocParserService.fetch_documents(parser.external_id)
     end
@@ -75,10 +75,38 @@ class SpreadsheetService
     )
   end
 
-  def fetch_documents_from_folder(folder_id)
-    folder = session.file_by_id(folder_id)
+  def fetch_documents_from_folder(parser)
+    files = []
+    folder = get_folder(parser)
+    spreadsheets = fetch_spreadsheets_from_folder(folder)
+    files.push(spreadsheets) if !spreadsheets.empty?
+    textfiles = fetch_textfiles_from_folder(folder)
+    files.push(textfiles)
+    files.flatten!
+  end
+
+  def get_folder(parser)
+    folder = session.file_by_id(parser.external_id)
+    subfolder_id = parser.settings.dig('subfolder')
+    if subfolder_id
+      subfolders = folder.subfolders
+      folder = subfolders.select{ |f| f.id == parser.settings.dig('subfolder') }.try(:first)
+    end
+    folder
+  end
+
+  def fetch_spreadsheets_from_folder(folder)
     sheets = folder.spreadsheets
     sheets.select { |sheet| !sheet.trashed? }
+  end
+
+  def fetch_textfiles_from_folder(folder)
+    files = folder.files
+    files.map do |file|
+      file.export_as_file("#{Rails.root}/#{file.name}")
+      content = File.read(file.name)
+      { 'id' => file.id, 'file_name' => file.title, 'content' => content, 'uploaded_at' => Date.today }
+    end
   end
 
   def create_sheet(folder_id, sheet_name) # '0BwwA4oUTeiV1TGRPeTVjaWRDY1E'

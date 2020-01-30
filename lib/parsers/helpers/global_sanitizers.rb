@@ -8,8 +8,8 @@ module Parsers
         amount = str_amount.to_s.try(:gsub,/(\,|\$|\s)/,'')
         dollar_cent_split = amount.try(:split, /(\.|\s)/)
         cents_str = dollar_cent_split.try(:length) == 3 ? dollar_cent_split.try(:last) : 0
-        cents_str += '0' if cents_str.try(:length) == 1
-        dollar_str = dollar_cent_split.try(:first) || 0
+        cents_str += '0' if cents_str.try(:length).try(:gsub, /\W*/i, '') == 1
+        dollar_str = dollar_cent_split.try(:first).try(:gsub, /\W*/i, '') || 0
         return '' if !cents_str && !dollar_str
         (dollar_str.to_f) + (cents_str.to_f / 100)
       end

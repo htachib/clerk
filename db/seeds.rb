@@ -82,7 +82,9 @@ parsers = [
   {"external_id"=>"14irlI9TfYc6aiwQ4thaUniUVALGLiiA-", "name"=>"UNFI East Reclaim Vendor Chargeback Report", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"source"=>"google_drive", "subfolder"=>"10TbNWtB-D5qjPIzGOlo4BFfCUKzq7xOx", "library"=>"UnfiEastReclaimVendorChargebackReport"}},
   {"external_id"=>"zdeazcgwlmay", "name"=>"UNFI East Reclaim Vendor Chargeback Report", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastReclaimVendorChargebackReport"}},
   {"external_id"=>"giaozenycspr", "name"=>"UNFI East Quality Deduction", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastQualityDeduction"}},
-  {"external_id"=>"wbiugfbmfpdy", "name"=>"UNFI East Giant Eagle Reclamation Charges", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastGiantEagleReclamationCharges"}}
+  {"external_id"=>"wbiugfbmfpdy", "name"=>"UNFI East Giant Eagle Reclamation Charges", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastGiantEagleReclamationCharges"}},
+  {"external_id"=>"hflqrmhfzbej", "name"=>"UNFI East Whole Foods In Store Execution Fee", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastWholeFoodsInStoreExecutionFee"}}
+
 
 ]
 # CHANGE DESTINATION IDS before production!!

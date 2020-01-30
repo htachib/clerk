@@ -80,7 +80,8 @@ parsers = [
   {"external_id"=>"dkupzwlmncau", "name"=>"DPI MCB", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"DpiMcb"}},
   {"external_id"=>"1KXsS6ewb6U9C_gOIKEmS9EK6JzxA4IU1", "name"=>"DPI Spoilage", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"source"=>"google_drive", "library"=>"DpiSpoilage"}},
   {"external_id"=>"14irlI9TfYc6aiwQ4thaUniUVALGLiiA-", "name"=>"UNFI East Reclaim Vendor Chargeback Report", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"source"=>"google_drive", "subfolder"=>"10TbNWtB-D5qjPIzGOlo4BFfCUKzq7xOx", "library"=>"UnfiEastReclaimVendorChargebackReport"}},
-  {"external_id"=>"zdeazcgwlmay", "name"=>"UNFI East Reclaim Vendor Chargeback Report", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastReclaimVendorChargebackReport"}}
+  {"external_id"=>"zdeazcgwlmay", "name"=>"UNFI East Reclaim Vendor Chargeback Report", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastReclaimVendorChargebackReport"}},
+  {"external_id"=>"giaozenycspr", "name"=>"UNFI East Quality Deduction", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastQualityDeduction"}}
 
 ]
 # CHANGE DESTINATION IDS before production!!

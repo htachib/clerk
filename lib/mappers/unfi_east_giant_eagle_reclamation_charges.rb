@@ -4,7 +4,7 @@ module Mappers
       def prepare_rows(raw_rows)
         prepared_row = OutputHeaders::ROW_FIELDS.deep_dup
         prepared_row['Customer'] = 'UNFI East'
-        prepared_row['Parser'] = "UNFI East Giant Eagle Reclamation Charges"
+        prepared_row['Parser'] = "Giant Eagle Reclamation Charges"
         file_name = raw_rows['file_name'].try(:gsub,'.pdf','').try(:gsub,'.PDF','')
         prepared_row['File Name'] = file_name
         prepared_row['Invoice Number'] = raw_rows['invoice_number']

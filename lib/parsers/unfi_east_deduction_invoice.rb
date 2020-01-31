@@ -66,7 +66,6 @@ module Parsers
       end
 
       def invoice_data(document)
-        binding.pry
         parsed_invoice_date(document).deep_merge(
         parsed_totals(document)).deep_merge(
         parsed_invoice_number(document)).deep_merge(

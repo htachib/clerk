@@ -79,7 +79,7 @@ class SpreadsheetService
     files = []
     folder = get_folder(parser)
     spreadsheets = fetch_spreadsheets_from_folder(folder)
-    files.push(spreadsheets) if !spreadsheets.empty?
+    files.push(spreadsheets).flatten! if !spreadsheets.empty?
     textfiles = fetch_textfiles_from_folder(folder)
     files.push(textfiles)
     files.flatten!
@@ -109,8 +109,9 @@ class SpreadsheetService
   end
 
   def fetch_textfiles_from_folder(folder)
-    return [] if !includes_textfiles?(files)
     files = folder.files
+    return [] if !includes_textfiles?(files)
+
     files.map do |file|
       file.export_as_file("#{Rails.root}/#{file.name}")
       content = File.read(file.name)

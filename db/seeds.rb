@@ -85,7 +85,8 @@ parsers = [
   {"external_id"=>"wbiugfbmfpdy", "name"=>"UNFI East Giant Eagle Reclamation Charges", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastGiantEagleReclamationCharges"}},
   {"external_id"=>"hflqrmhfzbej", "name"=>"UNFI East Whole Foods In Store Execution Fee", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastWholeFoodsInStoreExecutionFee"}},
   {"external_id"=>"amfchtyzxpbs", "name"=>"UNFI East Whole Foods Coupons, Scans", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastWholeFoodsCouponsScans"}},
-  {"external_id"=>"wawkvibydipf", "name"=>"UNFI East Whole Foods Ad Fee", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastWholeFoodsAdFee"}}
+  {"external_id"=>"wawkvibydipf", "name"=>"UNFI East Whole Foods Ad Fee", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastWholeFoodsAdFee"}},
+  {"external_id"=>"kgjwhdiqsqoz", "name"=>"UNFI East Vendor Billback Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastVendorBillbackForm"}}
 
 
 

@@ -87,10 +87,8 @@ parsers = [
   {"external_id"=>"amfchtyzxpbs", "name"=>"UNFI East Whole Foods Coupons, Scans", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastWholeFoodsCouponsScans"}},
   {"external_id"=>"wawkvibydipf", "name"=>"UNFI East Whole Foods Ad Fee", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastWholeFoodsAdFee"}},
   {"external_id"=>"kgjwhdiqsqoz", "name"=>"UNFI East Vendor Billback Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastVendorBillbackForm"}},
-  {"external_id"=>"xmtmcckhoyeo", "name"=>"UNFI East Overpull Supplier Billing Report", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastOverpullSupplierBillingReport"}}
-
-
-
+  {"external_id"=>"xmtmcckhoyeo", "name"=>"UNFI East Overpull Supplier Billing Report", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastOverpullSupplierBillingReport"}},
+  {"external_id"=>"nfmkjvgqhcsl", "name"=>"UNFI East Deduction Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastDeductionInvoice"}}
 
 ]
 # CHANGE DESTINATION IDS before production!!

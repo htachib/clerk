@@ -85,6 +85,14 @@ class SpreadsheetService
     files.flatten!
   end
 
+  def includes_textfiles?(files)
+    included = false
+    files.each do |file|
+      included = true if file.name.include?('.TXT') || file.resource_type == 'document'
+    end
+    included
+  end
+
   def get_folder(parser)
     folder = session.file_by_id(parser.external_id)
     subfolder_id = parser.settings.dig('subfolder')
@@ -101,6 +109,7 @@ class SpreadsheetService
   end
 
   def fetch_textfiles_from_folder(folder)
+    return [] if !includes_textfiles?(files)
     files = folder.files
     files.map do |file|
       file.export_as_file("#{Rails.root}/#{file.name}")

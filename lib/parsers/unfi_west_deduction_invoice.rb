@@ -141,7 +141,8 @@ module Parsers
 
       def parsed_invoice_number(document)
         invoice_number = parsed_rule(document, 'invoice_number_option')
-        {'invoice_number' => invoice_number}
+        match_from_file_name = match_to_file_name(invoice_number, document['file_name'], 5)
+        {'invoice_number' => match_from_file_name}
       end
 
       def multiline_parsed_option(document, idx, option_name)

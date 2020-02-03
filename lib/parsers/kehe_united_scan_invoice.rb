@@ -1,6 +1,8 @@
 module Parsers
   class KeheUnitedScanInvoice < Base
     class << self
+      DATE_REGEX = /\d{1,4}\/\d{1,4}\/\d{1,4}/
+
       def invoice_data(document)
         parsed_invoice_date(document).deep_merge(
         parsed_totals(document)).deep_merge(
@@ -14,9 +16,16 @@ module Parsers
       end
 
       def parsed_invoice_date(document)
-        start_date = parsed_data(document, 'start_date')
-        end_date = parsed_data(document, 'end_date')
-        end_date = date_b_year_cutoff(start_date, end_date)
+        invoice_date_str = parsed_data(document, 'invoice_date')
+        invoice_dates = invoice_date_str.try(:scan, DATE_REGEX)
+        invoice_dates_count = invoice_dates.try(:length)
+        if invoice_dates_count > 1
+          start_date, end_date = invoice_dates
+        elsif invoice_dates_count == 1
+          start_date = end_date = invoice_dates.try(:first)
+        else
+          start_date = end_date = nil
+        end
 
         {
           'start_date' => start_date,

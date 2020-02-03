@@ -24,6 +24,13 @@ module Mappers
         return '' if !cents_str && !dollar_str
         (dollar_str.to_f) + (cents_str.to_f / 100)
       end
+
+      def add_flag_if_missing(row, fields_arr)
+        fields_arr.each do |field|
+          row[field] = 'Not Found' if row[field].blank?
+        end
+        row
+      end
     end
   end
 end

@@ -38,8 +38,9 @@ module Parsers
 
       def parsed_invoice_date(document, row_idx)
         invoice_dates = document.try(:[], 'invoice_date').try(:[], row_idx)
-        start_date = invoice_dates.try(:[], 'start_date')
-        end_date = invoice_dates.try(:[], 'end_date')
+        dates = invoice_dates.try(:values).try(:first).try(:scan, /\d{2}\/\d{2}\/\d{4}/)
+        start_date = dates.try(:[], -2)
+        end_date = dates.try(:[], -1)
 
         {
           'start_date' => start_date,
@@ -73,19 +74,13 @@ module Parsers
 
       def parsed_upc(document, row_idx)
         values = row_values(document, row_idx)
-        joined_values = values[4..-1].try(:join, ' ')
-        upc = joined_values.try(:scan, /\d{6,}/).try(:first)
+        upc = values.try(:join, ' ').try(:scan, /\d{8,}/).try(:last)
         { 'upc' => upc }
       end
 
       def parsed_item_description(document, row_idx)
         values = row_values(document, row_idx)
-        last_date_index = values.each_index.select{ |i| values.try(:[], i).try(:match?, /\/+/) }.try(:last)
-        return { 'item_description' => nil } if !last_date_index
-
-        item_description_index = last_date_index + 1
-        item_description_index += 1 if !values.try(:[], item_description_index).try(:match?, /[a-z]{3,}/i)
-        item_description = values.try(:[], item_description_index).try(:gsub, /^\d+\s*/, '')
+        item_description = values.try(:join, ' ').try(:gsub, /.*\d{8,}\s*/, '').try(:gsub, /\s*\d+.*/, '').try(:gsub, '|', '').try(:strip)
         { 'item_description' => item_description }
       end
 
@@ -96,9 +91,13 @@ module Parsers
 
       def parsed_customer_location(document, row_idx)
         values = row_values(document, row_idx)
-        arr_index = values.each_index.select{ |i| values.try(:[], i).try(:match?, /\/+/) }.try(:first)
-        customer_location_idx = arr_index - 1 if !!arr_index
-        customer_location = values.try(:[], customer_location_idx) if !!customer_location_idx
+        date_regex = /\d{1,4}\/\d{1,4}\/\d{1,4}/
+
+        arr_index = values.each_index.select{ |i| values.try(:[], i).try(:match?, date_regex) }.try(:first)
+        date_str = values[arr_index] if !!arr_index
+        date_str_text = date_str.try(:gsub, /\d{1,4}\/\d{1,4}\/\d{1,4}.*/, '').try(:gsub, /[^[a-z]\s]/i, '').try(:strip) if date_str
+        customer_location = date_str_text.blank? ? values.try(:[], arr_index - 1) : date_str_text
+
         { 'customer_location' => customer_location }
       end
 
@@ -108,7 +107,7 @@ module Parsers
       end
 
       def parsed_shipped(document, row_idx)
-        shipped = parsed_digits(document, row_idx).try(:[], -3)
+        shipped = parsed_digits(document, row_idx).try(:join, ' ').try(:gsub, /[^\d\.\s]/,'').try(:split, ' ').try(:[], -3)
         { 'shipped' => shipped }
       end
     end

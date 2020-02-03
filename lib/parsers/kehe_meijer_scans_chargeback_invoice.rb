@@ -11,11 +11,8 @@ module Parsers
       end
 
       def parsed_invoice_number(document)
-        is_match = invoice_number_file_name_match?(document, 5)
-
-        invoice_number = is_match ? invoice_num_from_file_name(document) : get_invoice_number(document)
-
-        {'invoice_number' => invoice_number}
+        match_from_file_name = invoice_number_file_name_match(document, 5)
+        {'invoice_number' => match_from_file_name}
       end
 
       def parsed_invoice_date(document)

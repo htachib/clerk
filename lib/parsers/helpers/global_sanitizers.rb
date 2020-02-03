@@ -26,10 +26,20 @@ module Parsers
         document['file_name'].split(' ').first.match(/([a-zA-Z]|\d){5,}/).try(:[], 0)
       end
 
-      def invoice_number_file_name_match?(document, char_match_count)
-        file_name_invoice_number = invoice_num_from_file_name(document)
+      def invoice_number_file_name_match(document, char_match_count)
         parsed_invoice_number = get_invoice_number(document)
-        substring_match?(file_name_invoice_number, parsed_invoice_number, char_match_count)
+        file_name = document['file_name']
+        match_to_file_name(parsed_invoice_number, file_name, char_match_count)
+      end
+
+      def match_to_file_name(invoice_number, file_name, char_match_count)
+        match = nil
+        file_name_str_arr = file_name.try(:gsub, /\..*/, '').try(:split, /(\s|\-)/).try(:map, &:strip)
+        file_name_str_arr = file_name_str_arr.select{|sub| sub.try(:length) > 2}
+        file_name_str_arr.each do |substr|
+          match = substr if substring_match?(substr, invoice_number, char_match_count)
+        end
+        match
       end
 
       def substring_match?(option_a, option_b, char_count)

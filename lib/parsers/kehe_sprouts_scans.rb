@@ -9,8 +9,8 @@ module Parsers
       end
 
       def parsed_invoice_number(document)
-        invoice_number = get_invoice_number(document)
-        {'invoice_number' => invoice_number}
+        match_from_file_name = invoice_number_file_name_match(document, 5)
+        {'invoice_number' => match_from_file_name}
       end
 
       def parsed_invoice_date(document)

@@ -11,8 +11,10 @@ module Mappers
           prepared_row['Invoice Number'] = raw_row['invoice_number']
           invoice_number_lookup = get_invoice_number_lookup(raw_row['invoice_number']) if raw_row['invoice_number']
           prepared_row['Deduction Post Date'] = Date.parse(raw_row['uploaded_at']).strftime("%m/%d/%Y")
-          prepared_row['Promo End Date'] = raw_row['end_date']
-          prepared_row['Promo Start Date'] = raw_row['start_date']
+          end_date = raw_row['end_date']
+          start_date = raw_row['start_date']
+          prepared_row['Promo End Date'] = raw_row['end_date'].class == Date ? end_date.try(:strftime, '%m/%d/%y') : end_date
+          prepared_row['Promo Start Date'] = raw_row['start_date'].class == Date ? start_date.try(:strftime, '%m/%d/%y') : start_date
           prepared_row['Deduction Type'] = invoice_number_lookup['Deduction Type']
           prepared_row['Deduction Description'] = invoice_number_lookup['Deduction Description']
           prepared_row['Customer Chain ID'] = invoice_number_lookup['Customer Chain ID']

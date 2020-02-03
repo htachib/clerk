@@ -29,6 +29,8 @@ module Mappers
         prepared_row['EP / Admin Fee'] = chargeback_amount if !invoice_total
         prepared_row['EP / Admin Fee'] = chargeback_amount - invoice_total if chargeback_amount && invoice_total
         prepared_row['Variable Rate Per Unit'] = set_variable_rate(prepared_row)
+        flagged_fields = ['Promo End Date', 'Promo Start Date']
+        prepared_row = add_flag_if_missing(prepared_row, flagged_fields)
         prepared_row.values # => [['asdf', 'asdf', 'asdf']]
       end
     end

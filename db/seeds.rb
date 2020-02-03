@@ -11,7 +11,7 @@ parsers = [
   {"external_id"=>"enowqxdfgcqg", "name"=>"UNFI East Deduction Quarterly", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastDeductionQuarterly"}},
   {"external_id"=>"azwkpkgfxroi", "name"=>"UNFI East Reclamation", "destination_id"=>production_spreadsheet, "is_active"=>false, "settings"=>{"library"=>"UnfiEastReclamation"}},
   {"external_id"=>"unkxjvdpcdwg", "name"=>"KeHE Weekly MCB", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheWeeklyMcb"}},
-  {"external_id"=>"hkoarkqejsvb", "name"=>"KeHE Late Delivery Fee", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheLateDeliveryFee"}},
+  {"external_id"=>"xktyifsdkjpv", "name"=>"KeHE Late Delivery Fee", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheLateDeliveryFee"}},
   {"external_id"=>"bqwnqipeffxj", "name"=>"KeHE Pass Through Promotion", "destination_id"=>production_spreadsheet, "is_active"=>false, "settings"=>{"library"=>"KehePassThroughPromotion"}},
   {"external_id"=>"yajcqtqeuwhd", "name"=>"KeHE Promotion", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KehePromotion"}},
   {"external_id"=>"hjczbplazgti", "name"=>"KeHE Slotting", "destination_id"=>production_spreadsheet, "is_active"=>false, "settings"=>{"library"=>"KeheSlotting"}},
@@ -88,7 +88,10 @@ parsers = [
   {"external_id"=>"wawkvibydipf", "name"=>"UNFI East Whole Foods Ad Fee", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastWholeFoodsAdFee"}},
   {"external_id"=>"kgjwhdiqsqoz", "name"=>"UNFI East Vendor Billback Form", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastVendorBillbackForm"}},
   {"external_id"=>"xmtmcckhoyeo", "name"=>"UNFI East Overpull Supplier Billing Report", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastOverpullSupplierBillingReport"}},
-  {"external_id"=>"nfmkjvgqhcsl", "name"=>"UNFI East Deduction Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastDeductionInvoice"}}
+  {"external_id"=>"nfmkjvgqhcsl", "name"=>"UNFI East Deduction Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiEastDeductionInvoice"}},
+  {"external_id"=>"nezibspvakot", "name"=>"KeHE In Store Credits", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheInStoreCredits"}},
+  {"external_id"=>"hvgkdbutxlwv", "name"=>"UNFI West Whole Foods Coupons, Scans", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestWholeFoodsCouponsScans"}},
+  {"external_id"=>"vnzmwzupdhgj", "name"=>"UNFI West Whole Foods Ad Fee", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestWholeFoodsAdFee"}}
 
 ]
 # CHANGE DESTINATION IDS before production!!

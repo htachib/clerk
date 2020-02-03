@@ -383,7 +383,7 @@ module Mappers
           {"Customer Chain ID"=>["KIMBERTON WHOLE FDS/KIMB INFRA"], "Retail Chain Name"=>"INFRA"},
           {"Customer Chain ID"=>["KIMBERTON WHOLE FDS/OTINFRA"], "Retail Chain Name"=>"INFRA"},
           {"Customer Chain ID"=>["KIMBERTON WHOLE FDS/OTTS INFRA", 'KIMBERTON WHOLEFDS/OTTS INFRA'], "Retail Chain Name"=>"INFRA"},
-          {"Customer Chain ID"=>["KING SOOPERS 620"], "Retail Chain Name"=>"Safeway / Albertsons"},
+          {"Customer Chain ID"=>["KING SOOPERS 620"], "Retail Chain Name"=>"Kroger"},
           {"Customer Chain ID"=>["Kings"], "Retail Chain Name"=>"Kings Super Market"},
           {"Customer Chain ID"=>["KINGSSUPER MAREKT # 39"], "Retail Chain Name"=>"Kings Super Market"},
           {"Customer Chain ID"=>["KINGSSUPER MARKET # 12"], "Retail Chain Name"=>"Kings Super Market"},

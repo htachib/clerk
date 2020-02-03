@@ -38,6 +38,7 @@ module Mappers
           {"Parser"=>"KeHE Sprouts Scans", "Deduction Type"=>"Scan", "Deduction Description"=>nil, "Customer Chain ID"=>"Sprouts", "Customer Detailed Name"=>"Sprouts"},
           {"Parser"=>"KeHE United Scan Invoice", "Deduction Type"=>"Scan", "Deduction Description"=>nil, "Customer Chain ID"=>"Safeway / Albertsons", "Customer Detailed Name"=>"United"},
           {"Parser"=>"KeHE Vendor Chargeback Report", "Deduction Type"=>nil, "Deduction Description"=>nil, "Customer Chain ID"=>"KeHE", "Customer Detailed Name"=>nil},
+          {"Parser"=>"KeHE In Store Credits", "Deduction Type"=>"Spoilage", "Deduction Description"=>"In Store Credits", "Customer Chain ID"=>nil, "Customer Detailed Name"=>nil},
           {"Parser"=>"UNFI East Reclaim Vendor Chargeback Report", "Deduction Type"=>"Spoilage", "Deduction Description"=>"Reclaim Vendor Chargeback Report", "Customer Chain ID"=>"UNFI East", "Customer Detailed Name"=>"UNFI East"},
           {"Parser"=>"UNFI West Chargeback", "Deduction Type"=>nil, "Deduction Description"=>nil, "Customer Chain ID"=>"UNFI West", "Customer Detailed Name"=>"UNFI West"},
           {"Parser"=>"Gelson's Markets Deduction Form", "Deduction Type"=>"Scan", "Deduction Description"=>"Gelson's Price Reduction + Display Fee", "Customer Chain ID"=>"Gelson's Markets", "Customer Detailed Name"=>"Gelson's Markets"},

@@ -26,6 +26,8 @@ module Mappers
         prepared_row['Chargeback Amount'] = raw_rows['chargeback_amount']
         prepared_row['EP / Admin Fee'] = raw_rows['ep_fee']
         prepared_row['Variable Rate Per Unit'] = set_variable_rate(prepared_row)
+        flagged_fields = ['Promo End Date', 'Promo Start Date']
+        prepared_row = add_flag_if_missing(prepared_row, flagged_fields)
         prepared_row.values # => [['asdf', 'asdf', 'asdf']]
       end
     end

@@ -7,18 +7,19 @@ module Parsers
         { 'file_name_regex' => /.*DIBRGS/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_3', 'chargeback_option' => 'chargeback_1', 'ep_fee' => 'admin_fee_1', 'deduction_option' => 'deduction_description' },
         { 'file_name_regex' => /.*EOM/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_4', 'chargeback_option' => 'chargeback_1', 'ep_fee' => 'admin_fee_1', 'deduction_option' => 'deduction_description' },
         { 'file_name_regex' => /.*EFA/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_5', 'chargeback_option' => 'chargeback_1', 'ep_fee' => 'admin_fee_1', 'deduction_option' => 'deduction_description' },
-        { 'file_name_regex' => /.*GEAGLE/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => ['invoice_date_7', 'invoice_date_6'], 'chargeback_option' => 'chargeback_1', 'ep_fee' => 'admin_fee_1', 'deduction_option' => 'deduction_description' },
+        { 'file_name_regex' => /.*GEAGLE/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_6', 'chargeback_option' => 'chargeback_1', 'ep_fee' => 'admin_fee_1', 'deduction_option' => 'deduction_description' },
         { 'file_name_regex' => /FSRGE[a-z]{3}\d{2}.*PB/i, 'date_regex' => /FSRGE(.....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_3', 'ep_fee' => nil, 'deduction_option' => nil },
-        { 'file_name_regex' => /FSRGE\d{2}\d{2}.*A/, 'date_regex' => /FSRGE(....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_2', 'ep_fee' => nil, 'deduction_option' => nil },
+        { 'file_name_regex' => /FSRGE\d{2}\d{2}.*A/, 'date_regex' => /FSRGE(....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_3', 'ep_fee' => nil, 'deduction_option' => nil },
         { 'file_name_regex' => /FSRGE\d{2}\d{2}.*/, 'date_regex' => /FSRGE(....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_2', 'ep_fee' => 'admin_fee_2', 'deduction_option' => nil },
-        { 'file_name_regex' => /FSRGE[a-z]{3}\d{2}.*/i, 'date_regex' => /FSRGE(.....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_2', 'ep_fee' => 'admin_fee_3', 'deduction_option' => nil },
+        { 'file_name_regex' => /FSRGE[a-z]{3}\d{2}.*/i, 'date_regex' => /FSRGE(.....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_3', 'ep_fee' => 'admin_fee_3', 'deduction_option' => nil },
         { 'file_name_regex' => /NSOKOW.*HCM/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_8', 'chargeback_option' => 'chargeback_3', 'ep_fee' => nil, 'deduction_option' => nil },
         { 'file_name_regex' => /.*PUBLIX/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_9', 'chargeback_option' => 'chargeback_4', 'ep_fee' => 'admin_fee_1', 'deduction_option' => 'deduction_description' },
         { 'file_name_regex' => /FSRTFM\d{2}\d{2}.*PB/, 'date_regex' => /FSRTFM(....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_2', 'ep_fee' => 'admin_fee_3', 'deduction_option' => nil },
         { 'file_name_regex' => /FSRTFMGR[a-z]{3}\d{2}.*/i, 'date_regex' => /FSRTFMGR(.....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_2', 'ep_fee' => 'admin_fee_3', 'deduction_option' => nil },
         { 'file_name_regex' => /FSRTFMGR\d{2}\d{2}.*/, 'date_regex' => /FSRTFMGR(....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_2', 'ep_fee' => 'admin_fee_3', 'deduction_option' => nil },
+        { 'file_name_regex' => /FSRTFM\d{2}\d{2}.*/, 'date_regex' => /FSRTFM(....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_2', 'ep_fee' => 'admin_fee_4', 'deduction_option' => nil },
         { 'file_name_regex' => /.*TFM/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_10', 'chargeback_option' => 'chargeback_1', 'ep_fee' => 'admin_fee_1', 'deduction_option' => 'deduction_description' },
-        { 'file_name_regex' => /ERDC\d{2}\d{2}.*/, 'date_regex' => /ERDC(....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_1', 'ep_fee' => nil, 'deduction_option' => nil },
+        { 'file_name_regex' => /ERDC\d{2}\d{2}.*/, 'date_regex' => /ERDC(....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_4', 'ep_fee' => nil, 'deduction_option' => nil },
         { 'file_name_regex' => /EROSF\w{4}.*/, 'date_regex' => /EROSF(....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_3', 'ep_fee' => nil, 'deduction_option' => nil },
         { 'file_name_regex' => /ERNACVTN\d{2}\d{2}.*/, 'date_regex' => /ERNACVTN(....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_4', 'ep_fee' => nil, 'deduction_option' => nil },
         { 'file_name_regex' => /ERVELCTY\d{2}\d{2}.*/, 'date_regex' => /ERVELCTY(....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_3', 'ep_fee' => nil, 'deduction_option' => nil },
@@ -73,8 +74,25 @@ module Parsers
       end
 
       def parsed_invoice_number(document)
-        invoice_number = parsed_rule(document, 'invoice_number_option')
+        invoice_number = parsed_invoice_number_string(document)
         {'invoice_number' => invoice_number}
+      end
+
+      def parsed_invoice_number_string(document)
+        invoice_number = parsed_rule(document, 'invoice_number_option')
+        file_name = document['file_name']
+        match_to_file_name(invoice_number, file_name, 5)
+
+        # case file_name
+        # when /FSRGE\d{2}\d{2}.*A/
+        #   match_to_file_name(invoice_number, file_name, 5)
+        # when /FSRTFMGR\d{2}\d{2}.*/
+        #   match_to_file_name(invoice_number, file_name, 5)
+        # when /EROSF\w{4}.*/
+        #   match_to_file_name(invoice_number, file_name, 5)
+        # else
+        #   invoice_number
+        # end
       end
 
       def parsed_deduction_description(document)
@@ -87,12 +105,12 @@ module Parsers
         if invoice_date_rule.class == Array
           first_rule = invoice_date_rule.try(:first)
           second_rule = invoice_date_rule.try(:last)
-          date_str = parsed_data(document, first_rule)
-          date_str = is_date?(date_str) ? date_str : parsed_data(document, second_rule)
-          str_to_dates(date_str)
+          date_str = parsed_invoice_date_string(document, first_rule)
+          date_str = is_date?(date_str) ? date_str : parsed_invoice_date_string(document, second_rule)
+          start_date, end_date = str_to_dates(date_str)
         elsif invoice_date_rule.class == String
-          date_str = parsed_rule(document, 'invoice_date_option')
-          str_to_dates(date_str)
+          date_str = parsed_invoice_date_string(document, invoice_date_rule)
+          start_date, end_date = str_to_dates(date_str)
         elsif invoice_date_rule.nil?
           date_regex = parser_date_regex(document)
           start_date = end_date = nil if !date_regex
@@ -104,6 +122,19 @@ module Parsers
         end
 
         { 'start_date' => start_date, 'end_date' => end_date }
+      end
+
+      def parsed_invoice_date_string(document, invoice_date_rule)
+        case invoice_date_rule
+        when 'invoice_date_6'
+          document.try(:[], invoice_date_rule).try(:last).try(:values).try(:first)
+        when 'invoice_date_8'
+          dates_arr = document.try(:[], invoice_date_rule)
+          dates = dates_arr.map{|d| d.values.first} if dates_arr
+          "#{dates.try(:min)} #{dates.try(:max)}"
+        else
+          parsed_data(document, invoice_date_rule)
+        end
       end
 
       def str_to_dates(str)
@@ -143,9 +174,21 @@ module Parsers
       end
 
       def apply_ep_fee_options(document, ep_fee_option)
-        return nil if !ep_fee_option
         ep_fee_arr = document.try(:[], ep_fee_option)
-        return nil if !ep_fee_arr
+        return nil if !ep_fee_option || !ep_fee_arr
+        case ep_fee_option
+        when 'admin_fee_1'
+          parsed_data(document, 'admin_fee_1')
+        when 'admin_fee_4'
+          parsed_data(document, 'admin_fee_4')
+        when 'admin_fee_2'
+          option_admin_fee_2_or_3(ep_fee_arr)
+        when 'admin_fee_3'
+          option_admin_fee_2_or_3(ep_fee_arr)
+        end
+      end
+
+      def option_admin_fee_2_or_3(ep_fee_arr)
         arr = ep_fee_arr.map do |h|
           str_to_dollars(h.try(:values).try(:first))
         end

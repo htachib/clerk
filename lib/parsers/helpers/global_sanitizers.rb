@@ -286,7 +286,6 @@ module Parsers
       def full_date?(date_string)
         date_string.try(:match?, /\d{1,4}\/\d{1,4}\/\d{1,4}/)
       end
-
     end
   end
 end

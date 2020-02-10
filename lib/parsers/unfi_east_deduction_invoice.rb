@@ -29,10 +29,10 @@ module Parsers
         { 'file_name_regex' => /URMTO.*HCM/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => ['month_mcb_type', 'invoice_date_6'], 'chargeback_option' => 'chargeback_4', 'ep_fee' => nil, 'deduction_option' => nil },
         { 'file_name_regex' => /NSOWKF.*HCM/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_11', 'chargeback_option' => 'chargeback_3', 'ep_fee' => nil, 'deduction_option' => nil },
         { 'file_name_regex' => /FSRWGM[a-z]{3}\d{2}.*/i, 'date_regex' => /FSRWGM(.....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_4', 'ep_fee' => nil, 'deduction_option' => nil },
-        { 'file_name_regex' => /FSRWGM\d{2}\d{2}.*/, 'date_regex' => /FSRWGM(....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_4', 'ep_fee' => nil, 'deduction_option' => nil },
-        { 'file_name_regex' => /.*WEGMNS/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_6', 'chargeback_option' => 'chargeback_1', 'ep_fee' => nil, 'deduction_option' => 'deduction_description' },
+        { 'file_name_regex' => /FSRWGM\d{2}\d{2}.*/, 'date_regex' => /FSRWGM(....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_4', 'ep_fee' => 'admin_fee_4', 'deduction_option' => nil },
+        { 'file_name_regex' => /.*WEGMNS/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_6', 'chargeback_option' => 'chargeback_1', 'ep_fee' => 'admin_fee_1', 'deduction_option' => 'deduction_description' },
         { 'file_name_regex' => /.*WINDIXPB/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_4', 'ep_fee' => nil, 'deduction_option' => nil },
-        { 'file_name_regex' => /.*WINDIX/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_12', 'chargeback_option' => 'chargeback_4', 'ep_fee' => nil, 'deduction_option' => 'deduction_description' },
+        { 'file_name_regex' => /.*WINDIX/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_12', 'chargeback_option' => 'chargeback_4', 'ep_fee' => 'admin_fee_1', 'deduction_option' => 'deduction_description' },
         { 'file_name_regex' => /KGFSR\d{2}\d{2}.*/, 'date_regex' => /KGFSR(....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_2', 'ep_fee' => nil, 'deduction_option' => nil }
       ]
 
@@ -82,17 +82,6 @@ module Parsers
         invoice_number = parsed_rule(document, 'invoice_number_option')
         file_name = document['file_name']
         match_to_file_name(invoice_number, file_name, 5)
-
-        # case file_name
-        # when /FSRGE\d{2}\d{2}.*A/
-        #   match_to_file_name(invoice_number, file_name, 5)
-        # when /FSRTFMGR\d{2}\d{2}.*/
-        #   match_to_file_name(invoice_number, file_name, 5)
-        # when /EROSF\w{4}.*/
-        #   match_to_file_name(invoice_number, file_name, 5)
-        # else
-        #   invoice_number
-        # end
       end
 
       def parsed_deduction_description(document)
@@ -103,20 +92,11 @@ module Parsers
       def parsed_invoice_date(document)
         invoice_date_rule = parser_rule_option(document, 'invoice_date_option')
         if invoice_date_rule.class == Array
-          first_rule = invoice_date_rule.try(:first)
-          second_rule = invoice_date_rule.try(:last)
-          date_str = parsed_invoice_date_string(document, first_rule)
-          date_str = is_date?(date_str) ? date_str : parsed_invoice_date_string(document, second_rule)
-          start_date, end_date = str_to_dates(date_str)
+          start_date, end_date = parsed_invoice_date_array(document, invoice_date_rule)
         elsif invoice_date_rule.class == String
-          date_str = parsed_invoice_date_string(document, invoice_date_rule)
-          start_date, end_date = str_to_dates(date_str)
+          start_date, end_date = parsed_invoice_date_string(document, invoice_date_rule)
         elsif invoice_date_rule.nil?
-          date_regex = parser_date_regex(document)
-          start_date = end_date = nil if !date_regex
-          date_string = file_name(document).try(:scan, date_regex).try(:flatten).try(:first)
-          dates = date_string_to_promo_dates(date_string)
-          start_date, end_date = dates.try(:values)
+          start_date, end_date = parsed_invoice_date_nil(document)
         else
           start_date = end_date = nil
         end
@@ -124,17 +104,43 @@ module Parsers
         { 'start_date' => start_date, 'end_date' => end_date }
       end
 
+      def parsed_invoice_date_nil(document)
+        date_regex = parser_date_regex(document)
+        start_date = end_date = nil if !date_regex
+        date_string = file_name(document).try(:scan, date_regex).try(:flatten).try(:first)
+        dates = date_string_to_promo_dates(date_string)
+        start_date, end_date = dates.try(:values)
+        [start_date, end_date]
+      end
+
+      def parsed_invoice_date_array(document, rules)
+        case file_name(document)
+        when /URMTO.*HCM/
+          month_str = parsed_data(document, 'month_mcb_type')
+          year_str = parsed_invoice_date_string(document, rules.try(:last)).try(:first)
+          month_int = month_int_from_string(month_str)
+          year_int = Date.strptime(year_str, '%m/%d/%Y').try(:year)
+          start_date = date_formatted_promo(year_int, month_int, 1)
+          end_date = date_formatted_promo(year_int, month_int, -1)
+        else
+          start_date = end_date = nil
+        end
+        [start_date, end_date]
+      end
+
       def parsed_invoice_date_string(document, invoice_date_rule)
+        date_str = nil
         case invoice_date_rule
         when 'invoice_date_6'
-          document.try(:[], invoice_date_rule).try(:last).try(:values).try(:first)
+          date_str = document.try(:[], invoice_date_rule).try(:last).try(:values).try(:first)
         when 'invoice_date_8'
           dates_arr = document.try(:[], invoice_date_rule)
           dates = dates_arr.map{|d| d.values.first} if dates_arr
-          "#{dates.try(:min)} #{dates.try(:max)}"
+          date_str = "#{dates.try(:min)} #{dates.try(:max)}"
         else
-          parsed_data(document, invoice_date_rule)
+          date_str = parsed_data(document, invoice_date_rule)
         end
+        str_to_dates(date_str)
       end
 
       def str_to_dates(str)
@@ -150,11 +156,6 @@ module Parsers
         [start_date, end_date]
       end
 
-      def is_date?(str)
-        str.try(:match?, /\d{1,4}\/\d{1,4}\/\d{1,4}/)
-      end
-
-      #admin fee: first try admin_fee_3. MIN of smaller number in admin_fee_2 if 2 numbers exist, otherwise, try admin fee 3
       def parsed_totals(document)
         chargeback_option = parser_rule_option(document, 'chargeback_option')
         ep_fee_option = parser_rule_option(document, 'ep_fee')
@@ -174,25 +175,23 @@ module Parsers
       end
 
       def apply_ep_fee_options(document, ep_fee_option)
-        ep_fee_arr = document.try(:[], ep_fee_option)
-        return nil if !ep_fee_option || !ep_fee_arr
+        ep_fee_list = parsed_data(document, ep_fee_option, false)
+        return nil if !ep_fee_option || ep_fee_list.blank?
+        ep_fee_options(document, ep_fee_option)
+      end
+
+      def ep_fee_options(document, ep_fee_option)
         case ep_fee_option
-        when 'admin_fee_1'
-          parsed_data(document, 'admin_fee_1')
+        when 'admin_fee_1' # sum of admin_fee column
+          ep_fee_arr = parsed_data(document, ep_fee_option, false)
+          ep_fee_arr.map{|v| str_to_dollars(v)}.try(:inject, 0, &:+)
         when 'admin_fee_4'
           parsed_data(document, 'admin_fee_4')
         when 'admin_fee_2'
-          option_admin_fee_2_or_3(ep_fee_arr)
+          parsed_data(document, 'admin_fee_2', false).try(:min)
         when 'admin_fee_3'
-          option_admin_fee_2_or_3(ep_fee_arr)
+          parsed_data(document, 'admin_fee_3', false).try(:min)
         end
-      end
-
-      def option_admin_fee_2_or_3(ep_fee_arr)
-        arr = ep_fee_arr.map do |h|
-          str_to_dollars(h.try(:values).try(:first))
-        end
-        arr.try(:min)
       end
     end
   end

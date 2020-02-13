@@ -3,7 +3,7 @@ module Parsers
     class << self
       PARSER_RULE_OPTIONS = [
         { 'file_name_regex' => /.*AHOLD/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_2', 'chargeback_option' => 'chargeback_1', 'ep_fee' => 'admin_fee_1', 'deduction_option' => 'deduction_description' },
-        { 'file_name_regex' => /.*BIGY/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_8', 'chargeback_option' => 'chargeback_1', 'ep_fee' => 'admin_fee_1', 'deduction_option' => 'deduction_description' },
+        { 'file_name_regex' => /.*BIGY/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_1', 'chargeback_option' => 'chargeback_1', 'ep_fee' => 'admin_fee_1', 'deduction_option' => 'deduction_description' },
         { 'file_name_regex' => /.*DIBRGS/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_3', 'chargeback_option' => 'chargeback_1', 'ep_fee' => 'admin_fee_1', 'deduction_option' => 'deduction_description' },
         { 'file_name_regex' => /.*EOM/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_4', 'chargeback_option' => 'chargeback_1', 'ep_fee' => 'admin_fee_1', 'deduction_option' => 'deduction_description' },
         { 'file_name_regex' => /.*EFA/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_5', 'chargeback_option' => 'chargeback_1', 'ep_fee' => 'admin_fee_1', 'deduction_option' => 'deduction_description' },
@@ -33,7 +33,7 @@ module Parsers
         { 'file_name_regex' => /.*WEGMNS/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_6', 'chargeback_option' => 'chargeback_1', 'ep_fee' => 'admin_fee_1', 'deduction_option' => 'deduction_description' },
         { 'file_name_regex' => /.*WINDIXPB/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_4', 'ep_fee' => nil, 'deduction_option' => nil },
         { 'file_name_regex' => /.*WINDIX/, 'date_regex' => nil,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => 'invoice_date_12', 'chargeback_option' => 'chargeback_4', 'ep_fee' => 'admin_fee_1', 'deduction_option' => 'deduction_description' },
-        { 'file_name_regex' => /KGFSR\d{2}\d{2}.*/, 'date_regex' => /KGFSR(....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_2', 'ep_fee' => nil, 'deduction_option' => nil }
+        { 'file_name_regex' => /KGFSR\d{2}\d{2}.*/, 'date_regex' => /KGFSR(....)/,'invoice_number_option' => 'invoice_number_1', 'invoice_date_option' => nil, 'chargeback_option' => 'chargeback_2', 'ep_fee' => 'admin_fee_2', 'deduction_option' => nil }
       ]
 
 

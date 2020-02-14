@@ -32,6 +32,8 @@ module Mappers
           prepared_row['Product'] = raw_row['upc']
           prepared_row['Description'] = raw_row['item_description']
           prepared_row['Customer Location'] = raw_row['customer_location']
+          flagged_fields = ['Promo End Date', 'Promo Start Date', 'Product', 'Description', 'Customer Location']
+          prepared_row = add_flag_if_missing(prepared_row, flagged_fields)
           prepared_row.values # => [['asdf', 'asdf', 'asdf']]
         end
       end

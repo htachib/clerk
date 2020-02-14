@@ -3,7 +3,7 @@ module Parsers
     class << self
       def parse_rows(document)
         rows = []
-        row_count = document.try(:[], 'invoice_date').count
+        row_count = line_items(document).try(:count)
 
         row_count.times do |row_idx|
           meta_data = parsed_meta_data(document)
@@ -37,8 +37,8 @@ module Parsers
       end
 
       def parsed_invoice_date(document, row_idx)
-        invoice_dates = document.try(:[], 'invoice_date').try(:[], row_idx)
-        dates = invoice_dates.try(:values).try(:first).try(:scan, /\d{2}\/\d{2}\/\d{4}/)
+        row = row_values(document, row_idx)
+        dates = row.try(:scan, /\d{2}\/\d{2}\/\d{4}/)
         start_date = dates.try(:[], -2)
         end_date = dates.try(:[], -1)
 
@@ -49,36 +49,28 @@ module Parsers
       end
 
       def line_items(document)
-        line_items = document.try(:[], 'line_items').map{|line| line.try(:values).try(:first)}
+        raw_line_items = document.try(:[], 'line_items').map{|line| line.try(:values).try(:first)}
         merged_line_items = []
-        skip = false
-        line_items.each_with_index do |line, idx|
-          line = line.try(:gsub, /\W+$/, '').try(:strip)
-          if skip
-            skip = false
-            next
-          elsif line.try(:match?, /\d+(\.|\,)\d+$/)
-            merged_line_items.push(line)
-          else
-            line = line + line_items.try(:[], idx + 1)
-            merged_line_items.push(line)
-            skip = true
+        line_items_stripped = raw_line_items.map { |l| l.try(:gsub, /\W+$/, '').try(:strip) }
+        row_idx_with_totals = line_items_stripped.each_with_index.map{|line, idx| idx if line.try(:match?, /\d+(\.|\,)\d+$/) }
+        split_row = ''
+        line_items_stripped.each_with_index do |row, idx|
+          split_row += row
+          if row_idx_with_totals.include?(idx)
+            merged_line_items.push(split_row)
+            split_row = ''
           end
         end
         merged_line_items
       end
 
-      def get_line_item(document, row_idx)
+      def row_values(document, row_idx)
         line_items(document).try(:[], row_idx)
       end
 
       def parsed_digits(document, row_idx)
         values = row_values(document, row_idx)
         values.try(:scan, /\d+\.?\d*/)
-      end
-
-      def row_values(document, row_idx) # merges and sanitizes rows
-        get_line_item(document, row_idx)
       end
 
       def parsed_totals(document, row_idx)
@@ -109,32 +101,32 @@ module Parsers
       end
 
       def parsed_customer_location(document, row_idx)
-        values = row_values(document, row_idx)
-        cols = values.try(:strip).try(:scan, /[a-z\s\&\']{5,}/i)
-        customer_location_str = cols.try(:[], -2)
+        row = row_values(document, row_idx)
+        customer_location_str = strip_customer_location_string(row)
         customer_location = strip_non_letters(customer_location_str)
-
-        # first_date_str = get_nth_date_str(values, 0)
-        # customer_location = first_date_str.try(:length) < 3 ? get_nth_date_str(values, 1) : first_date_str
 
         { 'customer_location' => customer_location }
       end
 
-      def text_chars(arr)
-        arr.select{|v| v.match?(/[a-z]{4,}/i) && v.length > 4}
+      def strip_customer_location_string(string)
+        pre_substring = remove_post_customer_location_substring(string)
+        post_substring = remove_pre_customer_location_substring(pre_substring)
       end
 
-      def get_nth_date_str(values, n)
-        # date_regex = /\d{1,4}\/\d{1,4}\/\d{1,4}/
-        # # date_regex = /\d{1,4}\/\d{1,4}\/\d{1,4}\w{4,}.*\d{1,4}\/\d{1,4}\/\d{1,4}.*$/i
-        # cols = values.try(:split, date_regex)
-        # text_cols = text_chars(cols)
-        # col = text_cols.try(:[], 1).try(:split, '|')
-        # text_chars(col).try(:first).try(:strip)
-        # arr_index = values.each_index.select{ |i| values.try(:[], i).try(:match?, date_regex) }.try(:[], n)
-        # date_str = values[arr_index] if !!arr_index
-        # date_str_text = date_str.try(:gsub, /\d{1,4}\/\d{1,4}\/\d{1,4}.*/, '').try(:gsub, /(\||\$)/i, '').try(:strip) if date_str
-        # date_str_text.blank? && arr_index > 0 ? values.try(:[], arr_index - 1) : date_str_text
+      def remove_pre_customer_location_substring(string)
+        string.gsub(/.*\d{3,}/,'')
+      end
+
+      def remove_post_customer_location_substring(string)
+        substring = string.try(:gsub, /\d{1,4}\/\d{1,4}\/\d{1,4}.{1,5}\d{8,}.*/, '')
+        date_index_arr = substring.enum_for(:scan, /\d{1,4}\/\d{1,4}\/\d{1,4}/).map { Regexp.last_match.offset(0).first }
+        return substring if date_index_arr.empty?
+        last_date_index = date_index_arr.try(:last)
+        substring.try(:gsub, substring[last_date_index..-1], '')
+      end
+
+      def text_chars(arr)
+        arr.select{|v| v.match?(/[a-z]{4,}/i) && v.length > 4}
       end
 
       def parsed_contract_type(document)

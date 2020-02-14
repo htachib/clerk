@@ -80,8 +80,15 @@ module Parsers
 
       def parsed_invoice_number_string(document)
         invoice_number = parsed_rule(document, 'invoice_number_option')
-        file_name = document['file_name']
-        match_to_file_name(invoice_number, file_name, 5)
+        file_name = file_name(document)
+        exception_match_to_file_name?(file_name) ? invoice_number : match_to_file_name(invoice_number, file_name, 5)
+      end
+
+      def exception_match_to_file_name?(file_name)
+        exceptions = [/FSRGE\d{2}\d{2}.*/]
+        is_match = false
+        exceptions.each{ |e| is_match = true if file_name.try(:match?, e) }
+        is_match
       end
 
       def parsed_deduction_description(document)

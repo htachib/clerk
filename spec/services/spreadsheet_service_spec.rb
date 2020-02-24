@@ -12,7 +12,7 @@ describe SpreadsheetService do
     dummy_workbook = OpenStruct.new({append: true})
     allow(dummy_session).to receive(:spreadsheet_by_key).with(/.*/).and_return dummy_workbook
     allow(dummy_workbook).to receive(:append).with(any_args).and_return true
-    allow_any_instance_of(SpreadsheetService).to receive(:client).and_return(dummy_session)
+    allow(DriveService).to receive(:client).and_return(dummy_session)
 
     create(:parser)
   end

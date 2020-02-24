@@ -14,18 +14,6 @@ module Mappers
         shipped == 0 || shipped == '' ? 0 : (chargeback_amount.to_f - ep_fee.to_f) / shipped.to_f
       end
 
-      def str_to_dollars(str_amount)
-        return nil if !str_amount
-        amount = str_amount.to_s.try(:gsub,/(\,|\$|\s)/,'')
-        dollar_cent_split = amount.try(:split, /(\.|\s)/)
-        cents_str = dollar_cent_split.try(:length) == 3 ? dollar_cent_split.try(:last) : 0
-        cents_str += '0' if cents_str.try(:gsub, /\W*/i, '').try(:length) == 1
-        cents_str = cents_str.try(:scan, /^\d{2}/).try(:first)
-        dollar_str = dollar_cent_split.try(:first).try(:gsub, /\W*/i, '') || 0
-        return '' if !cents_str && !dollar_str
-        (dollar_str.to_f) + (cents_str.to_f / 100)
-      end
-
       def add_flag_if_missing(row, fields_arr)
         fields_arr.each do |field|
           row[field] = 'Not Found' if row[field].blank?

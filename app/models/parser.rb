@@ -1,4 +1,6 @@
 class Parser < ActiveRecord::Base
+  include Libraryable
+
   belongs_to :user
   has_many :documents, dependent: :destroy
   has_many :parse_map_exceptions, dependent: :destroy

@@ -20,18 +20,37 @@ describe SpreadsheetService do
   subject { described_class.new(create(:user)) }
 
   describe '#import_data' do
-    it 'should import documents and upload data to Google Sheets' do
-      expect {
+    context 'working parser and document' do
+      it 'should import documents and upload data to Google Sheets' do
+        expect {
+          subject.import_data!
+        }.to change { Document.processed.count }.by(1)
+      end
+
+      it 'should not import the same documents twice' do
         subject.import_data!
-      }.to change { Document.processed.count }.by(1)
+
+        expect {
+          subject.import_data!
+        }.to change { Document.count }.by(0)
+      end
     end
 
-    it 'should not import the same documents twice' do
-      subject.import_data!
+    context 'breaking document' do
+      before do
+        allow_any_instance_of(Parser).to receive(:library_name).and_return(nil)
+      end
 
-      expect {
+      it 'should create a parser exception log' do
+        expect {
+          subject.import_data!
+        }.to change { ParseMapException.count }.by(1)
+      end
+
+      it 'should relate ParseMapException to trouble Document' do
         subject.import_data!
-      }.to change { Document.count }.by(0)
+        expect(ParseMapException.last.file_name).to eql Document.last.name
+      end
     end
   end
 end

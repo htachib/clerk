@@ -1,0 +1,20 @@
+[{"id": "c66659bcd05043daedb445e5e725a8f2",
+  "document_id": "3c9119cc2f2176f4e7a8bea7caa800f1",
+  "remote_id": "",
+  "file_name": "HA2944125 - 2019-06-24 (1).pdf",
+  "media_link":
+   "https://api.docparser.com/v1/document/media/_pFbCCkwC7q8uZmwgZ5_L96zwW5bUQTER0_c_16KxngyiRDVwq1Txz7wN-NDJLAgl3sKnKeHrD_MJ1wevfciBopUpLRU8Pc_rGagL6B38Tg",
+  "media_link_original":
+   "https://api.docparser.com/v1/document/media/_pFbCCkwC7q8uZmwgZ5_L96zwW5bUQTER0_c_16KxngyiRDVwq1Txz7wN-NDJLAgl3sKnKeHrD_MJ1wevfciBopUpLRU8Pc_rGagL6B38Tg/original",
+  "media_link_data":
+   "https://api.docparser.com/v1/document/media/_pFbCCkwC7q8uZmwgZ5_L96zwW5bUQTER0_c_16KxngyiRDVwq1Txz7wN-NDJLAgl3sKnKeHrD_MJ1wevfciBopUpLRU8Pc_rGagL6B38Tg/data",
+  "page_count": 2,
+  "uploaded_at": "2020-02-03T02:33:42+00:00",
+  "processed_at": "2020-02-03T03:03:57+00:00",
+  "invoice_number": [{"key_0": "HA2944125"}],
+  "totals": [{"key_0": "26.30"}],
+  "shipped": [{"key_0": "5"}],
+  "invoice_date": [{"key_0": "201904"}],
+  "deduction_description":
+   [{"key_0": "Albertson / Safeway Non-Service In Store Credits"}],
+  "customer_chain": [{"key_0": "Albertson / Safeway"}]}]

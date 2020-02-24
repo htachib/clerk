@@ -109,4 +109,20 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+
+  def json_fixture(file_name, *args)
+    JSON.parse(string_fixture(file_name, *args))
+  end
+
+  def string_fixture(file_name, *args)
+    contents = File.open(File.dirname(__FILE__) + '/fixtures/' + file_name + '.json', 'rb').read
+
+    return contents unless args.first
+
+    args.first.each do |key, value|
+      contents.gsub!('{{' + key.to_s + '}}', value)
+    end
+
+    contents
+  end
 end

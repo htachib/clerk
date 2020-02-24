@@ -4,6 +4,7 @@ class DocParserService
 
   def self.fetch_documents(parser_id, limit=200)
     url = BASE_URL + "/results/#{parser_id}"
-    HTTParty.get(url + "?api_key=#{API_KEY}&limit=#{limit}").parsed_response
+    resp = HTTParty.get(url + "?api_key=#{API_KEY}&limit=#{limit}")
+    resp.success? ? JSON.parse(resp.body) : []
   end
 end

@@ -3,7 +3,7 @@ class SpreadsheetService
   attr_accessor :user
 
   def initialize(user = nil)
-    @session = client
+    @session = DriveService.client
     @user = user ||= User.find_by(email: User::ADMIN_EMAIL)
   end
 
@@ -119,19 +119,5 @@ class SpreadsheetService
 
   def create_sheet(folder_id, sheet_name) # '0BwwA4oUTeiV1TGRPeTVjaWRDY1E'
     session.create_spreadsheet(sheet_name)
-  end
-
-  def client
-    credentials.fetch_access_token!
-    GoogleDrive::Session.from_credentials(credentials)
-  end
-
-  def credentials
-    Google::Auth::UserRefreshCredentials.new(
-      client_id: ENV['GOOGLE_DRIVE_APP_CLIENT_ID'],
-      client_secret: ENV['GOOGLE_DRIVE_APP_CLIENT_SECRET'],
-      scope: GoogleSheets::SCOPES,
-      refresh_token: ENV['GOOGLE_DRIVE_REFRESH_TOKEN']
-    )
   end
 end

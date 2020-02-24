@@ -24,8 +24,8 @@ module Parsers
       def parsed_totals(document)
         invoice_total_str = parsed_data(document, 'invoice_total')
         chargeback_str = parsed_data(document, 'chargeback')
-        invoice_total_amount = str_to_dollars(invoice_total_str)
-        chargeback_amount = str_to_dollars(chargeback_str)
+        invoice_total_amount = invoice_total_str.to_dollars
+        chargeback_amount = chargeback_str.to_dollars
 
         {'chargeback_amount' => chargeback_amount,
           'invoice_total' => invoice_total_amount}

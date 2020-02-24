@@ -50,7 +50,7 @@ module Parsers
       def parsed_totals(document, row_idx)
         totals = get_totals(document)
         chargeback_amount = totals.try(:[], row_idx)
-        { 'chargeback_amount' => str_to_dollars(chargeback_amount) }
+        { 'chargeback_amount' => chargeback_amount.to_dollars }
       end
 
       def parsed_deduction_description(document)

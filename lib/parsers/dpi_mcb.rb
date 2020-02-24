@@ -75,7 +75,7 @@ module Parsers
 
       def parsed_totals(document, row_idx)
         chargeback_amount = parsed_digits(document, row_idx).try(:last)
-        { 'chargeback_amount' => str_to_dollars(chargeback_amount) }
+        { 'chargeback_amount' => chargeback_amount.to_dollars }
       end
 
       def parsed_upc(document, row_idx)

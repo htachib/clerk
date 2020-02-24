@@ -24,7 +24,7 @@ module Parsers
 
       def parsed_totals(document)
         totals = get_totals(document)
-        chargeback_amount = str_to_dollars(totals)
+        chargeback_amount = totals.to_dollars
 
         { 'chargeback_amount' => chargeback_amount }
       end

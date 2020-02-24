@@ -184,7 +184,7 @@ module Parsers
         admin_fee_group_str = document.try(:[], 'admin_fee').try(:map, &:values).try(:flatten)
         admin_fee_group = admin_fee_group_str.map do |str|
           str.try(:gsub, 'O', '0')
-          str_to_dollars(str)
+          str.to_dollars
         end
 
         admin_fee_group.try(:min)

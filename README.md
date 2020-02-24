@@ -12,6 +12,12 @@ $ rails db:seed # only need to do this once
 $ rails s
 ```
 
+## Testing
+```
+$ bin/rails db:migrate RAILS_ENV=test
+$ bundle exec rspec spec/
+```
+
 ## Additional Options
 1. Put your UA-XXX property code for Google Analytics in shared/footer
 2. Install Sendgrid add-on (Heroku), visit [settings](https://app.sendgrid.com/settings/tracking) to disable click, open tracking and enable subscription tracking

@@ -38,8 +38,8 @@ module Parsers
         type = parsed_type(meta_data)
         customer = parsed_customer(meta_data)
 
-        {'invoice number' => invoice_number,
-          'Type' => type,
+        {'invoice_number' => invoice_number,
+          'type' => type,
           'customer_name' => customer}
       end
 

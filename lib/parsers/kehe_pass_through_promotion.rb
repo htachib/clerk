@@ -47,7 +47,7 @@ module Parsers
         meta_data = get_meta_data(document)
         invoice_number = invoice_num_from_file_name(document) || parsed_invoice_number(meta_data)
 
-        {'invoice number' => invoice_number}
+        {'invoice_number' => invoice_number}
       end
 
       def parsed_invoice_date(document)

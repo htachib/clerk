@@ -37,8 +37,8 @@ module Parsers
         invoice_number = invoice_num_from_file_name(document) || parsed_invoice_number(meta_data)
         type = parsed_type(meta_data)
 
-        {'invoice number' => invoice_number,
-          'Type' => type}
+        {'invoice_number' => invoice_number,
+          'type' => type}
       end
 
       def parsed_totals(document)

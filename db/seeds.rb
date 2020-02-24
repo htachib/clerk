@@ -1,9 +1,10 @@
+# set up admin user
 admin_params = { email: User::ADMIN_EMAIL }
 admin = User.find_by(admin_params)
-User.create!(admin_params.merge('password' => 'password', 'password_confirmation' => 'password')) if admin.nil?
+admin = User.create!(admin_params.merge(admin: true, 'password' => 'password', 'password_confirmation' => 'password')) if admin.nil?
 
 production_spreadsheet = '1HqExgCGtmkiB1XX3BRI67w-k8NHZSReE06Sih7P68mM' # changed to new month
-# prepare: Parser.all.map {|p| p.attributes.except('created_at', 'id', 'updated_at', 'user_id')}
+
 parsers = [
   {"external_id"=>"1Z5by0rrvu1tVw5K2nXZRAJL3ct2TM7GS", "name"=>"UNFI East Weekly MCB", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"source"=>"google_drive", "library"=>"UnfiEastWeeklyMcb"}},
   {"external_id"=>"xvexmuksclhe", "name"=>"UNFI West Weekly MCB", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"UnfiWestWeeklyMcb"}},

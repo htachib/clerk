@@ -15,12 +15,10 @@ class SpreadsheetService
         doc = prepare_doc(parser, document)
         next if doc.processed?
 
-        # todo, could check spreadsheet headers and ensure they match?
         data = parse_and_prepare_rows(document, parser) # parses and prepares rows
+        next unless data
 
-        if data
-          doc.process! if add_rows(parser, data) # returns true/false
-        end
+        doc.process! if add_rows(parser, data) # returns true/false
       end
     end
   end
@@ -43,7 +41,7 @@ class SpreadsheetService
   def get_documents(parser)
     if parser.settings.dig('source') == 'google_drive'
       fetch_documents_from_folder(parser)
-    else # TODO: only fetch documents where created_at > last import
+    else
       DocParserService.fetch_documents(parser.external_id)
     end
   end

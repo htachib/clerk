@@ -7,9 +7,9 @@ module Mappers
         ep_fee_str = prepared_row['EP / Admin Fee'] || 0
         shipped_str = prepared_row['Shipped'] || 0
 
-        chargeback_amount = str_to_dollars(chargeback_amount_str)
-        ep_fee = str_to_dollars(ep_fee_str)
-        shipped = str_to_dollars(shipped_str)
+        chargeback_amount = chargeback_amount_str.to_dollars
+        ep_fee = ep_fee_str.to_dollars
+        shipped = shipped_str.to_dollars
 
         shipped == 0 || shipped == '' ? 0 : (chargeback_amount.to_f - ep_fee.to_f) / shipped.to_f
       end

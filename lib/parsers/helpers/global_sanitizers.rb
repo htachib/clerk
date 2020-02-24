@@ -206,7 +206,7 @@ module Parsers
         amount_row = string_match_from_arr(amounts_arr, regex)
         amount_row = amount_row.try(:gsub,/\s*/, '')
         amount_str = string_match(amount_row, /\$?\d*(\.|\s|\,)?\d+\.?\d*/)
-        str_to_dollars(amount_str)
+        amount_str.to_dollars
       end
 
       def titleize_with_spaces(string)

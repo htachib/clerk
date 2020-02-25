@@ -5,6 +5,6 @@ FactoryBot.define do
     name  { 'Cat Scans' }
     destination_id { SecureRandom.hex(16) }
     is_active { true }
-    settings { { 'library' => 'KeheNonserviceInStoreCredits' } }
+    settings { { 'library' => 'KeheInStoreCredits' } }
   end
 end

@@ -25,7 +25,7 @@ parsers = [
   {"external_id"=>"xzhgcymbtodl", "name"=>"KeHE Lumper Fee, Warehouse Support, FOB Surcharge", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheLumperFeeWarehouseSupportFobSurcharge"}},
   {"external_id"=>"uuopbrjehxkh", "name"=>"KeHE Merchandising Invoice", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheMerchandisingInvoice"}},
   {"external_id"=>"fcpastlnejqk", "name"=>"KeHE New Item Setup", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheNewItemSetup"}},
-  {"external_id"=>"sjyigeaaixuy", "name"=>"KeHE Non-Service In Store Credits", "destination_id"=>production_spreadsheet, "is_active"=>true, "settings"=>{"library"=>"KeheNonserviceInStoreCredits"}},
+  {"external_id"=>"sjyigeaaixuy", "name"=>"KeHE Non-Service In Store Credits", "destination_id"=>production_spreadsheet, "is_active"=>false, "settings"=>{"library"=>"KeheNonserviceInStoreCredits"}},
   {"external_id"=>"jmqonywollnj", "name"=>"KeHE Reclamation Recovery", "destination_id"=>production_spreadsheet, "is_active"=>false, "settings"=>{"library"=>"KeheReclamationRecovery"}},
   {"external_id"=>"xaewjhkmblpm", "name"=>"KeHE Retailer Store Placement", "destination_id"=>production_spreadsheet, "is_active"=>false, "settings"=>{"library"=>"KeheRetailerStorePlacement"}},
   {"external_id"=>"ccyfadqnatez", "name"=>"KeHE Scan Invoice", "destination_id"=>production_spreadsheet, "is_active"=>false, "settings"=>{"library"=>"KeheScanInvoice"}},

@@ -32,7 +32,7 @@ class DriveService
       folder
     end
 
-    def fetch_documents_from_folder(parser)
+    def fetch_documents_from_folder(session, parser)
       files = []
       folder = get_folder(session, parser)
       spreadsheets = fetch_spreadsheets_from_folder(folder)

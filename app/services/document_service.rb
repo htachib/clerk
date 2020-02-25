@@ -1,8 +1,8 @@
 class DocumentService
   class << self
-    def get_documents(parser)
+    def get_documents(session, parser)
       if parser.settings.dig('source') == 'google_drive'
-        DriveService.fetch_documents_from_folder(parser)
+        DriveService.fetch_documents_from_folder(session, parser)
       else
         DocParserService.fetch_documents(parser.external_id)
       end

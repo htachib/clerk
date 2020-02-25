@@ -8,7 +8,7 @@ class SpreadsheetService
 
   def import_data!
     Parser.active.each do |parser|
-      documents = DocumentService.get_documents(parser)
+      documents = DocumentService.get_documents(session, parser)
 
       documents.each do |document|
         doc = DocumentService.create_locally(parser, document)

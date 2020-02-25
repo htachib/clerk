@@ -10,4 +10,10 @@ class ApplicationController < ActionController::Base
 		current_user.admin? ? admin_index_path : dashboard_index_path
 	end
 
+	def authenticate_admin!
+		unless current_user.admin?
+			sign_out(current_user)
+			redirect_to(login_path)
+		end
+	end
 end

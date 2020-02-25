@@ -176,7 +176,7 @@ module Parsers
         chargeback_arr = document.try(:[], chargeback_option)
         return nil if !chargeback_arr
         arr = chargeback_arr.map do |h|
-          str_to_dollars(h.try(:values).try(:first))
+          h.try(:values).try(:first).to_dollars
         end
         arr.try(:max)
       end
@@ -191,7 +191,7 @@ module Parsers
         case ep_fee_option
         when 'admin_fee_1' # sum of admin_fee column
           ep_fee_arr = parsed_data(document, ep_fee_option, false)
-          ep_fee_arr.map{|v| str_to_dollars(v)}.try(:inject, 0, &:+)
+          ep_fee_arr.map{|v| v.to_dollars}.try(:inject, 0, &:+)
         when 'admin_fee_4'
           parsed_data(document, 'admin_fee_4')
         when 'admin_fee_2'

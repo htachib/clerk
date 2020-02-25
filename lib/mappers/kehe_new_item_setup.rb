@@ -7,11 +7,11 @@ module Mappers
         prepared_row['Parser'] = 'KeHE New Item Setup'
         file_name = raw_rows['file_name'].try(:gsub,'.pdf','').try(:gsub,'.PDF','')
         prepared_row['File Name'] = file_name
-        prepared_row['Invoice Number'] = raw_rows['invoice number']
+        prepared_row['Invoice Number'] = raw_rows['invoice_number']
         prepared_row['Deduction Post Date'] = Date.parse(raw_rows['uploaded_at']).strftime("%m/%d/%Y")
         prepared_row['Promo End Date'] = raw_rows['end_date']
         prepared_row['Promo Start Date'] = raw_rows['start_date']
-        prepared_row['Deduction Type'] = raw_rows['Type']
+        prepared_row['Deduction Type'] = raw_rows['type']
         prepared_row['Deduction Description'] = raw_rows['deduction_description']
         prepared_row['Customer Chain ID'] = 'KeHE'
         prepared_row['Customer Detailed Name'] = 'KeHE'

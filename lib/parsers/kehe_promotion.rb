@@ -11,10 +11,10 @@ module Parsers
         parsed = {}
         data = get_raw_data(document,'meta_data_cover').map { |row| row.join(' ') }
 
-        parsed['invoice number'] = data[0].try(:split,'#').try(:last).strip
-        parsed['PO #'] = data[2].try(:split,'#').try(:last).strip
-        parsed['DC #'] = data[3].try(:split,'#').try(:last).strip
-        parsed['Type'] = data[4].try(:split,' ').try(:last).strip
+        parsed['invoice_number'] = data[0].try(:split,'#').try(:last).strip
+        parsed['po_num'] = data[2].try(:split,'#').try(:last).strip
+        parsed['dc_num'] = data[3].try(:split,'#').try(:last).strip
+        parsed['type'] = data[4].try(:split,' ').try(:last).strip
         parsed
       end
 

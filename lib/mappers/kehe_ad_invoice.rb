@@ -7,7 +7,7 @@ module Mappers
         prepared_row['Parser'] = 'KeHE Ad Invoice'
         file_name = raw_rows['file_name'].try(:gsub, '.pdf','').try(:gsub, '.PDF','')
         prepared_row['File Name'] = file_name
-        prepared_row['Invoice Number'] = raw_rows['invoice number']
+        prepared_row['Invoice Number'] = raw_rows['invoice_number']
         prepared_row['Deduction Post Date'] = Date.parse(raw_rows['uploaded_at']).strftime("%m/%d/%Y")
         prepared_row['Promo End Date'] = raw_rows['promo_dates'].try(:[], 'end_date')
         prepared_row['Promo Start Date'] = raw_rows['promo_dates'].try(:[], 'start_date')

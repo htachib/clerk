@@ -53,7 +53,7 @@ module Parsers
 
       def meta_amount(document)
         chargeback_str = document.try(:[], 'amount').try(:first).try(:values).try(:first)
-        str_to_dollars(chargeback_str)
+        chargeback_str.to_dollars
       end
 
       def parser_three(document)
@@ -115,10 +115,10 @@ module Parsers
       def parser_five(document)
         row = first_row(document, 'invoice_summary_option_5')
         chargeback_str = row.try(:[], 'total')
-        chargeback_amount = str_to_dollars(chargeback_str)
+        chargeback_amount = chargeback_str.to_dollars
 
         shipped_str = row.try(:[], 'amount')
-        shipped = str_to_dollars(shipped_str)
+        shipped = shipped_str.to_dollars
 
         billing_desc = row.try(:[], 'billing_description')
         meta_data = get_meta_data(document)
@@ -127,7 +127,7 @@ module Parsers
         start_date = end_date = date
 
         admin_fee_str = row.try(:[], 'admin_fee')
-        admin_fee = str_to_dollars(admin_fee_str) if defined?(admin_fee_str)
+        admin_fee = admin_fee_str.to_dollars if defined?(admin_fee_str)
 
         deduction_detail = parsed_deduction_detail(billing_desc)
         deduction_type = deduction_detail.try(:[], 'deduction_type')
@@ -152,7 +152,7 @@ module Parsers
       def parser_four(document)
         row = first_row(document, 'invoice_summary_option_4')
         chargeback_str = row.try(:[], 'total')
-        chargeback_amount = str_to_dollars(chargeback_str)
+        chargeback_amount = chargeback_str.to_dollars
         billing_desc = row.try(:[], 'billing_desc')
         year = billing_desc.scan(/\d{4}/).try(:first).try(:to_i)
         month_count = month_count_from_string(billing_desc)

@@ -37,8 +37,8 @@ module Parsers
         invoice_number = invoice_num_from_file_name(document) || parsed_invoice_number(meta_data)
         type = parsed_type(meta_data)
 
-        {'invoice number' => invoice_number,
-          'Type' => type}
+        {'invoice_number' => invoice_number,
+          'type' => type}
       end
 
       def parsed_totals(document)
@@ -53,7 +53,7 @@ module Parsers
       def parsed_chargeback(totals)
         invoice_total_row = totals ? totals.select{ |row| row.match(/$/)}.last : nil
         invoice_total = get_amount_str(invoice_total_row)
-        str_to_dollars(invoice_total)
+        invoice_total.to_dollars
       end
 
       def parsed_ep_fee(totals)

@@ -1,0 +1,20 @@
+<h1>Admin Dashboard</h1>
+
+<h3>All Users</h3>
+<table class="table table--fixed table--compact table--border-bottom">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.id %></td>
+        <td><%= user.email %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

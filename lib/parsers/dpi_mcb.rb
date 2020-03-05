@@ -86,7 +86,11 @@ module Parsers
 
       def parsed_item_description(document, row_idx)
         values = row_values(document, row_idx)
-        item_description_str = values.try(:gsub, /.*\d{8,}\s*/, '').try(:gsub, /\s*\d+.*/, '').try(:gsub, '|', '').try(:strip)
+        if values.match?(/.*\d{8,}\s*/)
+          item_description_str = values.try(:gsub, /.*\d{8,}\s*/, '').try(:gsub, /\s*\d+.*/, '').try(:gsub, '|', '').try(:strip)
+        else
+          item_description_str = values.try(:gsub, /(\d|\s|\W)+$/, '').try(:gsub, /.*\d+\/\d+\/\d+/, '').try(:strip)
+        end
         item_description = strip_non_letters(item_description_str)
         { 'item_description' => item_description }
       end
